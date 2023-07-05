@@ -1,0 +1,70 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+  <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+  <id>com.intership.LSV-plugin</id>
+
+  <!-- Public plugin name should be written in Title Case.
+       Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+  <name>LSV-plugin</name>
+
+  <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+  <vendor email="support@yourcompany.com" url="https://www.yourcompany.com">YourCompany</vendor>
+
+  <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+       Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+       Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+  <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+  ]]></description>
+
+  <!-- Product and plugin compatibility requirements.
+       Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+  <depends>com.intellij.modules.platform</depends>
+
+  <actions>
+
+    <action id="com.intership.lsvplugin.PopupDialogAction" class="com.intership.lsvplugin.PopupDialogAction"
+            text="Action Basics Plugin: Pop Dialog Action" description="SDK action example">
+      <add-to-group group-id="ToolsMenu" anchor="first"/>
+      <override-text place="MainMenu" text="Pop Dialog Action"/>
+      <keyboard-shortcut first-keystroke="control alt A"  second-keystroke="C" keymap="$default"/>
+      <mouse-shortcut keymap="$default" keystroke="control button3 doubleClick"/>
+    </action>
+    
+    <group id="com.intership.lsvplugin.GroupedActions"
+           text="Static Grouped Actions" description="SDK statically grouped action example"
+           popup="true">
+      <add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="com.intership.lsvplugin.PopupDialogAction"/>
+      <action id="com.intership.lsvplugin.GroupPopupDialogAction"
+              class="com.intership.lsvplugin.PopupDialogAction"
+              text="A Group Action"
+              description="SDK static grouped action example"/>
+    </group>
+
+    <group id="com.intership.lsvplugin.CustomDefaultActionGroup"
+           class="com.intership.lsvplugin.CustomDefaultActionGroup" text="DefaultActionGroup" popup="true">
+      <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+      <action id="com.intership.lsvplugin.CustomGroupedAction" class="com.intership.lsvplugin.PopupDialogAction"/>
+    </group>
+
+    <group id="com.intership.lsvplugin.DynamicActionGroup" class="com.intership.lsvplugin.DynamicActionGroup"
+           text="Dynamically ActionGroup" popup="true" description="SDK dynamically grouped action example">
+      <add-to-group group-id="ToolsMenu" anchor="after" relative-to-action="com.intership.lsvplugin.GroupedActions"/>
+    </group>
+  </actions>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <toolWindow id="com.intership.lsvplugin.CustomTestExtensionsImpl" factoryClass="com.intership.lsvplugin.CustomTestExtensionsImpl"
+                anchor="right"/>
+  </extensions>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <projectService serviceInterface="com.intership.lsvplugin.CustomTestService"
+                    serviceImplementation="com.intership.lsvplugin.CustomTestServiceImpl"/>
+  </extensions>
+
+  <extensions defaultExtensionNs="com.intellij">
+
+  </extensions>
+</idea-plugin>
