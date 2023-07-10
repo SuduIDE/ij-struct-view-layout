@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact name="Source_code">
+    <output-path>$PROJECT_DIR$/out/</output-path>
+    <root id="root">
+      <element id="archive" name="source code.zip">
+        <element id="dir-copy" path="$PROJECT_DIR$" />
+      </element>
+      <element id="archive" name="source code.tar.gz">
+        <element id="dir-copy" path="$PROJECT_DIR$" />
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -22,3 +22,10 @@ jobs:
         uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Upload file
+        uses: xresloader/upload-to-github-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "./build/libs/*.jar"
+          tag_name: ${{ matrix.java }}-${{ matrix.os }}

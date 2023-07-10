@@ -2,6 +2,7 @@ plugins {
   id("java")
   id("org.jetbrains.kotlin.jvm") version "1.8.21"
   id("org.jetbrains.intellij") version "1.14.1"
+  kotlin("plugin.serialization") version "1.8.21"
 }
 
 group = "com.intership"
@@ -16,8 +17,7 @@ repositories {
 intellij {
   version.set("2023.1.2")
   type.set("IC") // Target IDE Platform
-
-  plugins.set(listOf(/* Plugin Dependencies */))
+//  plugins.set(listOf("com.intellij.java"))
 }
 
 tasks {
