@@ -1,45 +1,51 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-  <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-  <id>com.rri.LSV-plugin</id>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.rri.LSV-plugin</id>
 
-  <!-- Public plugin name should be written in Title Case.
-       Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-  <name>LSV</name>
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>LSV</name>
 
-  <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-  <vendor email="" url="">AvvALlV</vendor>
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="" url="">AvvALlV</vendor>
 
-  <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
-       Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
-       Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
-  <description><![CDATA[
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
     plugin for customization the structure of view layout
   ]]></description>
 
-  <!-- Product and plugin compatibility requirements.
-       Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
-  <depends>com.intellij.modules.platform</depends>
-<!--  <depends>com.intellij.java</depends>-->
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <!--  <depends>com.intellij.java</depends>-->
 
-  <actions>
-    <action class="com.rri.lsvplugin.actions.ActionCreateJsonSV" id="com.rri.lsvplugin.actions.ActionCreateJsonSV" text="Create json SV">
-      <override-text place="MainMenu" text="Create Json SV"/>
-      <keyboard-shortcut keymap="$default" first-keystroke="control alt A" second-keystroke="C"/>
-    </action>>
+    <actions>
+        <action class="com.rri.lsvplugin.actions.ActionCreateJsonSV" id="com.rri.lsvplugin.actions.ActionCreateJsonSV"
+                text="Create json SV">
+            <override-text place="MainMenu" text="Create Json SV"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="control alt A" second-keystroke="C"/>
+        </action>
+        >
 
-    <action class="com.rri.lsvplugin.actions.ActionOpenJsonSV" id="com.rri.lsvplugin.actions.ActionOpenJsonSV" text="Open json SV">
-      <override-text place="MainMenu" text="Open json SV"/>
-    </action>
-  </actions>
+        <action class="com.rri.lsvplugin.actions.ActionOpenJsonSV" id="com.rri.lsvplugin.actions.ActionOpenJsonSV"
+                text="Open json SV">
+            <override-text place="MainMenu" text="Open json SV"/>
+        </action>
+    </actions>
 
-  <extensions defaultExtensionNs="com.intellij">
-    <lang.psiStructureViewFactory language="JAVA" implementationClass="com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory"/>
-    <projectService serviceInterface="com.rri.lsvplugin.services.JsonSvContainer" serviceImplementation="com.rri.lsvplugin.services.JsonSvContainerImpl"/>
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <lang.psiStructureViewFactory language="JAVA"
+                                      implementationClass="com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory"/>
+        <projectService serviceInterface="com.rri.lsvplugin.services.JsonSvContainer"
+                        serviceImplementation="com.rri.lsvplugin.services.JsonSvContainerImpl"/>
+    </extensions>
 
-  <projectListeners>
-    <listener class="com.rri.lsvplugin.listeners.ListenerJsonSV" topic="com.intellij.openapi.vfs.newvfs.BulkFileListener"/>
-  </projectListeners>
+    <projectListeners>
+        <listener class="com.rri.lsvplugin.listeners.ListenerJsonSV"
+                  topic="com.intellij.openapi.vfs.newvfs.BulkFileListener"/>
+    </projectListeners>
 
 </idea-plugin>

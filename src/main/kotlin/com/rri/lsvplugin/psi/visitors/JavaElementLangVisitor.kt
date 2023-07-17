@@ -1,17 +1,13 @@
 package com.rri.lsvplugin.psi.visitors
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.util.elementType
 import com.rri.lsvplugin.languageElements.builders.BaseElementStructureBuilder
 import com.rri.lsvplugin.languageElements.elements.BaseElement
-import com.rri.lsvplugin.languageElements.elements.ClassBaseElement
-import com.rri.lsvplugin.languageElements.elements.FieldElement
-import com.rri.lsvplugin.languageElements.elements.FunctionBaseElement
 import com.rri.lsvplugin.psi.JsonContainerUtil
 
-class JavaElementLangVisitor: IElementVisitor {
-    lateinit var jsonUtil : JsonContainerUtil
-    override fun visitElement(element: BaseElement, builder: BaseElementStructureBuilder, util : JsonContainerUtil) {
+class JavaElementLangVisitor : IElementVisitor {
+    lateinit var jsonUtil: JsonContainerUtil
+    override fun visitElement(element: BaseElement, builder: BaseElementStructureBuilder, util: JsonContainerUtil) {
         jsonUtil = util
 
         builder.reset()
@@ -30,7 +26,7 @@ class JavaElementLangVisitor: IElementVisitor {
     }
 
 
-    fun visitModifierList(psiElement: PsiElement) : List<String> {
+    fun visitModifierList(psiElement: PsiElement): List<String> {
         val modifiers = ArrayList<String>()
         for (child in psiElement.children) {
             if (jsonUtil.isSubElement(child))
@@ -39,7 +35,7 @@ class JavaElementLangVisitor: IElementVisitor {
         return modifiers
     }
 
-    fun visitParameterList(psiElement: PsiElement) : List<String> {
+    fun visitParameterList(psiElement: PsiElement): List<String> {
         val parameters = ArrayList<String>()
         for (child in psiElement.children) {
             val par_type = when (jsonUtil.getSubKeywords(child)) {
@@ -54,12 +50,12 @@ class JavaElementLangVisitor: IElementVisitor {
     }
 
 
-    fun visitParameter(psiElement: PsiElement) : String? {
+    fun visitParameter(psiElement: PsiElement): String? {
         for (child in psiElement.children) {
-           val parType = when (jsonUtil.getSubKeywords(child)) {
-               "type" -> child.text
-               else -> null
-           }
+            val parType = when (jsonUtil.getSubKeywords(child)) {
+                "type" -> child.text
+                else -> null
+            }
 
             if (parType != null)
                 return parType

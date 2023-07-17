@@ -8,17 +8,17 @@ import com.rri.lsvplugin.languageElements.elements.LambdaElement
 
 interface IElementFactory {
 
-    fun createClass(langElement: PsiElement) : ClassBaseElement
+    fun createClass(langElement: PsiElement): ClassBaseElement
 
-    fun createAClass(langElement: PsiElement) : ClassBaseElement
+    fun createAClass(langElement: PsiElement): ClassBaseElement
 
-    fun createFunction(langElement: PsiElement) : FunctionBaseElement
+    fun createFunction(langElement: PsiElement): FunctionBaseElement
 
-    fun createMethod(langElement: PsiElement) : FunctionBaseElement
+    fun createMethod(langElement: PsiElement): FunctionBaseElement
 
-    fun createLambda(langElement: PsiElement) : LambdaElement
+    fun createLambda(langElement: PsiElement): LambdaElement
 
-    fun createField(langElement: PsiElement) : FieldElement
+    fun createField(langElement: PsiElement): FieldElement
 
 
 }

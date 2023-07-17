@@ -5,13 +5,13 @@ import kotlinx.serialization.json.Json
 import java.io.File
 
 class JsonInfo {
-    private lateinit var mapSV : MapTypeSV
+    private lateinit var mapSV: MapTypeSV
 
     init {
         reset()
     }
 
-    val filenameJsonSV : File = File((".customSV.json"))
+    val filenameJsonSV: File = File((".customSV.json"))
 
     fun reset() {
         mapSV = mutableMapOf(
@@ -40,11 +40,11 @@ class JsonInfo {
         )
     }
 
-    fun setMapSV(newMapSV : MapTypeSV) {
+    fun setMapSV(newMapSV: MapTypeSV) {
         mapSV = newMapSV
     }
 
-    fun getMapSV() : MapTypeSV = mapSV
+    fun getMapSV(): MapTypeSV = mapSV
 
     fun getJsonSV(): String {
         val format = Json { prettyPrint = true }

@@ -2,7 +2,7 @@ package com.rri.lsvplugin.languageElements.builders
 
 import com.rri.lsvplugin.languageElements.elementUtils.ElementStructure
 
-class ElementBuilder: BaseElementStructureBuilder {
+class ElementBuilder : BaseElementStructureBuilder {
     private var elementStructure: ElementStructure = ElementStructure()
 
     override fun reset(otherStructure: ElementStructure) {
@@ -34,5 +34,5 @@ class ElementBuilder: BaseElementStructureBuilder {
         elementStructure.getModifiers()?.add(modifier)
     }
 
-    override fun getElementStructure() : ElementStructure = elementStructure
+    override fun getElementStructure(): ElementStructure = elementStructure
 }

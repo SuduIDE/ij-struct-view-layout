@@ -12,7 +12,8 @@ import java.io.File
 class ActionOpenJsonSV : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val containerSV = e.project?.service<JsonSvContainerImpl>()
-        val fullPathToJsonSV = containerSV?.let { e.project?.basePath?.let { it1 -> File(it1).resolve(it.getFilename()) } }
+        val fullPathToJsonSV =
+            containerSV?.let { e.project?.basePath?.let { it1 -> File(it1).resolve(it.getFilename()) } }
         val virtualJsonFile = e.getData(CommonDataKeys.PSI_FILE)?.virtualFile?.findFile(fullPathToJsonSV.toString())
         virtualJsonFile?.let { e.project?.let { it1 -> OpenFileDescriptor(it1, it).navigate(true) } }
     }

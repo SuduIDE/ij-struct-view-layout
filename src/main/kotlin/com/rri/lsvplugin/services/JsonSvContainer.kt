@@ -6,9 +6,9 @@ interface JsonSvContainer {
 
     fun setJsonSV(mapSV: MapTypeSV?)
     fun reset()
-    fun getJsonSV() : String
+    fun getJsonSV(): String
 
-    fun getMapSV() : MapTypeSV
+    fun getMapSV(): MapTypeSV
 
-    fun getFilename() : File
+    fun getFilename(): File
 }

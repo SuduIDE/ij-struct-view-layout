@@ -1,6 +1,5 @@
 package com.rri.lsvplugin.languageElements.elements
 
-import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import com.intellij.ui.IconManager
 import com.intellij.ui.PlatformIcons
@@ -18,6 +17,7 @@ class MethodElement(private val langElement: PsiElement) : FunctionBaseElement(l
             presentableText.append(elementStructure.getParameters()!!.joinToString(separator = ", "))
         }
         presentableText.append("): ").append(elementStructure.getType())
-        presentableView = PresentableView(presentableText.toString(), IconManager.getInstance().getPlatformIcon(PlatformIcons.Method))
+        presentableView =
+            PresentableView(presentableText.toString(), IconManager.getInstance().getPlatformIcon(PlatformIcons.Method))
     }
 }

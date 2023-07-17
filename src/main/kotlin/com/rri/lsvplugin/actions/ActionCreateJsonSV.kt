@@ -3,13 +3,7 @@ package com.rri.lsvplugin.actions
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
-import com.intellij.psi.PsiFile
-import com.intellij.psi.impl.source.PsiFileImpl
 import com.rri.lsvplugin.services.JsonSvContainerImpl
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToJsonElement
 import java.io.File
 
 class ActionCreateJsonSV : AnAction() {

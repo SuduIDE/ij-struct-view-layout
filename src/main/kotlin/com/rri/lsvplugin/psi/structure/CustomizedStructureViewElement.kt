@@ -1,15 +1,10 @@
 package com.rri.lsvplugin.psi.structure
 
-import com.intellij.ide.projectView.PresentationData
 import com.intellij.ide.structureView.StructureViewTreeElement
-import com.intellij.ide.util.treeView.smartTree.TreeElement
 import com.intellij.navigation.ItemPresentation
 import com.intellij.pom.Navigatable
 import com.intellij.util.ArrayUtil
-import com.intellij.util.containers.toArray
-import com.rri.lsvplugin.languageElements.builders.BaseElementStructureBuilder
 import com.rri.lsvplugin.languageElements.elements.BaseElement
-import com.rri.lsvplugin.languageElements.elements.FileElement
 import com.rri.lsvplugin.psi.ViewCreator
 
 class CustomizedStructureViewElement(
@@ -44,5 +39,5 @@ class CustomizedStructureViewElement(
 
     override fun getValue(): Any = element
 
-    fun isPublic() : Boolean = element.isPublic()
+    fun isPublic(): Boolean = element.isPublic()
 }

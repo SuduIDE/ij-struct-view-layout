@@ -1,6 +1,5 @@
 package com.rri.lsvplugin.languageElements.elements
 
-import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import com.intellij.ui.IconManager
 import com.intellij.ui.PlatformIcons
@@ -17,7 +16,10 @@ class FieldElement(private val langElement: PsiElement) : BaseElement(langElemen
         if (elementStructure.getValue() != null)
             printableText.append(" = ").append(elementStructure.getValue())
 
-        presentableView = PresentableView(printableText.toString(), IconManager.getInstance().getPlatformIcon(
-            PlatformIcons.Field))
+        presentableView = PresentableView(
+            printableText.toString(), IconManager.getInstance().getPlatformIcon(
+                PlatformIcons.Field
+            )
+        )
     }
 }

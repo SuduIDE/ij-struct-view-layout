@@ -1,6 +1,5 @@
 package com.rri.lsvplugin.languageElements.builders
 
-import com.intellij.psi.PsiElement
 import com.rri.lsvplugin.languageElements.elementUtils.ElementStructure
 
 interface BaseElementStructureBuilder {
@@ -17,5 +16,5 @@ interface BaseElementStructureBuilder {
 
     fun addModifier(modifier: String)
 
-    fun getElementStructure() : ElementStructure
+    fun getElementStructure(): ElementStructure
 }

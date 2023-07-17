@@ -1,6 +1,5 @@
 package com.rri.lsvplugin.psi.visitors
 
-import com.intellij.psi.NavigatablePsiElement
 import com.intellij.psi.PsiElement
 import com.rri.lsvplugin.languageElements.builders.BaseElementStructureBuilder
 import com.rri.lsvplugin.languageElements.elements.*

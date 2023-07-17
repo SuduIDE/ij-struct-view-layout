@@ -1,6 +1,5 @@
 package com.rri.lsvplugin.languageElements.elements
 
-import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import com.intellij.ui.IconManager
 import com.intellij.ui.PlatformIcons

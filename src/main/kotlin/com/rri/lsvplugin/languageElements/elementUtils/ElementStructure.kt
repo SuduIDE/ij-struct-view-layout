@@ -13,13 +13,13 @@ class ElementStructure {
 
     val children = ArrayList<BaseElement>()
 
-    fun getName() : String? = structure["name"] as? String
+    fun getName(): String? = structure["name"] as? String
 
-    fun getType() : String? = structure["type"] as? String
+    fun getType(): String? = structure["type"] as? String
 
-    fun getValue() : String? = structure["value"] as? String
+    fun getValue(): String? = structure["value"] as? String
 
-    fun getModifiers() : MutableList<String>? = structure["modifiers"] as? MutableList<String>
+    fun getModifiers(): MutableList<String>? = structure["modifiers"] as? MutableList<String>
 
-    fun getParameters() : MutableList<String>? = structure["parameters"] as? MutableList<String>
+    fun getParameters(): MutableList<String>? = structure["parameters"] as? MutableList<String>
 }
