@@ -19,7 +19,7 @@ class GeneralizedElementVisitor : IElementVisitor {
         builder.reset(element.elementStructure)
         for (child in psiElement.children) {
             val newElement = when (jsonUtil.getMainKeywords(child)) {
-                "class" -> CallableClassElement(child)
+                "class" -> ClassElement(child)
                 "method" -> MethodElement(child)
                 "field" -> FieldElement(child)
                 "parameter" -> ParameterElement(child)

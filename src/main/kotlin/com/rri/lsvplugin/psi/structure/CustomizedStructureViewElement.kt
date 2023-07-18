@@ -12,7 +12,7 @@ class CustomizedStructureViewElement(
     private val creator: ViewCreator,
 ) : StructureViewTreeElement {
     override fun getPresentation(): ItemPresentation {
-        element.createPresentableView()
+        element.presentableView = creator.createPresentableViewElement(element)
         return element.presentableView
     }
 

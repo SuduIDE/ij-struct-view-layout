@@ -9,15 +9,4 @@ import com.rri.lsvplugin.psi.visitors.IElementVisitor
 class FunctionElement(private val langElement: PsiElement) : FunctionBaseElement(langElement) {
     override fun accept(visitor: IElementVisitor) {
     }
-
-    override fun createPresentableView() {
-        val presentableText = StringBuilder()
-        presentableText.append(elementStructure.getName()).append(": ").append(elementStructure.getType())
-
-        presentableView = PresentableView(
-            presentableText.toString(), IconManager.getInstance().getPlatformIcon(
-                PlatformIcons.Function
-            )
-        )
-    }
 }

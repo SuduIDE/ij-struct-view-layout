@@ -4,7 +4,7 @@ import com.intellij.psi.PsiElement
 import com.rri.lsvplugin.languageElements.elements.*
 
 class ElementFactory : IElementFactory {
-    override fun createClass(langElement: PsiElement): ClassBaseElement = CallableClassElement(langElement)
+    override fun createClass(langElement: PsiElement): ClassBaseElement = ClassElement(langElement)
 
     override fun createAClass(langElement: PsiElement): ClassBaseElement = AnonymousClassElement(langElement)
 

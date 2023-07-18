@@ -35,7 +35,7 @@ class JsonInfo {
                                     "public" to "PUBLIC_KEYWORD",
                                     "final" to "FINAL_KEYWORD",
                                     "static" to "STATIC_KEYWORD"
-                                )
+                                ),
                     )
         )
     }

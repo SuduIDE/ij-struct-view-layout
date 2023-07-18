@@ -4,10 +4,6 @@ import com.intellij.psi.PsiElement
 import com.rri.lsvplugin.psi.visitors.IElementVisitor
 
 class LambdaElement(langElement: PsiElement) : ClassBaseElement(langElement) {
-    override fun createPresentableView() {
-
-    }
-
     override fun accept(visitor: IElementVisitor) {
 
     }

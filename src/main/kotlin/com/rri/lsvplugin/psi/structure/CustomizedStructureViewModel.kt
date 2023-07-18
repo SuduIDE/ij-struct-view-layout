@@ -10,13 +10,15 @@ import com.rri.lsvplugin.languageElements.builders.ElementBuilder
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.languageElements.elements.FileElement
 import com.rri.lsvplugin.languageElements.factory.ElementFactory
+import com.rri.lsvplugin.languageElements.factory.IPresentableViewFactory
+import com.rri.lsvplugin.languageElements.factory.PresentableViewFactoryDefaultImpl
 import com.rri.lsvplugin.psi.ViewCreator
 import com.rri.lsvplugin.psi.visitors.JavaElementLangVisitor
 
 class CustomizedStructureViewModel(
     private val psiFile: PsiFile,
     private val editor: Editor?,
-    private val creator: ViewCreator = ViewCreator(ElementFactory(), JavaElementLangVisitor(), ElementBuilder())
+    private val creator: ViewCreator = ViewCreator(ElementFactory(), PresentableViewFactoryDefaultImpl(),  JavaElementLangVisitor(), ElementBuilder())
 ) : StructureViewModelBase(psiFile, editor, CustomizedStructureViewElement(FileElement(psiFile), creator)),
     StructureViewModel.ElementInfoProvider {
     override fun isAlwaysShowsPlus(element: StructureViewTreeElement?): Boolean {

@@ -10,14 +10,4 @@ class MethodElement(private val langElement: PsiElement) : FunctionBaseElement(l
     override fun accept(visitor: IElementVisitor) {
     }
 
-    override fun createPresentableView() {
-        val presentableText = StringBuilder()
-        presentableText.append(elementStructure.getName()).append("(")
-        if (elementStructure.getParameters() != null) {
-            presentableText.append(elementStructure.getParameters()!!.joinToString(separator = ", "))
-        }
-        presentableText.append("): ").append(elementStructure.getType())
-        presentableView =
-            PresentableView(presentableText.toString(), IconManager.getInstance().getPlatformIcon(PlatformIcons.Method))
-    }
 }

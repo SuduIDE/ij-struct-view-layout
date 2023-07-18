@@ -7,8 +7,4 @@ class AnonymousClassElement(private val langElement: PsiElement) : ClassBaseElem
     override fun accept(visitor: IElementVisitor) {
         TODO("Not yet implemented")
     }
-
-    override fun createPresentableView() {
-        TODO("Not yet implemented")
-    }
 }

@@ -6,7 +6,7 @@ import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.psi.JsonContainerUtil
 
 class JavaElementLangVisitor : IElementVisitor {
-    lateinit var jsonUtil: JsonContainerUtil
+    private lateinit var jsonUtil: JsonContainerUtil
     override fun visitElement(element: BaseElement, builder: BaseElementStructureBuilder, util: JsonContainerUtil) {
         jsonUtil = util
 
@@ -26,7 +26,7 @@ class JavaElementLangVisitor : IElementVisitor {
     }
 
 
-    fun visitModifierList(psiElement: PsiElement): List<String> {
+    private fun visitModifierList(psiElement: PsiElement): List<String> {
         val modifiers = ArrayList<String>()
         for (child in psiElement.children) {
             if (jsonUtil.isSubElement(child))
@@ -35,7 +35,7 @@ class JavaElementLangVisitor : IElementVisitor {
         return modifiers
     }
 
-    fun visitParameterList(psiElement: PsiElement): List<String> {
+    private fun visitParameterList(psiElement: PsiElement): List<String> {
         val parameters = ArrayList<String>()
         for (child in psiElement.children) {
             val par_type = when (jsonUtil.getSubKeywords(child)) {
@@ -50,7 +50,7 @@ class JavaElementLangVisitor : IElementVisitor {
     }
 
 
-    fun visitParameter(psiElement: PsiElement): String? {
+    private fun visitParameter(psiElement: PsiElement): String? {
         for (child in psiElement.children) {
             val parType = when (jsonUtil.getSubKeywords(child)) {
                 "type" -> child.text

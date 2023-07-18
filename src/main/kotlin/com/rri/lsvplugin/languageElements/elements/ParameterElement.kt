@@ -7,8 +7,4 @@ class ParameterElement(private val langElement: PsiElement) : BaseElement(langEl
     override fun accept(visitor: IElementVisitor) {
         TODO("Not yet implemented")
     }
-
-    override fun createPresentableView() {
-        TODO("Not yet implemented")
-    }
 }

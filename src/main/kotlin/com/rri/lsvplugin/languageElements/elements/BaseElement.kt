@@ -19,13 +19,14 @@ abstract class BaseElement(private val langElement: PsiElement) {
 
     open fun getChildren(): List<BaseElement> = elementStructure.children
 
+    open fun getModifiersList() : MutableList<String>? {
+        return elementStructure.getModifiers()
+    }
     open fun isPublic(): Boolean {
         return elementStructure.getModifiers()?.contains("public") ?: false
     }
 
     abstract fun accept(visitor: IElementVisitor)
-
-    abstract fun createPresentableView()
 
     open fun getLangElement(): PsiElement {
         return langElement
