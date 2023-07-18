@@ -25,14 +25,22 @@ tasks {
   compileKotlin {
     kotlinOptions.jvmTarget = "17"
   }
-
   compileTestKotlin {
     kotlinOptions.jvmTarget = "17"
+  }
+
+  withType<JavaCompile> {
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
   }
 
   patchPluginXml {
     sinceBuild.set("231")
     untilBuild.set("232.*")
+  }
+
+  buildSearchableOptions {
+    enabled = false
   }
 
   signPlugin {

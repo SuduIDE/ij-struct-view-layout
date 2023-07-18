@@ -41,6 +41,6 @@ class CustomizedStructureViewModel(
     }
 
     companion object {
-        private val FILTERS = arrayOf<Filter>(PublicElementsFilter, FieldElementsFilter)
+        private val FILTERS = arrayOf(PublicElementsFilter, FieldElementsFilter)
     }
 }

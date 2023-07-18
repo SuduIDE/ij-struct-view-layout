@@ -5,8 +5,8 @@ import com.rri.lsvplugin.languageElements.elements.*
 
 class ElementFactory : IElementFactory {
     override fun createClass(langElement: PsiElement): ClassBaseElement = ClassElement(langElement)
-
     override fun createAClass(langElement: PsiElement): ClassBaseElement = AnonymousClassElement(langElement)
+    override fun createInterface(langElement: PsiElement): InterfaceElement = InterfaceElement(langElement)
 
     override fun createFunction(langElement: PsiElement): FunctionBaseElement = FunctionElement(langElement)
 

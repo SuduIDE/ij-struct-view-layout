@@ -20,6 +20,7 @@ class JsonInfo {
                         "element" to
                                 mutableMapOf(
                                     "class" to "CLASS",
+                                    "interface" to "INTERFACE",
                                     "method" to "METHOD",
                                     "field" to "FIELD",
                                     "parameter" to "PARAMETER",
@@ -34,7 +35,8 @@ class JsonInfo {
                                     "private" to "PRIVATE_KEYWORD",
                                     "public" to "PUBLIC_KEYWORD",
                                     "final" to "FINAL_KEYWORD",
-                                    "static" to "STATIC_KEYWORD"
+                                    "static" to "STATIC_KEYWORD",
+                                    "abstract" to "ABSTRACT_KEYWORD"
                                 ),
                     )
         )

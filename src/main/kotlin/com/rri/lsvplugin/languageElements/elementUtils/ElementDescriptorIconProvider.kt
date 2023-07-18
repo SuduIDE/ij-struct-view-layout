@@ -12,6 +12,7 @@ class ElementDescriptorIconProvider {
             val baseIcon = when (element) {
                 is FileElement -> getBaseIcon(element)
                 is ClassElement -> getBaseIcon(element)
+                is InterfaceElement -> getBaseIcon(element)
                 is FieldElement -> getBaseIcon(element)
                 is MethodElement -> getBaseIcon(element)
                 is FunctionElement -> getBaseIcon(element)
@@ -30,6 +31,10 @@ class ElementDescriptorIconProvider {
                 return iconManager.getPlatformIcon(PlatformIcons.AbstractClass)
 
             return iconManager.getPlatformIcon(PlatformIcons.Class)
+        }
+
+        private fun getBaseIcon(interfaceElement: InterfaceElement): Icon {
+            return iconManager.getPlatformIcon(PlatformIcons.Interface)
         }
 
         private fun getBaseIcon(methodElement: MethodElement): Icon {

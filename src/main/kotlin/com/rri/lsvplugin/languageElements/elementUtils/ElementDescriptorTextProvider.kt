@@ -8,6 +8,7 @@ class ElementDescriptorTextProvider {
             return when (element) {
                 is FileElement -> getPresentableText(element)
                 is ClassElement -> getPresentableText(element)
+                is InterfaceElement -> getPresentableText(element)
                 is FieldElement -> getPresentableText(element)
                 is MethodElement -> getPresentableText(element)
                 is FunctionElement -> getPresentableText(element)
@@ -21,6 +22,10 @@ class ElementDescriptorTextProvider {
 
         private fun getPresentableText(classElement: ClassElement): String? {
             return classElement.elementStructure.getName()
+        }
+
+        private fun getPresentableText(interfaceElement: InterfaceElement) : String? {
+            return interfaceElement.elementStructure.getName()
         }
 
         private fun getPresentableText(fieldElement: FieldElement): String {

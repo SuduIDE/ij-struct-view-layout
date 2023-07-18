@@ -1,14 +1,13 @@
 package com.rri.lsvplugin.languageElements.factory
 
 import com.intellij.psi.PsiElement
-import com.rri.lsvplugin.languageElements.elements.ClassBaseElement
-import com.rri.lsvplugin.languageElements.elements.FieldElement
-import com.rri.lsvplugin.languageElements.elements.FunctionBaseElement
-import com.rri.lsvplugin.languageElements.elements.LambdaElement
+import com.rri.lsvplugin.languageElements.elements.*
 
 interface IElementFactory {
 
     fun createClass(langElement: PsiElement): ClassBaseElement
+
+    fun createInterface(langElement: PsiElement) : InterfaceElement
 
     fun createAClass(langElement: PsiElement): ClassBaseElement
 

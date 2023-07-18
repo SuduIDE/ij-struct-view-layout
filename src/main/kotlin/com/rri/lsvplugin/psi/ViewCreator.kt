@@ -20,6 +20,7 @@ class ViewCreator(
     fun createElement(langElement: PsiElement): BaseElement? {
         return when (jsonUtil.getMainKeywords(langElement)) {
             "class" -> factoryElement.createClass(langElement)
+            "interface" -> factoryElement.createInterface(langElement)
             "method" -> factoryElement.createMethod(langElement)
             "field" -> factoryElement.createField(langElement)
             else -> null

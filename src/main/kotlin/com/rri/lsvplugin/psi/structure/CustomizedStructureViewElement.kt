@@ -3,6 +3,7 @@ package com.rri.lsvplugin.psi.structure
 import com.intellij.ide.structureView.StructureViewTreeElement
 import com.intellij.navigation.ItemPresentation
 import com.intellij.pom.Navigatable
+import com.intellij.psi.util.elementType
 import com.intellij.util.ArrayUtil
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.languageElements.elements.ClassElement
@@ -26,6 +27,7 @@ class CustomizedStructureViewElement(
                 creator.visitElement(newElement)
                 childrenElements.add(CustomizedStructureViewElement(newElement, creator))
             }
+            println(childElement.elementType.toString())
         }
 
 //        val childrenElements = element.getChildren().map { CustomizedStructureViewElement(it, creator) }.toList()
