@@ -4,15 +4,19 @@ import com.intellij.ide.structureView.StructureViewModel
 import com.intellij.ide.structureView.StructureViewModelBase
 import com.intellij.ide.structureView.StructureViewTreeElement
 import com.intellij.ide.util.treeView.smartTree.Filter
+import com.intellij.ide.util.treeView.smartTree.Sorter
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiFile
 import com.rri.lsvplugin.languageElements.builders.ElementBuilder
 import com.rri.lsvplugin.languageElements.elements.BaseElement
+import com.rri.lsvplugin.languageElements.elements.ClassBaseElement
 import com.rri.lsvplugin.languageElements.elements.FileElement
 import com.rri.lsvplugin.languageElements.factory.ElementFactory
 import com.rri.lsvplugin.languageElements.factory.IPresentableViewFactory
 import com.rri.lsvplugin.languageElements.factory.PresentableViewFactoryDefaultImpl
 import com.rri.lsvplugin.psi.ViewCreator
+import com.rri.lsvplugin.psi.structure.filters.FieldElementsFilter
+import com.rri.lsvplugin.psi.structure.filters.PublicElementsFilter
 import com.rri.lsvplugin.psi.visitors.JavaElementLangVisitor
 
 class CustomizedStructureViewModel(
@@ -21,11 +25,13 @@ class CustomizedStructureViewModel(
     private val creator: ViewCreator = ViewCreator(ElementFactory(), PresentableViewFactoryDefaultImpl(),  JavaElementLangVisitor(), ElementBuilder())
 ) : StructureViewModelBase(psiFile, editor, CustomizedStructureViewElement(FileElement(psiFile), creator)),
     StructureViewModel.ElementInfoProvider {
+    init {
+        withSorters(Sorter.ALPHA_SORTER)
+    }
     override fun isAlwaysShowsPlus(element: StructureViewTreeElement?): Boolean {
         val value = element?.value as BaseElement
-        return value.getChildren().isNotEmpty()
+        return value.getChildren().isNotEmpty() || value is ClassBaseElement
     }
-
     override fun isAlwaysLeaf(element: StructureViewTreeElement?): Boolean = false
 
     override fun getFilters() = FILTERS
@@ -35,6 +41,6 @@ class CustomizedStructureViewModel(
     }
 
     companion object {
-        private val FILTERS = arrayOf<Filter>()
+        private val FILTERS = arrayOf<Filter>(PublicElementsFilter, FieldElementsFilter)
     }
 }

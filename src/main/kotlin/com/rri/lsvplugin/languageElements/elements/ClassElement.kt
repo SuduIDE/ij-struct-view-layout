@@ -14,4 +14,6 @@ class ClassElement(private val langElement: PsiElement) : ClassBaseElement(langE
     fun isRunnable() : Boolean {
         return getChildren().find {it.elementStructure.getName() == "main"} != null
     }
+
+    override fun isPublic(): Boolean = true
 }

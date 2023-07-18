@@ -5,6 +5,7 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.pom.Navigatable
 import com.intellij.util.ArrayUtil
 import com.rri.lsvplugin.languageElements.elements.BaseElement
+import com.rri.lsvplugin.languageElements.elements.ClassElement
 import com.rri.lsvplugin.psi.ViewCreator
 
 class CustomizedStructureViewElement(
@@ -37,7 +38,5 @@ class CustomizedStructureViewElement(
 
     override fun canNavigateToSource(): Boolean = (element.getLangElement() as Navigatable).canNavigateToSource()
 
-    override fun getValue(): Any = element
-
-    fun isPublic(): Boolean = element.isPublic()
+    override fun getValue(): BaseElement = element
 }
