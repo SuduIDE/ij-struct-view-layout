@@ -27,10 +27,8 @@ class CustomizedStructureViewElement(
                 creator.visitElement(newElement)
                 childrenElements.add(CustomizedStructureViewElement(newElement, creator))
             }
-            println(childElement.elementType.toString())
         }
 
-//        val childrenElements = element.getChildren().map { CustomizedStructureViewElement(it, creator) }.toList()
         return ArrayUtil.toObjectArray(childrenElements, StructureViewTreeElement::class.java)
     }
 

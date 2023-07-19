@@ -20,10 +20,8 @@ class JsonInfo {
                         "element" to
                                 mutableMapOf(
                                     "class" to "CLASS",
-                                    "interface" to "INTERFACE",
                                     "method" to "METHOD",
                                     "field" to "FIELD",
-                                    "parameter" to "PARAMETER",
                                 ),
                         "attribute" to
                                 mutableMapOf(
