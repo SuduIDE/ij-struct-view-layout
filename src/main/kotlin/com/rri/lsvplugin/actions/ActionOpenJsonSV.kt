@@ -1,5 +1,6 @@
 package com.rri.lsvplugin.actions
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -18,4 +19,5 @@ class ActionOpenJsonSV : AnAction() {
         virtualJsonFile?.let { e.project?.let { it1 -> OpenFileDescriptor(it1, it).navigate(true) } }
     }
 
+    override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 }
