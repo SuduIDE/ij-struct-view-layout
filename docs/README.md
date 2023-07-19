@@ -4,9 +4,9 @@
 
 This plugin is designed to customize the structure view for existing languages and for use in new ones.
 
-## Build
+## Install
 
-* Download LSV-plugin-*.jar
+* Download LSV-plugin-*.jar from Release
 * In intellij open __Settings__ &rarr; __Plugin__ &rarr; __Gear__ &rarr; __Install plugin from Disk__ and 
 select the location of the downloaded plugin
 * Reload Ide
