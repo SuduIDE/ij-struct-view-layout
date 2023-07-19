@@ -28,4 +28,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           file: "./build/distributions/*.zip"
-          tag_name: ${{ matrix.java }}-${{ matrix.os }}
+          tag_name: "LSV-plugin-0.1"
