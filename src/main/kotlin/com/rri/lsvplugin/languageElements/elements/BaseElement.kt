@@ -1,35 +1,8 @@
 package com.rri.lsvplugin.languageElements.elements
 
-import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
-import com.rri.lsvplugin.languageElements.elementUtils.ElementStructure
-import com.rri.lsvplugin.psi.visitors.IElementVisitor
 
-abstract class BaseElement(private val langElement: PsiElement) {
-    open lateinit var presentableView: ItemPresentation
-    open var elementStructure: ElementStructure = ElementStructure()
-
-    open fun setStructure(value: ElementStructure) {
-        elementStructure = value
-    }
-
-    open fun addChild(childElement: BaseElement) {
-        elementStructure.children.add(childElement)
-    }
-
-    open fun getChildren(): List<BaseElement> = elementStructure.children
-
-    open fun getModifiersList() : MutableList<String>? {
-        return elementStructure.getModifiers()
-    }
-    open fun isPublic(): Boolean {
-        return elementStructure.getModifiers()?.contains("public") ?: false
-    }
-
-    abstract fun accept(visitor: IElementVisitor)
-
-    open fun getLangElement(): PsiElement {
-        return langElement
-    }
-
+open class BaseElement(val langElement: PsiElement) {
+    open var structure : MutableMap<String, Any> = mutableMapOf()
+    
 }

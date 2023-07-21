@@ -37,15 +37,18 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <lang.psiStructureViewFactory language="JAVA"
-                                      implementationClass="com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory"/>
-        <projectService serviceInterface="com.rri.lsvplugin.services.JsonSvContainer"
-                        serviceImplementation="com.rri.lsvplugin.services.JsonSvContainerImpl"/>
+<!--        <lang.psiStructureViewFactory language="JAVA"-->
+<!--                                      implementationClass="com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory" />-->
+        <projectService serviceInterface="com.rri.lsvplugin.services.JsonSvContainerService"
+                        serviceImplementation="com.rri.lsvplugin.services.JsonSvContainerServiceImpl"/>
+        <postStartupActivity implementation="com.rri.lsvplugin.services.PostStartupService"/>
     </extensions>
+
 
     <projectListeners>
         <listener class="com.rri.lsvplugin.listeners.ListenerJsonSV"
                   topic="com.intellij.openapi.vfs.newvfs.BulkFileListener"/>
+        <listener class="com.rri.lsvplugin.listeners.ListenerFileOpening" topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
     </projectListeners>
 
 </idea-plugin>

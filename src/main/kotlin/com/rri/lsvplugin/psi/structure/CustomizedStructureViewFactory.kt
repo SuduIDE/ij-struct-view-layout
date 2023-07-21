@@ -14,6 +14,8 @@ class CustomizedStructureViewFactory : PsiStructureViewFactory {
             override fun createStructureViewModel(editor: Editor?): StructureViewModel {
                 return CustomizedStructureViewModel(psiFile, editor)
             }
+
+            override fun isRootNodeShown(): Boolean = false
         }
     }
 }

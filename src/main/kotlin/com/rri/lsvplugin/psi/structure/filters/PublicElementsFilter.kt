@@ -6,13 +6,12 @@ import com.intellij.ide.util.treeView.smartTree.Filter
 import com.intellij.ide.util.treeView.smartTree.TreeElement
 import com.intellij.ui.IconManager
 import com.intellij.ui.PlatformIcons
-import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewElement
 
 
 object PublicElementsFilter : Filter {
     override fun isVisible(treeNode: TreeElement): Boolean {
-        return (treeNode as? CustomizedStructureViewElement)?.value?.isPublic() ?: true
+        return  true
     }
 
     override fun getPresentation(): ActionPresentation {
