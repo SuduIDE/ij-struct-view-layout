@@ -47,14 +47,24 @@ class GeneralizedElementVisitor : IElementVisitor {
     }
 
     private fun visitList(langElement: PsiElement,elementCreator : IElementCreator, jsonUtil: JsonContainerUtil): List<Any> {
-        val listOfAttr = mutableListOf<String>()
+        val listOfAttr = mutableListOf<Any>()
         for (child in langElement.children) {
-            when (val elementsName = jsonUtil.getElementNames(langElement)) {
+            when (val elementsName = jsonUtil.getElementNames(child)) {
                 null -> null
                 else -> {
-                    val newBaseElement = elementCreator.createElement(child, elementName, jsonUtil.getElementByName(child, elementName))
-                    visitElement(newBaseElement, elementCreator, jsonUtil)
-                    listOfAttr.add(newBaseElement)
+                    for (elementName in elementsName) {
+                        val newBaseElement = elementCreator.createElement(
+                            child,
+                            elementName,
+                            jsonUtil.getElementByName(child, elementName)
+                        )
+                        visitElement(newBaseElement, elementCreator, jsonUtil)
+
+                        if (!newBaseElement.isFull())
+                            continue
+
+                        listOfAttr.add(newBaseElement)
+                    }
                 }
             }
             if (jsonUtil.isKeywordAttribute(child))

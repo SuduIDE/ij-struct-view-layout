@@ -24,7 +24,7 @@ class CustomizedStructureViewModel(
         withSorters(Sorter.ALPHA_SORTER)
     }
     override fun isAlwaysShowsPlus(element: StructureViewTreeElement?): Boolean {
-        return true
+        return (element!!.value as BaseElement).children.isNotEmpty()
     }
     override fun isAlwaysLeaf(element: StructureViewTreeElement?): Boolean = false
 

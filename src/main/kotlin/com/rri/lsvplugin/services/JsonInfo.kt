@@ -1,14 +1,8 @@
 package com.rri.lsvplugin.services
 
-import com.google.gson.JsonElement
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
 import java.io.File
 
 class JsonInfo {
@@ -20,17 +14,23 @@ class JsonInfo {
         val text: List<String>
     ) {
         companion object {
-            fun from(map:  Map<String, Any>) = object {
+            fun from(map: Map<String, Any>) = object {
                 val baseToken by map
                 val attributes by map
                 val baseIcon by map
                 val text by map
 
-                val elementInfo = ElementInfo(baseToken as String, attributes as List<String>, baseIcon as String, text as List<String>)
+                val elementInfo = ElementInfo(
+                    baseToken as String,
+                    @Suppress("UNCHECKED_CAST")
+                    attributes as List<String>,
+                    baseIcon as String,
+                    @Suppress("UNCHECKED_CAST")
+                    text as List<String>
+                )
             }.elementInfo
         }
     }
-
 
 
     private var mapSV: MapTypeSV? = null
@@ -43,10 +43,30 @@ class JsonInfo {
                         mutableMapOf(
                             "element" to
                                     mutableMapOf(
-                                        "class" to ElementInfo("CLASS", listOf("modifiers","name","class_keyword"), "default", listOf("name")),
-                                        "method" to ElementInfo("METHOD", listOf(""), "default", listOf()),
-                                        "field" to ElementInfo("FIELD", listOf(""), "default", listOf()),
-                                        "parameter" to ElementInfo("PARAMETER", listOf(""), "default", listOf()),
+                                        "class" to ElementInfo(
+                                            "CLASS",
+                                            listOf("modifiers", "name", "class_keyword"),
+                                            "default",
+                                            listOf("name")
+                                        ),
+                                        "method" to ElementInfo(
+                                            "METHOD",
+                                            listOf("modifiers", "name", "parameters", "type"),
+                                            "default",
+                                            listOf("name", "(", "parameters", ")", " : ", "type")
+                                        ),
+                                        "field" to ElementInfo(
+                                            "FIELD",
+                                            listOf("name", "type"),
+                                            "default",
+                                            listOf("name", ":", "type")
+                                        ),
+                                        "parameter" to ElementInfo(
+                                            "PARAMETER",
+                                            listOf("name", "type"),
+                                            "default",
+                                            listOf("type")
+                                        ),
                                     ),
                             "attribute" to
                                     mutableMapOf(
