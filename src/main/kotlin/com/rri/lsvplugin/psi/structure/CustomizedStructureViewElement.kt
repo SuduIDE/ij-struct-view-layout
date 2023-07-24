@@ -13,11 +13,14 @@ class CustomizedStructureViewElement(
     private val creator: ViewCreator,
 ) : StructureViewTreeElement {
     override fun getPresentation(): ItemPresentation {
-       return PresentationData()
+       return element.getPresentableView()
     }
 
     override fun getChildren(): Array<StructureViewTreeElement> {
         val childrenElements = ArrayList<StructureViewTreeElement>()
+        element.children.clear()
+        creator.visitElement(element)
+        element.children.forEach {childrenElements.add(CustomizedStructureViewElement(it, creator)) }
         return ArrayUtil.toObjectArray(childrenElements, StructureViewTreeElement::class.java)
     }
 

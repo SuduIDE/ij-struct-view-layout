@@ -17,8 +17,21 @@ class JsonInfo {
         val baseToken: String,
         val attributes: List<String>,
         val baseIcon: String,
-        val text: String
-    )
+        val text: List<String>
+    ) {
+        companion object {
+            fun from(map:  Map<String, Any>) = object {
+                val baseToken by map
+                val attributes by map
+                val baseIcon by map
+                val text by map
+
+                val elementInfo = ElementInfo(baseToken as String, attributes as List<String>, baseIcon as String, text as List<String>)
+            }.elementInfo
+        }
+    }
+
+
 
     private var mapSV: MapTypeSV? = null
     val filenameJsonSV: File = File((".customSV.json"))
@@ -30,10 +43,10 @@ class JsonInfo {
                         mutableMapOf(
                             "element" to
                                     mutableMapOf(
-                                        "class" to ElementInfo("CLASS", listOf(""), "default", "text"),
-                                        "method" to ElementInfo("METHOD", listOf(""), "default", "text"),
-                                        "field" to ElementInfo("FIELD", listOf(""), "default", "text"),
-                                        "parameter" to ElementInfo("PARAMETER", listOf(""), "default", "text"),
+                                        "class" to ElementInfo("CLASS", listOf("modifiers","name","class_keyword"), "default", listOf("name")),
+                                        "method" to ElementInfo("METHOD", listOf(""), "default", listOf()),
+                                        "field" to ElementInfo("FIELD", listOf(""), "default", listOf()),
+                                        "parameter" to ElementInfo("PARAMETER", listOf(""), "default", listOf()),
                                     ),
                             "attribute" to
                                     mutableMapOf(
@@ -44,6 +57,7 @@ class JsonInfo {
                                         "keywords" to mutableMapOf(
                                             "name" to "IDENTIFIER",
                                             "type" to "TYPE",
+                                            "class_keyword" to "CLASS_KEYWORD",
                                             "private" to "PRIVATE_KEYWORD",
                                             "public" to "PUBLIC_KEYWORD",
                                             "final" to "FINAL_KEYWORD",
