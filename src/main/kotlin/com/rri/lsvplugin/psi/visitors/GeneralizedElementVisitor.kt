@@ -1,74 +1,77 @@
 package com.rri.lsvplugin.psi.visitors
 
 import com.intellij.psi.PsiElement
+import com.intellij.util.alsoIfNull
 import com.rri.lsvplugin.languageElements.elements.*
-import com.rri.lsvplugin.languageElements.factory.CustomizedElementCreator
-import com.rri.lsvplugin.languageElements.factory.IElementCreator
+import com.rri.lsvplugin.languageElements.factory.elementCreator.IElementCreator
 import com.rri.lsvplugin.psi.JsonContainerUtil
+import java.util.*
 
 class GeneralizedElementVisitor : IElementVisitor {
+    private val queueChildren : Queue<Pair<BaseElement, PsiElement>> = LinkedList<Pair<BaseElement, PsiElement>>()
     override fun visitElement(element: BaseElement, elementCreator: IElementCreator, jsonUtil: JsonContainerUtil) {
-        for (child in element.langElement.children) {
-            when (val elementNames = jsonUtil.getElementNames(child)) {
-                null -> null
-                else -> {
-                    for (elementName in elementNames) {
-                        val newBaseElement = elementCreator.createElement(child, elementName, jsonUtil.getElementByName(child, elementName))
-                        visitElement(newBaseElement, elementCreator, jsonUtil)
-                        if (!newBaseElement.isFull())
-                            continue
-
-                        if (element.structure.containsKey(elementName))
-                            element.structure[elementName] = newBaseElement
-                        else
-                            element.children.add(newBaseElement)
+        queueChildren.add(Pair(element, element.langElement))
+        while(queueChildren.isNotEmpty()) {
+            val (curElement, curLangElement) = queueChildren.poll()
+            for (child in curLangElement.children) {
+                jsonUtil.getListAttribute(child)?.also {
+                    if (curElement.structure.containsKey(it) && curElement.structure[it] == null) {
+                        curElement.structure[it] = visitList(child, elementCreator, jsonUtil)
                     }
-                }
-            }
-
-            when (val listAttribute = jsonUtil.getListAttrubute(child)) {
-                null -> null
-                else -> {
-                    if (element.structure.containsKey(listAttribute) && element.structure[listAttribute] == null) {
-                        element.structure[listAttribute] = visitList(child, elementCreator, jsonUtil)
-                    }
-                }
-            }
-
-            when (val keywordAttribute = jsonUtil.getKeywordAttribute(child)) {
-                null -> null
-                else -> {
-                    if (element.structure.containsKey(keywordAttribute) && element.structure[keywordAttribute] == null)
-                        element.structure[keywordAttribute] = child.text
-                }
-            }
-
-        }
-    }
-
-    private fun visitList(langElement: PsiElement,elementCreator : IElementCreator, jsonUtil: JsonContainerUtil): List<Any> {
-        val listOfAttr = mutableListOf<Any>()
-        for (child in langElement.children) {
-            when (val elementsName = jsonUtil.getElementNames(child)) {
-                null -> null
-                else -> {
-                    for (elementName in elementsName) {
+                } ?:
+                jsonUtil.getKeywordAttribute(child)?.also {
+                    if (curElement.structure.containsKey(it) && curElement.structure[it] == null)
+                        curElement.structure[it] = it
+                } ?:
+                jsonUtil.getPropertyAttribute(child)?.also {
+                    if (curElement.structure.containsKey(it) && curElement.structure[it] == null)
+                        curElement.structure[it] = child.text
+                } ?:
+                jsonUtil.getElementNames(child)?.also {
+                    for (elementName in it) {
                         val newBaseElement = elementCreator.createElement(
                             child,
                             elementName,
                             jsonUtil.getElementByName(child, elementName)
                         )
                         visitElement(newBaseElement, elementCreator, jsonUtil)
-
                         if (!newBaseElement.isFull())
                             continue
 
-                        listOfAttr.add(newBaseElement)
+                        if (curElement.structure.containsKey(elementName) && curElement.structure[elementName] == null)
+                            curElement.structure[elementName] = newBaseElement
+                        else
+                            curElement.children.add(newBaseElement)
                     }
+                } ?: queueChildren.add(Pair(curElement, child))
+            }
+        }
+    }
+
+    override fun clear() {
+        queueChildren.clear()
+    }
+
+    private fun visitList(langElement: PsiElement, elementCreator : IElementCreator, jsonUtil: JsonContainerUtil): List<Any> {
+        val listOfAttr = mutableListOf<Any>()
+        for (child in langElement.children) {
+            jsonUtil.getElementNames(child)?.also {
+                for (elementName in it) {
+                    val newBaseElement = elementCreator.createElement(
+                        child,
+                        elementName,
+                        jsonUtil.getElementByName(child, elementName)
+                    )
+                   visitElement(newBaseElement, elementCreator, jsonUtil)
+
+                    if (!newBaseElement.isFull())
+                        continue
+
+                    listOfAttr.add(newBaseElement)
                 }
             }
-            if (jsonUtil.isKeywordAttribute(child))
-                listOfAttr.add(child.text)
+            jsonUtil.getKeywordAttribute(child)?.also { listOfAttr.add(it) }
+            jsonUtil.getPropertyAttribute(child)?.also { listOfAttr.add(child.text) }
         }
 
         return listOfAttr

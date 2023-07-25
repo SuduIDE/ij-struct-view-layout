@@ -6,7 +6,6 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.ProjectManager
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.File
 
@@ -51,10 +50,11 @@ class JsonSvContainerServiceImpl : JsonSvContainerService {
             val tmpUpdatedJsonSV = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build().adapter(Any::class.java)
                 .fromJson(it) as MapTypeSV
             for (langugage in tmpUpdatedJsonSV.values) {
-                val newElements = mutableMapOf<String, JsonInfo.ElementInfo>()
-                for ((key, value) in langugage["element"]?.entries!!) {
-                    newElements[key] = JsonInfo.ElementInfo.from(value as Map<String, Any>)
-                }
+                val newElements = mutableMapOf<String, JsonStructureSV.ElementInfo>()
+                if (langugage["element"]?.entries != null)
+                    for ((key, value) in langugage["element"]?.entries!!) {
+                        newElements[key] = JsonStructureSV.ElementInfo.fromJsonToElementInfo(value as Map<String, Any>)
+                    }
                 langugage["element"] = newElements
             }
             tmpUpdatedJsonSV

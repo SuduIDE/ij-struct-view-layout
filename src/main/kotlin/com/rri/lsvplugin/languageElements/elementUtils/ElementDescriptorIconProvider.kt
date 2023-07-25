@@ -15,25 +15,22 @@ class ElementDescriptorIconProvider {
         }
         private fun getBaseIcon(element : BaseElement) : Icon? {
             if (element.baseIcon == "default") {
-                return when(element.typeElement) {
+                return when(element.elementType) {
                     "class" -> {
                         if (getModifiers(element)?.contains("abstract") == true)
-                            iconManager.getPlatformIcon(PlatformIcons.AbstractClass)
+                            DefaultIconContainer.getIcon("abstractClass")
                         else
-                            iconManager.getPlatformIcon(PlatformIcons.Class)
+                            DefaultIconContainer.getIcon("class")
                     }
                     "interface" -> iconManager.getPlatformIcon(PlatformIcons.Interface)
                     "method" -> {
                         if (getModifiers(element)?.contains("abstract") == true)
-                            iconManager.getPlatformIcon(PlatformIcons.AbstractMethod)
+                            DefaultIconContainer.getIcon("abstractMethod")
                         else
-                            iconManager.getPlatformIcon(PlatformIcons.Method)
+                            DefaultIconContainer.getIcon("method")
                     }
-                    "field" -> iconManager.getPlatformIcon(PlatformIcons.Field)
-                    "lambda" -> iconManager.getPlatformIcon(PlatformIcons.Lambda)
-                    "property" -> iconManager.getPlatformIcon(PlatformIcons.Property)
-                    "aclass" -> iconManager.getPlatformIcon(PlatformIcons.AnonymousClass)
-                    else -> null
+                    null -> null
+                    else -> DefaultIconContainer.getIcon(element.elementType!!)
                 }
             } else {
                 return iconManager.getIcon(element.baseIcon!!, BaseElement::class.java)
@@ -47,23 +44,23 @@ class ElementDescriptorIconProvider {
         }
         private fun getVisibility(element: BaseElement): Icon {
             if (getModifiers(element)?.contains("public") == true)
-                return iconManager.getPlatformIcon(PlatformIcons.Public)
+                return DefaultIconContainer.getIcon("public")!!
             if (getModifiers(element)?.contains("private") == true)
-                return iconManager.getPlatformIcon(PlatformIcons.Private)
+                return DefaultIconContainer.getIcon("private")!!
             if (getModifiers(element)?.contains("protected") == true)
-                return iconManager.getPlatformIcon(PlatformIcons.Protected)
+                return DefaultIconContainer.getIcon("protected")!!
 
-            return iconManager.getPlatformIcon(PlatformIcons.Local)
+            return DefaultIconContainer.getIcon("local")!!
         }
 
         private fun getModifiersIcon(baseIcon : Icon, element: BaseElement): Icon {
             var icon: Icon = baseIcon
             if (getModifiers(element)?.contains("final") == true) {
-                icon = iconManager.createRowIcon(icon, iconManager.getPlatformIcon(PlatformIcons.FinalMark))
+                icon = iconManager.createLayered(icon, DefaultIconContainer.getIcon("final")!!)
             }
             if (getModifiers(element)?.contains("static") == true) {
-                val staticIcon =  iconManager.getPlatformIcon(PlatformIcons.StaticMark)
-                icon = iconManager.createRowIcon(icon, staticIcon)
+                val staticIcon =  DefaultIconContainer.getIcon("static")!!
+                icon = iconManager.createLayered(icon, staticIcon)
             }
 
 //            if (element is ClassElement && element.isRunnable()) {
@@ -71,7 +68,7 @@ class ElementDescriptorIconProvider {
 //                icon = iconManager.createRowIcon(icon, runnableIcon)
 //            }
 
-            return baseIcon
+            return icon
         }
 
     }

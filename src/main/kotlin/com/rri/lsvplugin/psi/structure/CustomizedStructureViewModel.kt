@@ -3,22 +3,21 @@ package com.rri.lsvplugin.psi.structure
 import com.intellij.ide.structureView.StructureViewModel
 import com.intellij.ide.structureView.StructureViewModelBase
 import com.intellij.ide.structureView.StructureViewTreeElement
+import com.intellij.ide.util.treeView.smartTree.Filter
 import com.intellij.ide.util.treeView.smartTree.Sorter
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiFile
 import com.rri.lsvplugin.languageElements.elements.BaseElement
-import com.rri.lsvplugin.languageElements.elements.FileElement
-import com.rri.lsvplugin.languageElements.factory.CustomizedElementCreator
+import com.rri.lsvplugin.languageElements.factory.elementCreator.CustomizedElementCreator
+import com.rri.lsvplugin.languageElements.factory.filterCreator.VisibilityFilterCreator
 import com.rri.lsvplugin.psi.ViewCreator
-import com.rri.lsvplugin.psi.structure.filters.FieldElementsFilter
-import com.rri.lsvplugin.psi.structure.filters.PublicElementsFilter
 import com.rri.lsvplugin.psi.visitors.GeneralizedElementVisitor
 
 class CustomizedStructureViewModel(
     private val psiFile: PsiFile,
     private val editor: Editor?,
-    private val creator: ViewCreator = ViewCreator(GeneralizedElementVisitor(), CustomizedElementCreator())
-) : StructureViewModelBase(psiFile, editor, CustomizedStructureViewElement(FileElement(psiFile), creator)),
+    private val creator: ViewCreator = ViewCreator(GeneralizedElementVisitor(), CustomizedElementCreator(), VisibilityFilterCreator())
+) : StructureViewModelBase(psiFile, editor, CustomizedStructureViewElement(BaseElement(psiFile), creator)),
     StructureViewModel.ElementInfoProvider {
     init {
         withSorters(Sorter.ALPHA_SORTER)
@@ -28,13 +27,14 @@ class CustomizedStructureViewModel(
     }
     override fun isAlwaysLeaf(element: StructureViewTreeElement?): Boolean = false
 
-    override fun getFilters() = FILTERS
-
-    override fun getRoot(): StructureViewTreeElement {
-        return CustomizedStructureViewElement(FileElement(psiFile), creator)
+    override fun getFilters(): Array<out Filter> {
+        val filterList = creator.createFilters(psiFile)
+        return Array(filterList.size) {
+            filterList[it]
+        }
     }
 
-    companion object {
-        private val FILTERS = arrayOf(PublicElementsFilter, FieldElementsFilter)
+    override fun getRoot(): StructureViewTreeElement {
+        return CustomizedStructureViewElement(BaseElement(psiFile), creator)
     }
 }

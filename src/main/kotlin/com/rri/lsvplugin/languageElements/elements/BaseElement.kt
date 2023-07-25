@@ -3,14 +3,11 @@ package com.rri.lsvplugin.languageElements.elements
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
-import com.intellij.ui.IconManager
-import com.intellij.ui.PlatformIcons
-import com.openhtmltopdf.css.parser.property.BorderPropertyBuilders.BorderLeft
 import com.rri.lsvplugin.languageElements.elementUtils.ElementDescriptorIconProvider
 import javax.swing.Icon
 
 open class BaseElement(val langElement: PsiElement){
-    open var typeElement : String? = null
+    open var elementType : String? = null
     open var structure : MutableMap<String, Any?> = mutableMapOf()
     open var presentableTextList: List<String> = listOf()
     open var baseIcon : String? = "default"

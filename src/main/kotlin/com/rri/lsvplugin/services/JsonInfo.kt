@@ -6,32 +6,6 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.File
 
 class JsonInfo {
-    @JsonClass(generateAdapter = true)
-    data class ElementInfo(
-        val baseToken: String,
-        val attributes: List<String>,
-        val baseIcon: String,
-        val text: List<String>
-    ) {
-        companion object {
-            fun from(map: Map<String, Any>) = object {
-                val baseToken by map
-                val attributes by map
-                val baseIcon by map
-                val text by map
-
-                val elementInfo = ElementInfo(
-                    baseToken as String,
-                    @Suppress("UNCHECKED_CAST")
-                    attributes as List<String>,
-                    baseIcon as String,
-                    @Suppress("UNCHECKED_CAST")
-                    text as List<String>
-                )
-            }.elementInfo
-        }
-    }
-
 
     private var mapSV: MapTypeSV? = null
     val filenameJsonSV: File = File((".customSV.json"))
@@ -43,25 +17,25 @@ class JsonInfo {
                         mutableMapOf(
                             "element" to
                                     mutableMapOf(
-                                        "class" to ElementInfo(
+                                        "class" to JsonStructureSV.ElementInfo(
                                             "CLASS",
                                             listOf("modifiers", "name", "class_keyword"),
                                             "default",
                                             listOf("name")
                                         ),
-                                        "method" to ElementInfo(
+                                        "method" to JsonStructureSV.ElementInfo(
                                             "METHOD",
                                             listOf("modifiers", "name", "parameters", "type"),
                                             "default",
                                             listOf("name", "(", "parameters", ")", " : ", "type")
                                         ),
-                                        "field" to ElementInfo(
+                                        "field" to JsonStructureSV.ElementInfo(
                                             "FIELD",
                                             listOf("name", "type"),
                                             "default",
                                             listOf("name", ":", "type")
                                         ),
-                                        "parameter" to ElementInfo(
+                                        "parameter" to JsonStructureSV.ElementInfo(
                                             "PARAMETER",
                                             listOf("name", "type"),
                                             "default",
@@ -74,9 +48,11 @@ class JsonInfo {
                                             "modifiers" to "MODIFIER_LIST",
                                             "parameters" to "PARAMETER_LIST",
                                         ),
-                                        "keywords" to mutableMapOf(
+                                        "properties" to mutableMapOf(
                                             "name" to "IDENTIFIER",
                                             "type" to "TYPE",
+                                        ),
+                                        "keywords" to mutableMapOf(
                                             "class_keyword" to "CLASS_KEYWORD",
                                             "private" to "PRIVATE_KEYWORD",
                                             "public" to "PUBLIC_KEYWORD",
@@ -84,6 +60,14 @@ class JsonInfo {
                                             "static" to "STATIC_KEYWORD",
                                             "abstract" to "ABSTRACT_KEYWORD"
                                         )
+                                    ),
+                            "filters" to
+                                    mutableMapOf(
+                                        "visibility" to mutableMapOf(
+                                            "Fields" to mutableMapOf(
+                                                "elementType" to "field",
+                                            )
+                                        ),
                                     ),
                         )
             )

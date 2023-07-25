@@ -1,13 +1,13 @@
-package com.rri.lsvplugin.languageElements.factory
+package com.rri.lsvplugin.languageElements.factory.elementCreator
 
 import com.intellij.psi.PsiElement
 import com.rri.lsvplugin.languageElements.elements.BaseElement
-import com.rri.lsvplugin.services.JsonInfo
+import com.rri.lsvplugin.services.JsonStructureSV
 
 class CustomizedElementCreator : IElementCreator {
-    override fun createElement(langElement: PsiElement, typeElement: String, elementStructure: JsonInfo.ElementInfo) : BaseElement {
+    override fun createElement(langElement: PsiElement, typeElement: String, elementStructure: JsonStructureSV.ElementInfo) : BaseElement {
         val element = BaseElement(langElement)
-        element.typeElement = typeElement
+        element.elementType = typeElement
         for (attr in elementStructure.attributes) {
             element.structure[attr] = null
         }
