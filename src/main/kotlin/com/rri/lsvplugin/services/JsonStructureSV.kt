@@ -8,7 +8,8 @@ class JsonStructureSV {
             val baseToken: String,
             val attributes: List<String>,
             val baseIcon: String,
-            val text: List<String>
+            val text: List<String>,
+            val description: List<String>
         ) {
             companion object {
                 fun fromJsonToElementInfo(map: Map<String, Any>) = object {
@@ -16,6 +17,7 @@ class JsonStructureSV {
                     private val attributes by map
                     private val baseIcon by map
                     private val text by map
+                    private val description by map
 
                     val elementInfo = ElementInfo(
                         baseToken as String,
@@ -23,7 +25,9 @@ class JsonStructureSV {
                         attributes as List<String>,
                         baseIcon as String,
                         @Suppress("UNCHECKED_CAST")
-                        text as List<String>
+                        text as List<String>,
+                        @Suppress("UNCHECKED_CAST")
+                        description as List<String>
                     )
                 }.elementInfo
             }

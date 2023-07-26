@@ -26,19 +26,19 @@ class JsonContainerUtil {
     private fun isListAttribute(langElement: PsiElement): Boolean {
         val attributeList = getLangElementsMap(langElement)?.get(getLanguage(langElement)) ?: return false
 
-        return (attributeList["attribute"]?.get("list") as MutableMap<*, *>).containsValue(langElement.elementType.toString())
+        return (attributeList["attribute"]?.get("list") as? MutableMap<*, *>)?.containsValue(langElement.elementType.toString()) ?: false
     }
 
     private fun isKeywordAttribute(langElement: PsiElement): Boolean {
         val attributeList = getLangElementsMap(langElement)?.get(getLanguage(langElement)) ?: return false
 
-        return (attributeList["attribute"]?.get("keywords") as MutableMap<*, *>).containsValue(langElement.elementType.toString())
+        return (attributeList["attribute"]?.get("keywords") as? MutableMap<*, *>)?.containsValue(langElement.elementType.toString()) ?: false
     }
 
     private fun isPropertyAttribute(langElement: PsiElement) : Boolean {
         val attributeList = getLangElementsMap(langElement)?.get(getLanguage(langElement)) ?: return false
 
-        return (attributeList["attribute"]?.get("properties") as MutableMap<*, *>).containsValue(langElement.elementType.toString())
+        return (attributeList["attribute"]?.get("properties") as? MutableMap<*, *>)?.containsValue(langElement.elementType.toString()) ?: false
     }
     fun getElementNames(langElement: PsiElement): Set<String>? {
         if (!isELement(langElement))

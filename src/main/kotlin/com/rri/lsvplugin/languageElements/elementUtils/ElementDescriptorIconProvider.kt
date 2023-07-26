@@ -42,15 +42,17 @@ class ElementDescriptorIconProvider {
 
             return (element.structure["modifiers"] as List<String>)
         }
-        private fun getVisibility(element: BaseElement): Icon {
+        private fun getVisibility(element: BaseElement): Icon? {
             if (getModifiers(element)?.contains("public") == true)
                 return DefaultIconContainer.getIcon("public")!!
             if (getModifiers(element)?.contains("private") == true)
                 return DefaultIconContainer.getIcon("private")!!
             if (getModifiers(element)?.contains("protected") == true)
                 return DefaultIconContainer.getIcon("protected")!!
+            if (getModifiers(element) != null)
+                return DefaultIconContainer.getIcon("local")
 
-            return DefaultIconContainer.getIcon("local")!!
+            return null
         }
 
         private fun getModifiersIcon(baseIcon : Icon, element: BaseElement): Icon {

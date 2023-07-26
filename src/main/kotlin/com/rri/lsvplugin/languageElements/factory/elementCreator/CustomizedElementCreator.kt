@@ -14,6 +14,8 @@ class CustomizedElementCreator : IElementCreator {
 
         element.baseIcon = elementStructure.baseIcon
         element.presentableTextList = elementStructure.text
+        element.presentableDescriptionList = elementStructure.description
+
         return element
     }
 

@@ -22,7 +22,7 @@ class VisibilityFilter(private val filterName : String, private val filterInfo: 
         if (filterInfo.attributeKey != null) {
             if (element.structure[filterInfo.attributeKey] is List<*>) {
                 return (element.structure[filterInfo.attributeKey] as List<*>).contains(filterInfo.attributeValue)
-            } else (element.structure[filterInfo.attributeKey] != null && element.structure[filterInfo.attributeKey] == filterInfo.attributeValue)
+            } else if (element.structure[filterInfo.attributeKey] != null && element.structure[filterInfo.attributeKey] != filterInfo.attributeValue)
                 return true
         }
 

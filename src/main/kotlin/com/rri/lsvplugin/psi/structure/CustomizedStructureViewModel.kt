@@ -6,6 +6,7 @@ import com.intellij.ide.structureView.StructureViewTreeElement
 import com.intellij.ide.util.treeView.smartTree.Filter
 import com.intellij.ide.util.treeView.smartTree.Sorter
 import com.intellij.openapi.editor.Editor
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.languageElements.factory.elementCreator.CustomizedElementCreator
@@ -27,6 +28,10 @@ class CustomizedStructureViewModel(
     }
     override fun isAlwaysLeaf(element: StructureViewTreeElement?): Boolean = false
 
+    override fun isSuitable(element: PsiElement?): Boolean {
+        return super.isSuitable(element)
+    }
+
     override fun getFilters(): Array<out Filter> {
         val filterList = creator.createFilters(psiFile)
         return Array(filterList.size) {
@@ -35,6 +40,8 @@ class CustomizedStructureViewModel(
     }
 
     override fun getRoot(): StructureViewTreeElement {
-        return CustomizedStructureViewElement(BaseElement(psiFile), creator)
+        val fileElement = BaseElement(psiFile)
+        fileElement.elementType = "file"
+        return CustomizedStructureViewElement(fileElement, creator)
     }
 }

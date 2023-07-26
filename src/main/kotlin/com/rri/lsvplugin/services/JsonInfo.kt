@@ -21,25 +21,29 @@ class JsonInfo {
                                             "CLASS",
                                             listOf("modifiers", "name", "class_keyword"),
                                             "default",
-                                            listOf("name")
+                                            listOf("name"),
+                                            listOf()
                                         ),
                                         "method" to JsonStructureSV.ElementInfo(
                                             "METHOD",
                                             listOf("modifiers", "name", "parameters", "type"),
                                             "default",
-                                            listOf("name", "(", "parameters", ")", " : ", "type")
+                                            listOf("name", "(", "parameters", ")", " : ", "type"),
+                                            listOf()
                                         ),
                                         "field" to JsonStructureSV.ElementInfo(
                                             "FIELD",
                                             listOf("name", "type"),
                                             "default",
-                                            listOf("name", ":", "type")
+                                            listOf("name", ":", "type"),
+                                            listOf()
                                         ),
                                         "parameter" to JsonStructureSV.ElementInfo(
                                             "PARAMETER",
                                             listOf("name", "type"),
                                             "default",
-                                            listOf("type")
+                                            listOf("type"),
+                                            listOf()
                                         ),
                                     ),
                             "attribute" to
