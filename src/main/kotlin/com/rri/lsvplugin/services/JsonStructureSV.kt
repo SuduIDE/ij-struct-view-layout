@@ -5,14 +5,16 @@ import com.squareup.moshi.JsonClass
 class JsonStructureSV {
         @JsonClass(generateAdapter = true)
         data class ElementInfo(
+            val displayLevel : Int,
             val baseToken: String,
-            val attributes: List<String>,
+            val attributes: Map<String, List<String>>,
             val baseIcon: String,
             val text: List<String>,
             val description: List<String>
         ) {
             companion object {
                 fun fromJsonToElementInfo(map: Map<String, Any>) = object {
+                    private val displayLevel by map
                     private val baseToken by map
                     private val attributes by map
                     private val baseIcon by map
@@ -20,9 +22,10 @@ class JsonStructureSV {
                     private val description by map
 
                     val elementInfo = ElementInfo(
+                        (displayLevel as Double).toInt(),
                         baseToken as String,
                         @Suppress("UNCHECKED_CAST")
-                        attributes as List<String>,
+                        attributes as Map<String, List<String>>,
                         baseIcon as String,
                         @Suppress("UNCHECKED_CAST")
                         text as List<String>,

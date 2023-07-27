@@ -37,10 +37,10 @@ class ElementDescriptorIconProvider {
             }
         }
         private fun getModifiers(element: BaseElement) : List<String>? {
-            if (!element.structure.containsKey("modifiers"))
+            if (!element.getUniqueAttributes().containsKey("modifiers"))
                 return null
 
-            return (element.structure["modifiers"] as List<String>)
+            return (element.getUniqueAttributes()["modifiers"] as List<String>)
         }
         private fun getVisibility(element: BaseElement): Icon? {
             if (getModifiers(element)?.contains("public") == true)

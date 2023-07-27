@@ -23,8 +23,9 @@ class CustomizedStructureViewElement(
         val prevVersionElement = element.clone()
         prevVersionElement.children.clear()
         creator.visitElement(prevVersionElement)
-        if (!prevVersionElement.equals(element))
+        if (prevVersionElement != element) {
             element = prevVersionElement
+        }
 
         element.children.forEach {childrenElements.add(CustomizedStructureViewElement(it, creator)) }
         return ArrayUtil.toObjectArray(childrenElements, StructureViewTreeElement::class.java)

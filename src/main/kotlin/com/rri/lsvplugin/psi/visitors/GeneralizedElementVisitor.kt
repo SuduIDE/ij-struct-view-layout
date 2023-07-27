@@ -17,17 +17,14 @@ class GeneralizedElementVisitor : IElementVisitor {
             var child = curLangElement.firstChild
             while (child != null) {
                 jsonUtil.getListAttribute(child)?.also {
-                    if (curElement.structure.containsKey(it) && curElement.structure[it] == null) {
-                        curElement.structure[it] = visitList(child, elementCreator, jsonUtil)
-                    }
+                    val visitedList = visitList(child, elementCreator, jsonUtil)
+                    addAttribute(curElement, it, visitedList)
                 } ?:
                 jsonUtil.getKeywordAttribute(child)?.also {
-                    if (curElement.structure.containsKey(it) && curElement.structure[it] == null)
-                        curElement.structure[it] = it
+                    addAttribute(curElement, it, it)
                 } ?:
                 jsonUtil.getPropertyAttribute(child)?.also {
-                    if (curElement.structure.containsKey(it) && curElement.structure[it] == null)
-                        curElement.structure[it] = child.text
+                    addAttribute(curElement, it, child.text)
                 } ?:
                 jsonUtil.getElementNames(child)?.also {
                     for (elementName in it) {
@@ -40,9 +37,7 @@ class GeneralizedElementVisitor : IElementVisitor {
                         if (!newBaseElement.isFull())
                             continue
 
-                        if (curElement.structure.containsKey(elementName) && curElement.structure[elementName] == null)
-                            curElement.structure[elementName] = newBaseElement
-                        else
+                        if (!addAttribute(curElement, elementName, newBaseElement) && newBaseElement.displayLevel != 0)
                             curElement.children.add(newBaseElement)
                     }
                 } ?: queueChildren.add(Pair(curElement, child))
@@ -54,6 +49,20 @@ class GeneralizedElementVisitor : IElementVisitor {
 
     override fun clear() {
         queueChildren.clear()
+    }
+
+    private fun addAttribute(curElement : BaseElement, attributeName : String, attributeValue : Any) : Boolean {
+        if (curElement.getUniqueAttributes().containsKey(attributeName) && curElement.getUniqueAttributes()[attributeName] == null) {
+            curElement.getUniqueAttributes()[attributeName] = attributeValue
+            return true
+        } else if (curElement.getSetAttributes().containsKey(attributeName)) {
+            if (curElement.getSetAttributes()[attributeName] == null)
+                curElement.getSetAttributes()[attributeName] = mutableListOf(attributeValue)
+            else
+                (curElement.getSetAttributes()[attributeName] as MutableList<Any>).add(attributeValue)
+            return true
+        }
+        return false
     }
 
     private fun visitList(langElement: PsiElement, elementCreator : IElementCreator, jsonUtil: JsonContainerUtil): List<Any> {
@@ -72,6 +81,7 @@ class GeneralizedElementVisitor : IElementVisitor {
                         continue
 
                     listOfAttr.add(newBaseElement)
+
                 }
             }
             jsonUtil.getKeywordAttribute(child)?.also { listOfAttr.add(it) }

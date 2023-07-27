@@ -49,13 +49,13 @@ class JsonSvContainerServiceImpl : JsonSvContainerService {
             @Suppress("UNCHECKED_CAST")
             val tmpUpdatedJsonSV = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build().adapter(Any::class.java)
                 .fromJson(it) as MapTypeSV
-            for (langugage in tmpUpdatedJsonSV.values) {
+            for (language in tmpUpdatedJsonSV.values) {
                 val newElements = mutableMapOf<String, JsonStructureSV.ElementInfo>()
-                if (langugage["element"]?.entries != null)
-                    for ((key, value) in langugage["element"]?.entries!!) {
+                if (language["element"]?.entries != null)
+                    for ((key, value) in language["element"]?.entries!!) {
                         newElements[key] = JsonStructureSV.ElementInfo.fromJsonToElementInfo(value as Map<String, Any>)
                     }
-                langugage["element"] = newElements
+                language["element"] = newElements
             }
             tmpUpdatedJsonSV
         }

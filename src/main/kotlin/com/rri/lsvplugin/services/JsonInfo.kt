@@ -18,29 +18,45 @@ class JsonInfo {
                             "element" to
                                     mutableMapOf(
                                         "class" to JsonStructureSV.ElementInfo(
+                                            1,
                                             "CLASS",
-                                            listOf("modifiers", "name", "class_keyword"),
+                                            mutableMapOf(
+                                                "set" to listOf(),
+                                                "unique" to listOf("modifiers", "name", "class_keyword")
+                                            ),
                                             "default",
                                             listOf("name"),
                                             listOf()
                                         ),
                                         "method" to JsonStructureSV.ElementInfo(
+                                            1,
                                             "METHOD",
-                                            listOf("modifiers", "name", "parameters", "type"),
+                                            mutableMapOf(
+                                                "set" to listOf(),
+                                                "unqiue" to listOf("modifiers", "name", "parameters", "type")
+                                            ),
                                             "default",
                                             listOf("name", "(", "parameters", ")", " : ", "type"),
                                             listOf()
                                         ),
                                         "field" to JsonStructureSV.ElementInfo(
+                                            1,
                                             "FIELD",
-                                            listOf("name", "type"),
+                                            mutableMapOf(
+                                                "set" to listOf(),
+                                                "unique" to listOf("name", "type")
+                                            ),
                                             "default",
                                             listOf("name", ":", "type"),
                                             listOf()
                                         ),
                                         "parameter" to JsonStructureSV.ElementInfo(
+                                            0,
                                             "PARAMETER",
-                                            listOf("name", "type"),
+                                            mutableMapOf(
+                                                "set" to listOf(),
+                                                "unique" to listOf("name", "type")
+                                            ),
                                             "default",
                                             listOf("type"),
                                             listOf()
