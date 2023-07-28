@@ -22,10 +22,17 @@ jobs:
         uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
       - name: Build with Gradle
         run: ./gradlew buildPlugin
-      - name: Upload file
+      - name: Upload Release
         uses: xresloader/upload-to-github-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           file: "./build/distributions/*.zip"
           tag_name: "LSV-plugin-0.2"
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: plugin_package-${{ github.run_number }}
+          path: ./build/distributions/*.zip
+          retention-days: 7
+

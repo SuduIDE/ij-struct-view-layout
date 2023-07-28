@@ -5,5 +5,5 @@ import com.rri.lsvplugin.services.JsonInfo
 import com.rri.lsvplugin.services.JsonStructureSV
 
 interface IElementCreator {
-    fun createElement(langElement: PsiElement, typeElement: String, elementStructure: JsonStructureSV.ElementInfo) : BaseElement
+    fun createElement(langElement: PsiElement, typeElement: String, elementStructure: JsonStructureSV.ElementInfo, parent: BaseElement) : BaseElement
 }

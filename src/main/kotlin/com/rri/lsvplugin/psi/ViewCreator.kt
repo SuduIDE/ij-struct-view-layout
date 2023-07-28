@@ -6,6 +6,7 @@ import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.languageElements.factory.elementCreator.IElementCreator
 import com.rri.lsvplugin.languageElements.factory.filterCreator.IFilterCreator
 import com.rri.lsvplugin.psi.visitors.IElementVisitor
+import java.util.*
 
 
 class ViewCreator(
@@ -17,7 +18,6 @@ class ViewCreator(
     private val jsonUtil = JsonContainerUtil()
 
     fun visitElement(element: BaseElement) {
-        visitor.clear()
         visitor.visitElement(element, elementCreator, jsonUtil)
     }
 
@@ -31,6 +31,28 @@ class ViewCreator(
         }
 
         return filtersList
+    }
+
+    fun adjustDisplayLevel(element : BaseElement) {
+        val queueChildren : Queue<BaseElement> = LinkedList()
+        queueChildren.add(element)
+        while(queueChildren.isNotEmpty()) {
+            val curElement = queueChildren.poll()
+            for (child in curElement.children)
+                queueChildren.add(child)
+
+            curElement.children.clear()
+
+            if (curElement.displayLevel > 0) {
+                var i = 1
+                while (i < curElement.displayLevel && curElement.parent?.parent != null) {
+                    curElement.parent = curElement.parent?.parent
+                    ++i
+                }
+
+                curElement.parent?.children?.add(curElement)
+            }
+        }
     }
 
 

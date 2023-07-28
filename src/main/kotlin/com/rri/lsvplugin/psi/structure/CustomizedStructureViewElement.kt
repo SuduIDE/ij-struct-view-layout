@@ -20,11 +20,14 @@ class CustomizedStructureViewElement(
 
     override fun getChildren(): Array<StructureViewTreeElement> {
         val childrenElements = ArrayList<StructureViewTreeElement>()
-        val prevVersionElement = element.clone()
-        prevVersionElement.children.clear()
-        creator.visitElement(prevVersionElement)
-        if (prevVersionElement != element) {
-            element = prevVersionElement
+        if (element.elementType == "file") {
+            val prevVersionElement = element.clone()
+            prevVersionElement.clear()
+            creator.visitElement(prevVersionElement)
+            if (prevVersionElement != element) {
+                element = prevVersionElement
+            }
+            creator.adjustDisplayLevel(element)
         }
 
         element.children.forEach {childrenElements.add(CustomizedStructureViewElement(it, creator)) }

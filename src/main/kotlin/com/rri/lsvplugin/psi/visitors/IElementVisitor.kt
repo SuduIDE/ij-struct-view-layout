@@ -7,6 +7,4 @@ import com.rri.lsvplugin.psi.JsonContainerUtil
 
 interface IElementVisitor {
     fun visitElement(element: BaseElement, elementCreator: IElementCreator, jsonUtil: JsonContainerUtil)
-
-    fun clear()
 }

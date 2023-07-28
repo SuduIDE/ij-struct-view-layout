@@ -14,24 +14,81 @@ open class BaseElement(val langElement: PsiElement) {
         val uniqueAttributes: MutableMap<String, Any?> = mutableMapOf()
     )
 
-    data class ElementPresentableText(
-        var presentableTextList: List<String> = listOf(),
-        var presentableDescriptionList: List<String> = listOf()
-    )
+    inner class PresentableViewText(private var presentableTextList: List<String> = listOf(),
+                              private var presentableDescriptionList: List<String> = listOf()) {
+
+        fun getText() : String {
+            return getPresentableText { obj: BaseElement -> obj.presentableText.presentableTextList }
+
+        }
+
+        fun getDescription() : String {
+            return getPresentableText { obj: BaseElement -> obj.presentableText.presentableDescriptionList }
+
+        }
+
+        private fun getPresentableText(fpresentableElementList: (BaseElement) -> List<String>): String {
+            val presentableText = StringBuilder()
+            for (attr in fpresentableElementList(this@BaseElement)) {
+                if (attr == "\$i") {
+                    var thisPos = 0
+                    for (parentChild in this@BaseElement.parent?.children!!) {
+                        if (this@BaseElement === parentChild)
+                            break
+                        else if (this@BaseElement.elementType == parentChild.elementType)
+                            thisPos++
+                    }
+                    presentableText.append(thisPos.toString())
+                } else if (getUniqueAttributes()[attr] is List<*>) {
+                    for (elAttr in getUniqueAttributes()[attr] as List<*>) {
+                        addPartToPresentableText(presentableText, elAttr)
+                    }
+                } else if (getSetAttributes().containsKey(attr)) {
+                    if (getSetAttributes()[attr] != null) {
+                        for (elAttr in getSetAttributes()[attr] as List<*>) {
+                            addPartToPresentableText(presentableText, elAttr)
+                        }
+                    }
+                } else if (!addPartToPresentableText(
+                        presentableText,
+                        getUniqueAttributes()[attr]
+                    ) && !getUniqueAttributes().containsKey(attr)
+                )
+                    presentableText.append(attr)
+
+            }
+
+            return presentableText.toString()
+        }
+        private fun addPartToPresentableText(
+            presentableText: StringBuilder,
+            description: Any?
+        ): Boolean {
+            if (description == null)
+                return false
+
+            if (description is BaseElement) {
+                presentableText.append(description.presentableText.getText())
+            } else presentableText.append(description)
+
+            return true
+        }
+    }
 
     var displayLevel: Int = 0
-    open var elementType: String? = null
+    var elementType: String? = null
     var structure = ElementStructure()
-    open var baseIcon: String? = "default"
-    var presentableText = ElementPresentableText()
-    open var children: MutableList<BaseElement> = mutableListOf()
+    var baseIcon: String? = "default"
+    var presentableText = PresentableViewText()
+    var children: MutableList<BaseElement> = mutableListOf()
+    var parent : BaseElement? = null
 
     fun getPresentableView(): ItemPresentation {
         if (elementType == "file")
             return PresentationData("", null, null, null)
         return PresentationData(
-            getText(),
-            getDescription(),
+            presentableText.getText(),
+            presentableText.getDescription(),
             getIcon(),
             null
         )
@@ -56,41 +113,10 @@ open class BaseElement(val langElement: PsiElement) {
         return elementType.equals(other.elementType) && other.structure == structure && other.children == children
     }
 
-    private fun getPresentableText(fpresentableElementList: (BaseElement) -> List<String>): String {
-        val presentableText = StringBuilder()
-        for (attr in fpresentableElementList(this)) {
-            if (getUniqueAttributes()[attr] is List<*>) {
-                for (elAttr in getUniqueAttributes()[attr] as List<*>) {
-                    addPartToPresentableText(presentableText, elAttr)
-                }
-            } else if (getSetAttributes().containsKey(attr)) {
-                if (getSetAttributes()[attr] != null) {
-                    for (elAttr in getSetAttributes()[attr] as List<*>) {
-                        addPartToPresentableText(presentableText, elAttr)
-                    }
-                }
-            } else if (!addPartToPresentableText(
-                    presentableText,
-                    getUniqueAttributes()[attr]
-                ) && !getUniqueAttributes().containsKey(attr)
-            )
-                presentableText.append(attr)
-
-        }
-
-        return presentableText.toString()
-    }
-
-    private fun getText() : String {
-        return getPresentableText { obj: BaseElement -> obj.presentableText.presentableTextList }
-    }
-
-    private fun getDescription() : String {
-        return getPresentableText { obj: BaseElement -> obj.presentableText.presentableDescriptionList }
-    }
-
-    private fun getIcon(): Icon? {
-        return ElementDescriptorIconProvider.getIcon(this)
+    fun clear() {
+        parent = null
+        children.forEach{ it.clear()}
+        children.clear()
     }
 
     fun isFull(): Boolean {
@@ -101,18 +127,7 @@ open class BaseElement(val langElement: PsiElement) {
         return true
     }
 
-    private fun addPartToPresentableText(
-        presentableText: StringBuilder,
-        description: Any?
-    ): Boolean {
-        if (description == null)
-            return false
+    private fun getIcon(): Icon? = ElementDescriptorIconProvider.getIcon(this)
 
-        if (description is BaseElement) {
-            presentableText.append(description.getText())
-        } else presentableText.append(description)
-
-        return true
-    }
 
 }
