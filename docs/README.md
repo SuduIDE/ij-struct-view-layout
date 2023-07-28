@@ -98,7 +98,7 @@ Filters are specified using a name and conditions with the following structure:
 #### Examples
 
 Below is a small example of a config for XML. For other examples see
-[в примерах](./examples/)
+[in examples](./examples/)
 
 ```json
 {
