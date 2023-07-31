@@ -1,7 +1,7 @@
 # Structure view customization
 
-_Name : LSV_ \
-_Version : 0.2_
+_Name : Flexible Structure View_ \
+_Version : 0.2.2_
 
 ## General information
 
@@ -72,8 +72,7 @@ Supported iterative text: "$i" - the number of the element in the parent
 
 #### Attributes
 
-There are three types of attributes in total: __list__, __properties__, __keywords__. Each of them is currently set in
-this format:
+There are three types of attributes in total: __list__, __property__, __keyword__. List and keywords have the following structure:
 
 ```
 "attribute name" : "the name of the token in the language being used"
@@ -81,8 +80,11 @@ this format:
 
 * __list__ - contains attributes whose tokens are lists with other attributes or elements. 
 For example, in Java this could be MODIFIER_LIST, which lists the modifier keywords.
-* __properties__ - the text of the tokens is unique, such as the class name, etc.
-* __keywords__ - keywords specific to the language being used, such as the words class, public, etc.
+* __property__ - the text of the tokens is unique, such as the class name, etc. Consists of the following fields:
+  * id - property name, which may not depend on the language in any way: name, type, etc.
+  * token - the name of the token in the language being used
+  * regexp - an optional parameter containing a regular expression that allows you to use only those tokens whose text matches the expression
+* __keyword__ - keywords specific to the language being used, such as the words class, public, etc.
 
 #### Filters
 
@@ -144,17 +146,29 @@ Below is a small example of a config for XML. For other examples see
       }
     },
     "attribute": {
-      "properties": {
-        "name": "XML_NAME",
-        "text": "XML_TEXT",
-        "attribute_value": "XML_ATTRIBUTE_VALUE"
-      }
+      "property": [
+        {
+          "id": "name",
+          "token": "XML_NAME",
+          "regexp": "(act)\\w*"
+        },
+        {
+          "id": "text",
+          "token": "XML_TEXT"
+        },
+        {
+          "id": "attribute_value",
+          "token": "XML_ATTRIBUTE_VALUE"
+        }
+      ]
     },
     "filters": {
       "visibility": {
         "Actions": {
           "attributeKey": "name",
-          "attributeValue": "actions",
+          "attributeValue": [
+            "action"
+          ],
           "icon": "tag"
         }
       }

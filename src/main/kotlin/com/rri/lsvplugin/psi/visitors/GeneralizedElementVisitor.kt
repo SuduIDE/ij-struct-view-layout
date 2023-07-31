@@ -1,11 +1,9 @@
 package com.rri.lsvplugin.psi.visitors
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.util.elementType
-import com.intellij.util.alsoIfNull
 import com.rri.lsvplugin.languageElements.elements.*
 import com.rri.lsvplugin.languageElements.factory.elementCreator.IElementCreator
-import com.rri.lsvplugin.psi.JsonContainerUtil
+import com.rri.lsvplugin.utils.JsonContainerUtil
 import java.util.*
 
 class GeneralizedElementVisitor : IElementVisitor {
@@ -25,7 +23,7 @@ class GeneralizedElementVisitor : IElementVisitor {
                     attributeSupplier.addAttribute(curElement, it, it)
                 } ?:
                 jsonUtil.getPropertyAttribute(child)?.also {
-                    attributeSupplier.addAttribute(curElement, it, child.text)
+                    attributeSupplier.addAttribute(curElement, it.id, child.text)
                 } ?:
                 jsonUtil.getElementNames(child)?.also {
                     for (elementName in it) {

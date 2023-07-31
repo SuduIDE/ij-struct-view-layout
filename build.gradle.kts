@@ -13,6 +13,12 @@ repositories {
 }
 
 dependencies {
+  testImplementation(platform("org.junit:junit-bom:5.10.0"))
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
+    because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
+  }
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+  testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
   implementation("com.squareup.moshi:moshi:1.14.0")
   implementation("com.squareup.moshi:moshi-adapters:1.14.0")
   implementation("com.squareup.moshi:moshi-kotlin:1.14.0")

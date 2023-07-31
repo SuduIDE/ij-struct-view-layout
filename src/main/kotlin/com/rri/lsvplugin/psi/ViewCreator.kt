@@ -4,15 +4,15 @@ import com.intellij.ide.util.treeView.smartTree.Filter
 import com.intellij.psi.PsiElement
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.languageElements.factory.elementCreator.IElementCreator
-import com.rri.lsvplugin.languageElements.factory.filterCreator.IFilterCreator
+import com.rri.lsvplugin.psi.structure.filters.VisibilityFilter
 import com.rri.lsvplugin.psi.visitors.IElementVisitor
+import com.rri.lsvplugin.utils.JsonContainerUtil
 import java.util.*
 
 
 class ViewCreator(
     private val visitor: IElementVisitor,
     private val elementCreator: IElementCreator,
-    private val filterCreator: IFilterCreator
 ) {
 
     private val jsonUtil = JsonContainerUtil()
@@ -27,7 +27,7 @@ class ViewCreator(
         val visibilityFilters = jsonUtil.getVisibilityFilters(langElement) ?: return filtersList
 
         for ((key, value) in visibilityFilters.entries) {
-            filtersList.add(filterCreator.createFilter(key, value))
+            filtersList.add(VisibilityFilter(key, value))
         }
 
         return filtersList

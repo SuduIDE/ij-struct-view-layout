@@ -10,14 +10,13 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.languageElements.factory.elementCreator.CustomizedElementCreator
-import com.rri.lsvplugin.languageElements.factory.filterCreator.VisibilityFilterCreator
 import com.rri.lsvplugin.psi.ViewCreator
 import com.rri.lsvplugin.psi.visitors.GeneralizedElementVisitor
 
 class CustomizedStructureViewModel(
     private val psiFile: PsiFile,
     private val editor: Editor?,
-    private val creator: ViewCreator = ViewCreator(GeneralizedElementVisitor(), CustomizedElementCreator(), VisibilityFilterCreator())
+    private val creator: ViewCreator = ViewCreator(GeneralizedElementVisitor(), CustomizedElementCreator())
 ) : StructureViewModelBase(psiFile, editor, CustomizedStructureViewElement(BaseElement(psiFile), creator)),
     StructureViewModel.ElementInfoProvider {
     init {

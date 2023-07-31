@@ -14,15 +14,17 @@ open class BaseElement(val langElement: PsiElement) {
         val uniqueAttributes: MutableMap<String, Any?> = mutableMapOf()
     )
 
-    inner class PresentableViewText(private var presentableTextList: List<String> = listOf(),
-                              private var presentableDescriptionList: List<String> = listOf()) {
+    inner class PresentableViewText(
+        private var presentableTextList: List<String> = listOf(),
+        private var presentableDescriptionList: List<String> = listOf()
+    ) {
 
-        fun getText() : String {
+        fun getText(): String {
             return getPresentableText { obj: BaseElement -> obj.presentableText.presentableTextList }
 
         }
 
-        fun getDescription() : String {
+        fun getDescription(): String {
             return getPresentableText { obj: BaseElement -> obj.presentableText.presentableDescriptionList }
 
         }
@@ -60,6 +62,7 @@ open class BaseElement(val langElement: PsiElement) {
 
             return presentableText.toString()
         }
+
         private fun addPartToPresentableText(
             presentableText: StringBuilder,
             description: Any?
@@ -81,7 +84,7 @@ open class BaseElement(val langElement: PsiElement) {
     var baseIcon: String? = "default"
     var presentableText = PresentableViewText()
     var children: MutableList<BaseElement> = mutableListOf()
-    var parent : BaseElement? = null
+    var parent: BaseElement? = null
 
     fun getPresentableView(): ItemPresentation {
         if (elementType == "file")
@@ -93,8 +96,9 @@ open class BaseElement(val langElement: PsiElement) {
             null
         )
     }
-    fun getUniqueAttributes() : MutableMap<String, Any?> = structure.uniqueAttributes
-    fun getSetAttributes() : MutableMap<String, MutableList<*>?> = structure.setAttributes
+
+    fun getUniqueAttributes(): MutableMap<String, Any?> = structure.uniqueAttributes
+    fun getSetAttributes(): MutableMap<String, MutableList<*>?> = structure.setAttributes
 
     fun clone(): BaseElement {
         val cloneElement = BaseElement(langElement.deepClonePolymorphic())
@@ -107,18 +111,6 @@ open class BaseElement(val langElement: PsiElement) {
         return cloneElement
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (other !is BaseElement)
-            return false
-        return elementType.equals(other.elementType) && other.structure == structure && other.children == children
-    }
-
-    fun clear() {
-        parent = null
-        children.forEach{ it.clear()}
-        children.clear()
-    }
-
     fun isFull(): Boolean {
         for (attr in structure.uniqueAttributes.values)
             if (attr == null)
@@ -128,6 +120,22 @@ open class BaseElement(val langElement: PsiElement) {
     }
 
     private fun getIcon(): Icon? = ElementDescriptorIconProvider.getIcon(this)
+
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is BaseElement)
+            return false
+        return elementType.equals(other.elementType) && other.structure == structure && other.children == children
+    }
+
+    override fun toString(): String = presentableText.getText()
+
+
+    fun clear() {
+        parent = null
+        children.forEach { it.clear() }
+        children.clear()
+    }
 
 
 }

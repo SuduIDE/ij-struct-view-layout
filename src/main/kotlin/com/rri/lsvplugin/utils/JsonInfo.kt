@@ -1,6 +1,5 @@
-package com.rri.lsvplugin.services
+package com.rri.lsvplugin.utils
 
-import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.File
@@ -15,7 +14,7 @@ class JsonInfo {
             mutableMapOf(
                 "JAVA" to
                         mutableMapOf(
-                            "element" to
+                            SvConstants.ELEMENTS to
                                     mutableMapOf(
                                         "class" to JsonStructureSV.ElementInfo(
                                             1,
@@ -62,17 +61,17 @@ class JsonInfo {
                                             listOf()
                                         ),
                                     ),
-                            "attribute" to
+                            SvConstants.ATTRIBUTES to
                                     mutableMapOf(
-                                        "list" to mutableMapOf(
+                                        SvConstants.LISTS to mutableMapOf(
                                             "modifiers" to "MODIFIER_LIST",
                                             "parameters" to "PARAMETER_LIST",
                                         ),
-                                        "properties" to mutableMapOf(
+                                        SvConstants.PROPERTIES to mutableMapOf(
                                             "name" to "IDENTIFIER",
                                             "type" to "TYPE",
                                         ),
-                                        "keywords" to mutableMapOf(
+                                        SvConstants.KEYWORDS to mutableMapOf(
                                             "class_keyword" to "CLASS_KEYWORD",
                                             "private" to "PRIVATE_KEYWORD",
                                             "public" to "PUBLIC_KEYWORD",
@@ -81,9 +80,9 @@ class JsonInfo {
                                             "abstract" to "ABSTRACT_KEYWORD"
                                         )
                                     ),
-                            "filters" to
+                            SvConstants.FILTERS to
                                     mutableMapOf(
-                                        "visibility" to mutableMapOf(
+                                        SvConstants.VISIBILITY_FILTERS to mutableMapOf(
                                             "Fields" to mutableMapOf(
                                                 "elementType" to "field",
                                             )
