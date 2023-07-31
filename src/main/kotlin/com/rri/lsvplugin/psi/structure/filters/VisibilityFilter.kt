@@ -7,23 +7,29 @@ import com.intellij.ide.util.treeView.smartTree.TreeElement
 import com.intellij.ui.IconManager
 import com.intellij.ui.PlatformIcons
 import com.rri.lsvplugin.languageElements.elementUtils.DefaultIconContainer
+import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewElement
-import com.rri.lsvplugin.services.JsonStructureSV
+import com.rri.lsvplugin.utils.JsonStructureSV
 
+
+// Global class for all types a visibility filters
 class VisibilityFilter(private val filterName : String, private val filterInfo: JsonStructureSV.VisibilityFilterInfo) : Filter {
     override fun isVisible(treeNode: TreeElement?): Boolean {
         val element = (treeNode as CustomizedStructureViewElement).value
+        //exclude elements for which the filter does not work
         if (filterInfo.notElementType != null && filterInfo.notElementType.contains(element.elementType))
             return true
-
+        //exclude elements for which the filter does not work
         if ( filterInfo.elementType != null && !filterInfo.elementType.contains(element.elementType))
             return true
 
         if (filterInfo.attributeKey != null) {
-            if (element.getUniqueAttributes()[filterInfo.attributeKey] is List<*>) {
-                return (element.getUniqueAttributes()[filterInfo.attributeKey] as List<*>).contains(filterInfo.attributeValue)
-            } else if (element.getUniqueAttributes()[filterInfo.attributeKey] != null && element.getUniqueAttributes()[filterInfo.attributeKey] != filterInfo.attributeValue)
+            if ((filterInfo.notAttributeValue != null && includeAttributes(element)) || (filterInfo.attributeValue != null && excludeAttributes(element))) {
                 return true
+            }
+
+            if (filterInfo.notAttributeValue == null && filterInfo.attributeValue == null)
+                return !element.getUniqueAttributes().containsKey(filterInfo.attributeKey) && !element.getSetAttributes().containsKey(filterInfo.attributeKey)
         }
 
         return false
@@ -40,4 +46,43 @@ class VisibilityFilter(private val filterName : String, private val filterInfo: 
     }
 
     override fun isReverted(): Boolean = true
+
+    private fun includeAttributes(element: BaseElement) : Boolean {
+        return if (element.getUniqueAttributes()[filterInfo.attributeKey] == null)
+            false
+        else if (includeUniqueAttribute(element, filterInfo.notAttributeValue!!))
+            true
+        else if (element.getSetAttributes()[filterInfo.attributeKey] == null)
+            false
+        else
+            includeSetAttribute(element, filterInfo.notAttributeValue)
+    }
+
+    private fun excludeAttributes(element: BaseElement) : Boolean {
+        return if (element.getUniqueAttributes()[filterInfo.attributeKey] == null)
+            false
+        else if (!includeUniqueAttribute(element, filterInfo.attributeValue!!))
+            true
+        else if (element.getSetAttributes()[filterInfo.attributeKey] == null)
+            false
+        else
+            !includeSetAttribute(element, filterInfo.attributeValue)
+    }
+
+    private fun includeUniqueAttribute(element: BaseElement, attributeValue: List<String>) : Boolean {
+        return if (element.getUniqueAttributes()[filterInfo.attributeKey] is List<*>)
+            attributeValue.any {
+                (element.getUniqueAttributes()[filterInfo.attributeKey] as List<*>).contains(it.toString())
+            }
+        else
+            attributeValue.contains(element.getUniqueAttributes()[filterInfo.attributeKey])
+    }
+
+
+    private fun includeSetAttribute(element: BaseElement, attributeValue: List<String>) : Boolean {
+        return attributeValue.any {
+            element.getSetAttributes()[filterInfo.attributeKey]!!.contains(it.toString())
+        }
+    }
+    
 }

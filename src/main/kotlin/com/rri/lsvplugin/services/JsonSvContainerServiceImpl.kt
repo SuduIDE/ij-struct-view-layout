@@ -5,6 +5,10 @@ import com.intellij.lang.LanguageStructureViewBuilder
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.ProjectManager
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory
+import com.rri.lsvplugin.utils.JsonInfo
+import com.rri.lsvplugin.utils.JsonStructureSV
+import com.rri.lsvplugin.utils.MapTypeSV
+import com.rri.lsvplugin.utils.SvConstants
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.File
@@ -49,13 +53,32 @@ class JsonSvContainerServiceImpl : JsonSvContainerService {
             @Suppress("UNCHECKED_CAST")
             val tmpUpdatedJsonSV = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build().adapter(Any::class.java)
                 .fromJson(it) as MapTypeSV
+
             for (language in tmpUpdatedJsonSV.values) {
                 val newElements = mutableMapOf<String, JsonStructureSV.ElementInfo>()
-                if (language["element"]?.entries != null)
-                    for ((key, value) in language["element"]?.entries!!) {
-                        newElements[key] = JsonStructureSV.ElementInfo.fromJsonToElementInfo(value as Map<String, Any>)
-                    }
-                language["element"] = newElements
+                language[SvConstants.ELEMENTS]?.forEach { element ->
+                   newElements[element.key] = JsonStructureSV.ElementInfo.fromJson(element.value as Map<String, Any>)
+                }
+                language[SvConstants.ELEMENTS] = newElements
+
+                val properties = mutableListOf<JsonStructureSV.PropertyInfo>()
+                (language[SvConstants.ATTRIBUTES]?.get(SvConstants.PROPERTIES) as? List<*>)?.forEach {
+                    property -> properties.add(JsonStructureSV.PropertyInfo.fromJson(property as Map<String, String>))
+                }
+                language[SvConstants.ATTRIBUTES] = mutableMapOf(
+                    SvConstants.LISTS to (language[SvConstants.ATTRIBUTES]?.get(SvConstants.LISTS) ?: mutableMapOf<String, String>()),
+                    SvConstants.PROPERTIES to properties,
+                    SvConstants.KEYWORDS to (language[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) ?: mutableMapOf<String, String>())
+                )
+
+                val visibilityFiltersMap = (language[SvConstants.FILTERS]?.get(SvConstants.VISIBILITY_FILTERS) as? Map<String, Map<String, Any>>)
+                val visibilityFilters = mutableMapOf<String, JsonStructureSV.VisibilityFilterInfo>()
+                visibilityFiltersMap?.entries?.forEach { visibilityFilter ->
+                    visibilityFilters[visibilityFilter.key] =
+                        JsonStructureSV.VisibilityFilterInfo.fromJson(visibilityFilter.value)
+                }
+
+                language[SvConstants.FILTERS] = mutableMapOf(SvConstants.VISIBILITY_FILTERS to visibilityFilters)
             }
             tmpUpdatedJsonSV
         }
