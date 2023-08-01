@@ -38,9 +38,11 @@ class CustomizedStructureViewModel(
         }
     }
 
-    override fun getRoot(): StructureViewTreeElement {
+    override fun getRoot(): CustomizedStructureViewElement {
         val fileElement = BaseElement(psiFile)
         fileElement.elementType = "file"
+        fileElement.structure.uniqueAttributes["name"] = psiFile.name
+        fileElement.presentableText = fileElement.PresentableViewText(listOf("name"), listOf())
         return CustomizedStructureViewElement(fileElement, creator)
     }
 }

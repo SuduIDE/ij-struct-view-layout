@@ -1,5 +1,6 @@
 package com.rri.lsvplugin.services
 
+import com.intellij.lang.Language
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project

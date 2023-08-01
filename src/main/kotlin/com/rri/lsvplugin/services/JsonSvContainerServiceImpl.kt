@@ -4,6 +4,7 @@ import com.intellij.lang.Language
 import com.intellij.lang.LanguageStructureViewBuilder
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.ProjectManager
+import com.intellij.openapi.util.Disposer
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory
 import com.rri.lsvplugin.utils.JsonInfo
 import com.rri.lsvplugin.utils.JsonStructureSV
@@ -11,7 +12,10 @@ import com.rri.lsvplugin.utils.MapTypeSV
 import com.rri.lsvplugin.utils.SvConstants
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import org.jetbrains.annotations.TestOnly
 import java.io.File
+import java.nio.file.Path
+import kotlin.io.path.exists
 
 @Service(Service.Level.PROJECT)
 class JsonSvContainerServiceImpl : JsonSvContainerService {
@@ -32,8 +36,9 @@ class JsonSvContainerServiceImpl : JsonSvContainerService {
 
     override fun getFilename(): File = jsonSV.filenameJsonSV
 
-    fun getFullPathToCustomSV(): File? =
-        ProjectManager.getInstance().openProjects[0].basePath?.let { File(it).resolve(jsonSV.filenameJsonSV) }
+    fun getFullPathToCustomSV(): File? {
+        return ProjectManager.getInstance().openProjects[0].basePath?.let { File(it).resolve(jsonSV.filenameJsonSV) }
+    }
 
     fun isCustomSvExist(): Boolean {
         val fullPath = getFullPathToCustomSV()
@@ -42,13 +47,32 @@ class JsonSvContainerServiceImpl : JsonSvContainerService {
 
     fun loadCurrentVersion() {
         removeStructureViewForLang()
+        ////
         if (!isCustomSvExist()) {
             setJsonSV(null)
             return
         }
 
         val fullPathToJsonSV = getFullPathToCustomSV()
+        loadAndConvertJson(fullPathToJsonSV)
+        ////
+        addStructureViewForLang()
+    }
 
+    @TestOnly
+    fun loadCurrentVersion(pathJsonStructureSV: Path) {
+        removeStructureViewForLang()
+        ////
+        if (!pathJsonStructureSV.exists()) {
+            setJsonSV(null)
+            return
+        }
+        loadAndConvertJson(pathJsonStructureSV.toFile())
+        ////
+        addStructureViewForLang()
+    }
+
+    private fun loadAndConvertJson(fullPathToJsonSV: File?) {
         val updatedJsonSV = fullPathToJsonSV?.readText()?.let {
             @Suppress("UNCHECKED_CAST")
             val tmpUpdatedJsonSV = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build().adapter(Any::class.java)
@@ -57,13 +81,13 @@ class JsonSvContainerServiceImpl : JsonSvContainerService {
             for (language in tmpUpdatedJsonSV.values) {
                 val newElements = mutableMapOf<String, JsonStructureSV.ElementInfo>()
                 language[SvConstants.ELEMENTS]?.forEach { element ->
-                   newElements[element.key] = JsonStructureSV.ElementInfo.fromJson(element.value as Map<String, Any>)
+                    newElements[element.key] = JsonStructureSV.ElementInfo.fromJson(element.value as Map<String, Any>)
                 }
                 language[SvConstants.ELEMENTS] = newElements
 
                 val properties = mutableListOf<JsonStructureSV.PropertyInfo>()
                 (language[SvConstants.ATTRIBUTES]?.get(SvConstants.PROPERTIES) as? List<*>)?.forEach {
-                    property -> properties.add(JsonStructureSV.PropertyInfo.fromJson(property as Map<String, String>))
+                        property -> properties.add(JsonStructureSV.PropertyInfo.fromJson(property as Map<String, String>))
                 }
                 language[SvConstants.ATTRIBUTES] = mutableMapOf(
                     SvConstants.LISTS to (language[SvConstants.ATTRIBUTES]?.get(SvConstants.LISTS) ?: mutableMapOf<String, String>()),
@@ -83,8 +107,6 @@ class JsonSvContainerServiceImpl : JsonSvContainerService {
             tmpUpdatedJsonSV
         }
         setJsonSV(updatedJsonSV)
-
-        addStructureViewForLang()
     }
 
     private fun addStructureViewForLang() {
