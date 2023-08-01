@@ -1,0 +1,228 @@
+{
+  "JAVA": {
+    "element": {
+      "class": {
+        "displayLevel": 1,
+        "baseToken": "CLASS",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "modifiers",
+            "name",
+            "class_keyword"
+          ]
+        },
+        "baseIcon": "default",
+        "text": [
+          "name"
+        ],
+        "description": []
+      },
+      "interface": {
+        "displayLevel": 1,
+        "baseToken": "CLASS",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "modifiers",
+            "name",
+            "interface_keyword"
+          ]
+        },
+        "baseIcon": "default",
+        "text": [
+          "name"
+        ],
+        "description": []
+      },
+      "method": {
+        "displayLevel": 1,
+        "baseToken": "METHOD",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "modifiers",
+            "name",
+            "parameters",
+            "type"
+          ]
+        },
+        "baseIcon": "default",
+        "text": [
+          "name",
+          "(",
+          "parameters",
+          ")",
+          ": ",
+          "type"
+        ],
+        "description": []
+      },
+      "field": {
+        "displayLevel": 1,
+        "baseToken": "FIELD",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "modifiers",
+            "name",
+            "type"
+          ]
+        },
+        "baseIcon": "default",
+        "text": [
+          "name",
+          ": ",
+          "type"
+        ],
+        "description": []
+      },
+      "parameter": {
+        "displayLevel": 0,
+        "baseToken": "PARAMETER",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "name",
+            "type"
+          ]
+        },
+        "baseIcon": "default",
+        "text": [
+          "type"
+        ],
+        "description": []
+      },
+      "aClass": {
+        "displayLevel": 1,
+        "baseToken": "ANONYMOUS_CLASS",
+        "attributes": {
+          "set": [],
+          "unique": []
+        },
+        "baseIcon": "default",
+        "text": [
+          "$",
+          "$i"
+        ],
+        "description": []
+      },
+      "lambda": {
+        "displayLevel": 1,
+        "baseToken": "LAMBDA_EXPRESSION",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "parameters"
+          ]
+        },
+        "baseIcon": "default",
+        "text": [
+          "lambda$",
+          "$i"
+        ],
+        "description": [
+          "(<lambda expression>)"
+        ]
+      }
+    },
+    "attribute": {
+      "list": {
+        "modifiers": "MODIFIER_LIST",
+        "parameters": "PARAMETER_LIST"
+      },
+      "property": [
+        {
+          "id": "name",
+          "token": "IDENTIFIER"
+        },
+        {
+          "id": "type",
+          "token": "TYPE"
+        }
+      ],
+      "keyword": {
+        "class_keyword": "CLASS_KEYWORD",
+        "interface_keyword": "INTERFACE_KEYWORD",
+        "private": "PRIVATE_KEYWORD",
+        "public": "PUBLIC_KEYWORD",
+        "final": "FINAL_KEYWORD",
+        "static": "STATIC_KEYWORD",
+        "abstract": "ABSTRACT_KEYWORD"
+      }
+    },
+    "filters": {
+      "visibility": {
+      }
+    }
+  },
+  "XML": {
+    "element": {
+      "tag": {
+        "displayLevel": 1,
+        "baseToken": "XML_TAG",
+        "attributes": {
+          "set": [
+            "Attribute"
+          ],
+          "unique": [
+            "name",
+            "text"
+          ]
+        },
+        "baseIcon": "default",
+        "text": [
+          "name"
+        ],
+        "description": [
+          "Attribute"
+        ]
+      },
+      "Attribute": {
+        "displayLevel": 0,
+        "baseToken": "XML_ATTRIBUTE",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "name",
+            "attribute_value"
+          ]
+        },
+        "baseIcon": "",
+        "text": [
+          "name",
+          "=",
+          "attribute_value"
+        ],
+        "description": []
+      }
+    },
+    "attribute": {
+      "property": [
+        {
+          "id": "name",
+          "token": "XML_NAME"
+        },
+        {
+          "id": "text",
+          "token": "XML_TEXT"
+        },
+        {
+          "id": "attribute_value",
+          "token": "XML_ATTRIBUTE_VALUE"
+        }
+      ]
+    },
+    "filters": {
+      "visibility": {
+        "Actions": {
+          "attributeKey": "name",
+          "attributeValue": [
+            "action"
+          ],
+          "icon": "tag"
+        }
+      }
+    }
+  }
+}
