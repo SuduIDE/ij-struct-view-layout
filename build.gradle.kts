@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
   testImplementation(platform("org.junit:junit-bom:5.10.0"))
+  testImplementation(kotlin("test"))
   testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
     because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
   }
@@ -29,10 +30,27 @@ dependencies {
 intellij {
   version.set("2023.1.2")
   type.set("IC") // Target IDE Platform
-//  plugins.set(listOf("com.intellij.java"))
+  plugins.set(listOf("com.intellij.java"))
+}
+
+sourceSets {
+  main {
+    java {
+      srcDirs("src/main/kotlin/")
+    }
+  }
+
+  test {
+    java {
+      srcDirs("src/test/kotlin/")
+    }
+  }
 }
 
 tasks {
+  test {
+    useJUnitPlatform()
+  }
   // Set the JVM compatibility versions
   compileKotlin {
     kotlinOptions.jvmTarget = "17"
