@@ -13,6 +13,7 @@ class JsonStructureSV {
         val description: List<String>
     ) {
         companion object {
+            @Suppress("UNCHECKED_CAST")
             fun fromJson(map: Map<String, Any>) = object {
                 private val displayLevel by map
                 private val baseToken by map
@@ -24,12 +25,9 @@ class JsonStructureSV {
                 val elementInfo = ElementInfo(
                     (displayLevel as Double).toInt(),
                     baseToken as String,
-                    @Suppress("UNCHECKED_CAST")
                     attributes as Map<String, List<String>>,
                     baseIcon as String,
-                    @Suppress("UNCHECKED_CAST")
                     text as List<String>,
-                    @Suppress("UNCHECKED_CAST")
                     description as List<String>
                 )
             }.elementInfo
@@ -46,6 +44,7 @@ class JsonStructureSV {
         val icon: String?
     ) {
         companion object {
+            @Suppress("UNCHECKED_CAST")
             fun fromJson(map: Map<String, Any>)  = object {
                 private val defaultMap = map.withDefault { null }
                 private val elementType by defaultMap

@@ -46,13 +46,16 @@ class JsonInfo {
         for (language in tmpUpdatedJsonSV.values) {
             val newElements = mutableMapOf<String, JsonStructureSV.ElementInfo>()
             language[SvConstants.ELEMENTS]?.forEach { element ->
+                @Suppress("UNCHECKED_CAST")
                 newElements[element.key] = JsonStructureSV.ElementInfo.fromJson(element.value as Map<String, Any>)
             }
             language[SvConstants.ELEMENTS] = newElements
 
             val properties = mutableListOf<JsonStructureSV.PropertyInfo>()
             (language[SvConstants.ATTRIBUTES]?.get(SvConstants.PROPERTIES) as? List<*>)?.forEach {
-                    property -> properties.add(JsonStructureSV.PropertyInfo.fromJson(property as Map<String, String>))
+                    property ->
+                @Suppress("UNCHECKED_CAST")
+                properties.add(JsonStructureSV.PropertyInfo.fromJson(property as Map<String, String>))
             }
             language[SvConstants.ATTRIBUTES] = mutableMapOf(
                 SvConstants.LISTS to (language[SvConstants.ATTRIBUTES]?.get(SvConstants.LISTS) ?: mutableMapOf<String, String>()),
@@ -60,6 +63,7 @@ class JsonInfo {
                 SvConstants.KEYWORDS to (language[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) ?: mutableMapOf<String, String>())
             )
 
+            @Suppress("UNCHECKED_CAST")
             val visibilityFiltersMap = (language[SvConstants.FILTERS]?.get(SvConstants.VISIBILITY_FILTERS) as? Map<String, Map<String, Any>>)
             val visibilityFilters = mutableMapOf<String, JsonStructureSV.VisibilityFilterInfo>()
             visibilityFiltersMap?.entries?.forEach { visibilityFilter ->
