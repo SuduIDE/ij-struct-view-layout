@@ -3,97 +3,24 @@ package com.rri.lsvplugin.utils
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.File
+import java.nio.file.Path
 
 class JsonInfo {
 
     private var mapSV: MapTypeSV? = null
-    val filenameJsonSV: File = File((".customSV.json"))
+    val filenameJsonSV: File = File(".customSV.json")
+    private val defaultJsonSv: Path = Path.of("defaultCustomSV/.defaultJavaCustomSV.json")
 
     fun reset() {
-        mapSV =
-            mutableMapOf(
-                "JAVA" to
-                        mutableMapOf(
-                            SvConstants.ELEMENTS to
-                                    mutableMapOf(
-                                        "class" to JsonStructureSV.ElementInfo(
-                                            1,
-                                            "CLASS",
-                                            mutableMapOf(
-                                                "set" to listOf(),
-                                                "unique" to listOf("modifiers", "name", "class_keyword")
-                                            ),
-                                            "default",
-                                            listOf("name"),
-                                            listOf()
-                                        ),
-                                        "method" to JsonStructureSV.ElementInfo(
-                                            1,
-                                            "METHOD",
-                                            mutableMapOf(
-                                                "set" to listOf(),
-                                                "unqiue" to listOf("modifiers", "name", "parameters", "type")
-                                            ),
-                                            "default",
-                                            listOf("name", "(", "parameters", ")", " : ", "type"),
-                                            listOf()
-                                        ),
-                                        "field" to JsonStructureSV.ElementInfo(
-                                            1,
-                                            "FIELD",
-                                            mutableMapOf(
-                                                "set" to listOf(),
-                                                "unique" to listOf("name", "type")
-                                            ),
-                                            "default",
-                                            listOf("name", ":", "type"),
-                                            listOf()
-                                        ),
-                                        "parameter" to JsonStructureSV.ElementInfo(
-                                            0,
-                                            "PARAMETER",
-                                            mutableMapOf(
-                                                "set" to listOf(),
-                                                "unique" to listOf("name", "type")
-                                            ),
-                                            "default",
-                                            listOf("type"),
-                                            listOf()
-                                        ),
-                                    ),
-                            SvConstants.ATTRIBUTES to
-                                    mutableMapOf(
-                                        SvConstants.LISTS to mutableMapOf(
-                                            "modifiers" to "MODIFIER_LIST",
-                                            "parameters" to "PARAMETER_LIST",
-                                        ),
-                                        SvConstants.PROPERTIES to mutableMapOf(
-                                            "name" to "IDENTIFIER",
-                                            "type" to "TYPE",
-                                        ),
-                                        SvConstants.KEYWORDS to mutableMapOf(
-                                            "class_keyword" to "CLASS_KEYWORD",
-                                            "private" to "PRIVATE_KEYWORD",
-                                            "public" to "PUBLIC_KEYWORD",
-                                            "final" to "FINAL_KEYWORD",
-                                            "static" to "STATIC_KEYWORD",
-                                            "abstract" to "ABSTRACT_KEYWORD"
-                                        )
-                                    ),
-                            SvConstants.FILTERS to
-                                    mutableMapOf(
-                                        SvConstants.VISIBILITY_FILTERS to mutableMapOf(
-                                            "Fields" to mutableMapOf(
-                                                "elementType" to "field",
-                                            )
-                                        ),
-                                    ),
-                        )
-            )
+        val jsonSV = javaClass.classLoader?.getResourceAsStream("defaultCustomSV/.defaultJavaCustomSV.json")?.reader()?.readText()
+        if (jsonSV != null) {
+           setMapSV(convertJsonToMapSV(jsonSV))
+        }
     }
 
-    fun setMapSV(newMapSV: MapTypeSV) {
-        mapSV = newMapSV
+    fun setMapSV(newMapSV: MapTypeSV?) {
+        if (newMapSV != null)
+            mapSV = newMapSV
     }
 
     fun getMapSV(): MapTypeSV? = mapSV
@@ -101,6 +28,48 @@ class JsonInfo {
     fun getJsonSV(): String {
         return Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build().adapter(Any::class.java).indent("    ")
             .toJson(mapSV)
+    }
+
+
+    fun loadAndConvertJson(fullPathToJsonSV: File?) {
+        val updatedJsonSV = fullPathToJsonSV?.readText()?.let {
+            convertJsonToMapSV(it)
+        }
+        setMapSV(updatedJsonSV)
+    }
+
+    private fun convertJsonToMapSV(jsonSV: String) : MapTypeSV {
+        @Suppress("UNCHECKED_CAST")
+        val tmpUpdatedJsonSV = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build().adapter(Any::class.java)
+            .fromJson(jsonSV) as MapTypeSV
+
+        for (language in tmpUpdatedJsonSV.values) {
+            val newElements = mutableMapOf<String, JsonStructureSV.ElementInfo>()
+            language[SvConstants.ELEMENTS]?.forEach { element ->
+                newElements[element.key] = JsonStructureSV.ElementInfo.fromJson(element.value as Map<String, Any>)
+            }
+            language[SvConstants.ELEMENTS] = newElements
+
+            val properties = mutableListOf<JsonStructureSV.PropertyInfo>()
+            (language[SvConstants.ATTRIBUTES]?.get(SvConstants.PROPERTIES) as? List<*>)?.forEach {
+                    property -> properties.add(JsonStructureSV.PropertyInfo.fromJson(property as Map<String, String>))
+            }
+            language[SvConstants.ATTRIBUTES] = mutableMapOf(
+                SvConstants.LISTS to (language[SvConstants.ATTRIBUTES]?.get(SvConstants.LISTS) ?: mutableMapOf<String, String>()),
+                SvConstants.PROPERTIES to properties,
+                SvConstants.KEYWORDS to (language[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) ?: mutableMapOf<String, String>())
+            )
+
+            val visibilityFiltersMap = (language[SvConstants.FILTERS]?.get(SvConstants.VISIBILITY_FILTERS) as? Map<String, Map<String, Any>>)
+            val visibilityFilters = mutableMapOf<String, JsonStructureSV.VisibilityFilterInfo>()
+            visibilityFiltersMap?.entries?.forEach { visibilityFilter ->
+                visibilityFilters[visibilityFilter.key] =
+                    JsonStructureSV.VisibilityFilterInfo.fromJson(visibilityFilter.value)
+            }
+
+            language[SvConstants.FILTERS] = mutableMapOf(SvConstants.VISIBILITY_FILTERS to visibilityFilters)
+        }
+        return tmpUpdatedJsonSV
     }
 }
 

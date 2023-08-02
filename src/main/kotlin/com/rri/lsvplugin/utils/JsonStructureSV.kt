@@ -36,6 +36,7 @@ class JsonStructureSV {
         }
     }
 
+    @JsonClass(generateAdapter = true)
     data class VisibilityFilterInfo(
         val elementType: List<String>?,
         val notElementType: List<String>?,
@@ -67,7 +68,7 @@ class JsonStructureSV {
         }
     }
 
-
+    @JsonClass(generateAdapter = true)
     data class PropertyInfo(
         val id: String,
         val token: String,
@@ -85,7 +86,7 @@ class JsonStructureSV {
         }
     }
 
-
+    @JsonClass(generateAdapter = true)
     data class KeywordInfo(
         val id: String,
         val token: String,

@@ -83,7 +83,7 @@ class JsonContainerUtil {
 
         @Suppress("UNCHECKED_CAST")
         return (getLangElementsMap(langElement)!![getLanguage(langElement)]!![SvConstants.ATTRIBUTES]!![SvConstants.PROPERTIES]!! as List<JsonStructureSV.PropertyInfo>)
-            .firstOrNull { it.token == langElement.elementType.toString() && (it.regexp == null || Regex(it.regexp).matches(langElement.text)) }
+            .firstOrNull { it.token == langElement.elementType.toString() && (it.regexp == null || Regex(it.regexp).find(langElement.text) != null) }
     }
 
     fun getVisibilityFilters(langElement: PsiElement): Map<String, JsonStructureSV.VisibilityFilterInfo>? {
