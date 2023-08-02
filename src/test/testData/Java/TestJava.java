@@ -1,4 +1,4 @@
-package test
+package testData;
 
 class TestJava {
     private int testIntField = 10;
