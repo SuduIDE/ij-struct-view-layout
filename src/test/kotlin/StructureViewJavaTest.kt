@@ -12,23 +12,8 @@ import junit.framework.TestCase
 import org.junit.Test
 import kotlin.io.path.Path
 
-class StructureViewJavaTest : LightPlatformCodeInsightFixture4TestCase() {
-    private fun doTest(fileName : String, jsonName : String, expected: String) {
-        val testVF = LocalFileSystem.getInstance().findFileByNioFile(Path(testDataPath).resolve(fileName))
-        project.service<JsonSvContainerServiceImpl>().loadCurrentVersion(Path(testDataPath).resolve(jsonName))
+class StructureViewJavaTest : StructureViewBaseTest() {
 
-        val structureViewBuilder = StructureViewBuilder.PROVIDER.getStructureViewBuilder(testVF!!.fileType,
-            testVF, myFixture.project)
-        val structureViewModel = (structureViewBuilder as TreeBasedStructureViewBuilder).createStructureViewModel(null)
-        val abstractTreeStructure = SmartTreeStructure(project, structureViewModel as CustomizedStructureViewModel)
-
-        val printInfo = Queryable.PrintInfo(
-            arrayOf("element"),
-            arrayOf("text")
-        )
-        val stringPresentationTree = PlatformTestUtil.print(abstractTreeStructure, abstractTreeStructure.rootElement, 0, null, 27, ' ', printInfo)
-        TestCase.assertEquals(expected.trim(), stringPresentationTree.trim())
-    }
     @Test
     fun `baseJavaTest`(): Unit = doTest("TestJava.java", ".customBaseJavaSV.json",
         """
@@ -48,8 +33,8 @@ class StructureViewJavaTest : LightPlatformCodeInsightFixture4TestCase() {
            aClass text=${'$'}1
             method text=print(): void
             field text=sas: int
-           lambda text=lambda${'$'}0
-           lambda text=lambda${'$'}1
+           lambda text=lambda${'$'}0 (<lambda expression>)
+           lambda text=lambda${'$'}1 (<lambda expression>)
           field text=testPublicProtectedIntField: int
           field text=testStringField: String
         """.trimIndent())

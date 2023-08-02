@@ -1,0 +1,71 @@
+{
+  "XML": {
+    "element": {
+      "tag": {
+        "displayLevel": 1,
+        "baseToken": "XML_TAG",
+        "attributes": {
+          "set": [
+            "Attribute"
+          ],
+          "unique": [
+            "name",
+            "text"
+          ]
+        },
+        "baseIcon": "default",
+        "text": [
+          "name"
+        ],
+        "description": [
+          "Attribute"
+        ]
+      },
+      "Attribute": {
+        "displayLevel": 0,
+        "baseToken": "XML_ATTRIBUTE",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "name",
+            "attribute_value"
+          ]
+        },
+        "baseIcon": "",
+        "text": [
+          "name",
+          "=",
+          "attribute_value"
+        ],
+        "description": []
+      }
+    },
+    "attribute": {
+      "property": [
+        {
+          "id": "name",
+          "token": "XML_NAME"
+        },
+        {
+          "id": "text",
+          "token": "XML_TEXT"
+        },
+        {
+          "id": "attribute_value",
+          "token": "XML_ATTRIBUTE_VALUE"
+        }
+      ]
+    },
+    "filters": {
+      "visibility": {
+        "Actions": {
+          "attributeKey": "name",
+          "attributeValue": [
+            "action"
+          ],
+          "icon": "tag"
+        }
+      }
+    }
+  }
+}

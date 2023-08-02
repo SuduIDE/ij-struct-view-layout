@@ -42,14 +42,12 @@ open class BaseElement(val langElement: PsiElement) {
                     }
                     presentableText.append(thisPos.toString())
                 } else if (getUniqueAttributes()[attr] is List<*>) {
-                    for (elAttr in getUniqueAttributes()[attr] as List<*>) {
-                        addPartToPresentableText(presentableText, elAttr)
-                    }
-                } else if (getSetAttributes().containsKey(attr)) {
+                    val uniqueAttributeList = getUniqueAttributes()[attr] as List<*>
+                    presentableText.append(addPresentableListText(uniqueAttributeList))
+                } else if (getSetAttributes().containsKey(attr) ) {
                     if (getSetAttributes()[attr] != null) {
-                        for (elAttr in getSetAttributes()[attr] as List<*>) {
-                            addPartToPresentableText(presentableText, elAttr)
-                        }
+                        val setAttributeList = getSetAttributes()[attr] as List<*>
+                        presentableText.append(addPresentableListText(setAttributeList))
                     }
                 } else if (!addPartToPresentableText(
                         presentableText,
@@ -75,6 +73,19 @@ open class BaseElement(val langElement: PsiElement) {
             } else presentableText.append(description)
 
             return true
+        }
+
+        private fun addPresentableListText(attributeList: List<*>) : String {
+            val presentableListText = StringBuilder()
+            for (elAttr in attributeList) {
+                presentableListText.append(' ')
+                addPartToPresentableText(presentableListText, elAttr)
+            }
+            if (presentableListText.isNotEmpty()) {
+                presentableListText.deleteCharAt(0)
+            }
+
+            return presentableListText.toString()
         }
     }
 

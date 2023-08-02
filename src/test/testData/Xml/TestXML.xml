@@ -1,0 +1,20 @@
+<?xml version='1.0'?>
+<!-- This file represents a fragment of a book store database. -->
+<bookstore specialty='novel'>
+    <book style='autobiography'>
+        <title>Seven Years in Trenton</title>
+        <author>
+        </author>
+        <price>12</price>
+    </book>
+    <book style='textbook'>
+        <title>History of Trenton</title>
+        <price>55</price>
+    </book>
+    <magazine style='glossy' frequency='monthly'>
+    </magazine>
+    <book style='novel' id='myfave'>
+        <title>Trenton Today, Trenton Tomorrow</title>
+        <price intl='canada' exchange='0.7'>6.50</price>
+    </book>
+</bookstore>

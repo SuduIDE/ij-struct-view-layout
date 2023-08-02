@@ -44,7 +44,9 @@ class CustomizedStructureViewElement(
     override fun getValue(): BaseElement = element
     override fun putInfo(info: MutableMap<in String, in String>) {
         info["element"] = element.elementType!!
-        info["text"] = element.presentableText.getText()
+        info["text"] = element.presentableText.getText() +
+                if (element.presentableText.getDescription() != "")  (" " + element.presentableText.getDescription()) else ""
+
     }
 
 
