@@ -77,6 +77,8 @@ class StructureViewJavaTest : StructureViewBaseTest() {
     fun `propertyRegexpJavaTest`(): Unit = doTest("TestJava.java", ".customWithRegexpPropertyJavaSV.json",
         """
         file text=TestJava.java
+         aClass text=${'$'}0
+         aClass text=${'$'}1
          interface text=InterfaceTest
         """.trimIndent())
 

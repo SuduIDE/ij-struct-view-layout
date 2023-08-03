@@ -19,8 +19,9 @@ class JsonInfo {
     }
 
     fun setMapSV(newMapSV: MapTypeSV?) {
-        if (newMapSV != null)
-            mapSV = newMapSV
+        if (newMapSV != null) {
+            mapSV = languageToLowerCase(newMapSV)
+        }
     }
 
     fun getMapSV(): MapTypeSV? = mapSV
@@ -74,6 +75,10 @@ class JsonInfo {
             language[SvConstants.FILTERS] = mutableMapOf(SvConstants.VISIBILITY_FILTERS to visibilityFilters)
         }
         return tmpUpdatedJsonSV
+    }
+
+    private fun languageToLowerCase(mapSV : MapTypeSV) : MapTypeSV {
+        return  mapSV.mapKeys { it.key.lowercase() }.toMutableMap()
     }
 }
 

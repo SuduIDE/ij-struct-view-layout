@@ -7,7 +7,7 @@ import com.rri.lsvplugin.services.JsonSvContainerServiceImpl
 
 class JsonContainerUtil {
 
-    private fun getLanguage(langElement: PsiElement) = langElement.language.id
+    private fun getLanguage(langElement: PsiElement) = langElement.language.id.lowercase()
 
     private fun getLangElementsMap(langElement: PsiElement) =
         langElement.project.service<JsonSvContainerServiceImpl>().getMapSV()

@@ -6,10 +6,7 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.util.Disposer
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory
-import com.rri.lsvplugin.utils.JsonInfo
-import com.rri.lsvplugin.utils.JsonStructureSV
-import com.rri.lsvplugin.utils.MapTypeSV
-import com.rri.lsvplugin.utils.SvConstants
+import com.rri.lsvplugin.utils.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.jetbrains.annotations.TestOnly
@@ -74,10 +71,11 @@ class JsonSvContainerServiceImpl : JsonSvContainerService {
 
     private fun addStructureViewForLang() {
         for (lang in jsonSV.getMapSV()?.keys!!) {
-            if (Language.findLanguageByID(lang) != null)
+            val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
+            if (Language.findLanguageByID(langId) != null)
                 structureViewFactoryMap[lang] = CustomizedStructureViewFactory()
                 LanguageStructureViewBuilder.INSTANCE.addExplicitExtension(
-                    Language.findLanguageByID(lang)!!,
+                    Language.findLanguageByID(langId)!!,
                     structureViewFactoryMap[lang]!!
                 )
         }
@@ -87,9 +85,10 @@ class JsonSvContainerServiceImpl : JsonSvContainerService {
         if (jsonSV.getMapSV() == null)
             return
         for (lang in jsonSV.getMapSV()?.keys!!) {
-            if (Language.findLanguageByID(lang) != null && structureViewFactoryMap.contains(lang)) {
+            val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
+            if (Language.findLanguageByID(langId) != null && structureViewFactoryMap.contains(lang)) {
                 LanguageStructureViewBuilder.INSTANCE.removeExplicitExtension(
-                    Language.findLanguageByID(lang)!!,
+                    Language.findLanguageByID(langId)!!,
                     structureViewFactoryMap[lang]!!
                 )
                 structureViewFactoryMap.remove(lang)
