@@ -11,7 +11,11 @@ class ElementDescriptorIconProvider {
 
         fun getIcon(element: BaseElement) : Icon? {
             val baseIcon = getBaseIcon(element) ?: return null
-            return iconManager.createRowIcon(getModifiersIcon(baseIcon, element), getVisibility(element))
+            val visibilityIcon = getVisibility(element)
+            return if (visibilityIcon != null)
+                iconManager.createRowIcon(getModifiersIcon(baseIcon, element), visibilityIcon)
+            else
+                getModifiersIcon(baseIcon, element)
         }
         private fun getBaseIcon(element : BaseElement) : Icon? {
             if (element.baseIcon == "default") {

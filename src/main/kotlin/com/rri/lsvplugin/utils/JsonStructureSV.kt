@@ -1,5 +1,6 @@
 package com.rri.lsvplugin.utils
 
+import com.intellij.psi.PsiElement
 import com.squareup.moshi.JsonClass
 
 class JsonStructureSV {
@@ -73,6 +74,10 @@ class JsonStructureSV {
         val token: String,
         val regexp: String?,
     ) {
+
+        fun isNotPartialMatch(langElement: PsiElement) : Boolean {
+            return regexp != null && Regex(regexp).find(langElement.text) == null
+        }
         companion object {
             fun fromJson(map: Map<String, String>) = object {
                 private val defaultMap = map.withDefault { null }

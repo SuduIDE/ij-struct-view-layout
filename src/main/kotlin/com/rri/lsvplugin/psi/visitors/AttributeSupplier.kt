@@ -4,7 +4,7 @@ import com.rri.lsvplugin.languageElements.elements.BaseElement
 
 class AttributeSupplier : IAttributeSupplier {
     override fun addAttribute(curElement: BaseElement, attributeName: String, attributeValue: Any): Boolean {
-        if (curElement.getUniqueAttributes().containsKey(attributeName) && curElement.getUniqueAttributes()[attributeName] == null) {
+        if (containsUniqueElement(curElement, attributeName)) {
             curElement.getUniqueAttributes()[attributeName] = attributeValue
             return true
         } else if (curElement.getSetAttributes().containsKey(attributeName)) {
@@ -15,6 +15,10 @@ class AttributeSupplier : IAttributeSupplier {
             return true
         }
         return false
+    }
+
+    override fun containsUniqueElement(element: BaseElement, attributeName: String): Boolean {
+        return element.getUniqueAttributes().containsKey(attributeName) && element.getUniqueAttributes()[attributeName] == null
     }
 
 }

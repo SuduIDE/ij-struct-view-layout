@@ -50,8 +50,13 @@ class ViewCreator(
                     ++i
                 }
 
+                while (curElement.parent?.parent != null && curElement.parent?.displayLevel == -1) {
+                    curElement.parent = curElement.parent?.parent
+                }
+
                 curElement.parent?.children?.add(curElement)
             }
+
         }
     }
 

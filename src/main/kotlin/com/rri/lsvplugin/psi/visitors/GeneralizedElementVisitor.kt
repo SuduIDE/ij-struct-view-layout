@@ -23,6 +23,9 @@ class GeneralizedElementVisitor : IElementVisitor {
                     attributeSupplier.addAttribute(curElement, it, it)
                 } ?:
                 jsonUtil.getPropertyAttribute(child)?.also {
+                    if (curElement.displayLevel != 0 && it.isNotPartialMatch(child) && attributeSupplier.containsUniqueElement(curElement, it.id))
+                        curElement.displayLevel = -1
+
                     attributeSupplier.addAttribute(curElement, it.id, child.text)
                 } ?:
                 jsonUtil.getElementNames(child)?.also {
