@@ -38,7 +38,7 @@ abstract class StructureViewBaseTest : LightPlatformCodeInsightFixture4TestCase(
             printInfo
         )
 
-        println(stringPresentationTree.trim())
+//        println(stringPresentationTree.trim())
         TestCase.assertEquals(expected.trim(), stringPresentationTree.trim())
     }
 

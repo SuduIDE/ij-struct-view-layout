@@ -12,7 +12,7 @@
             "class_keyword"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": "class",
         "text": [
           "name"
         ],
@@ -29,7 +29,7 @@
             "interface_keyword"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": "interface",
         "text": [
           "name"
         ],
@@ -47,7 +47,7 @@
             "type"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": "method",
         "text": [
           "name",
           "(",
@@ -69,7 +69,7 @@
             "type"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": "fieldCustomIcon",
         "text": [
           "name",
           ": ",
@@ -87,7 +87,7 @@
             "type"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": "",
         "text": [
           "type"
         ],
@@ -101,7 +101,7 @@
           "set" : [],
           "unique" : []
         },
-        "baseIcon" : "default",
+        "baseIcon" : "aClass",
         "text" : [
           "$","$i"
         ],
@@ -116,7 +116,7 @@
             "parameters"
           ]
         },
-        "baseIcon" : "default",
+        "baseIcon" : "lambda",
         "text" : [
           "lambda$",
           "$i"
@@ -147,7 +147,44 @@
         "final": "FINAL_KEYWORD",
         "static": "STATIC_KEYWORD",
         "abstract": "ABSTRACT_KEYWORD"
-      }
+      },
+      "icons" : [
+        {
+          "id" :  "class",
+          "iconType" : "Base",
+          "icon" : "Nodes.Class"
+        },
+        {
+          "id" : "fieldCustomIcon",
+          "iconType" : "Base",
+          "icon" : "Field"
+        },
+        {
+          "id" : "aClass",
+          "iconType" : "Base",
+          "icon" : "AnonymousClass"
+        },
+        {
+          "id" : "lambda",
+          "iconType" : "Base",
+          "icon" : "Lambda"
+        },
+        {
+          "id" : "method",
+          "iconType" : "Base",
+          "icon" : "Method"
+        },
+        {
+          "id" : "private",
+          "iconType" : "Base",
+          "icon" : "Private"
+        },
+        {
+          "id" : "interface",
+          "iconType" : "Base",
+          "icon" : "Interface"
+        }
+      ]
     },
     "filters": {
       "visibility" : {
@@ -159,7 +196,7 @@
         },
         "Fields" : {
           "elementType" : ["field"],
-          "icon" : "field"
+          "icon" : "fieldCustomIcon"
         },
         "Anonymous class" : {
           "elementType" : ["aClass"],
