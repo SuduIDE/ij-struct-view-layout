@@ -83,12 +83,17 @@ class JsonContainerUtil {
 
         @Suppress("UNCHECKED_CAST")
         return (getLangElementsMap(langElement)!![getLanguage(langElement)]!![SvConstants.ATTRIBUTES]!![SvConstants.PROPERTIES]!! as List<JsonStructureSV.PropertyInfo>)
-            .firstOrNull { it.token == langElement.elementType.toString()}
+            .firstOrNull { it.token == langElement.elementType.toString() }
     }
 
     fun getVisibilityFilters(langElement: PsiElement): Map<String, JsonStructureSV.VisibilityFilterInfo>? {
         @Suppress("UNCHECKED_CAST")
         return getLangElementsMap(langElement)?.get(getLanguage(langElement))?.get(SvConstants.FILTERS)
             ?.get(SvConstants.VISIBILITY_FILTERS) as? Map<String, JsonStructureSV.VisibilityFilterInfo>
+    }
+
+    fun getIconInfo(langElement: PsiElement, baseIconName: String?): JsonStructureSV.IconInfo? {
+        return (getLangElementsMap(langElement)?.get(getLanguage(langElement))?.get(SvConstants.ATTRIBUTES)
+            ?.get(SvConstants.ICONS) as List<JsonStructureSV.IconInfo>).firstOrNull { it.id == baseIconName }
     }
 }

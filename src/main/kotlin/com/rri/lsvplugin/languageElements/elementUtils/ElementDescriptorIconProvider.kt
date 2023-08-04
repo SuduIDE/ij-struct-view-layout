@@ -1,8 +1,10 @@
 package com.rri.lsvplugin.languageElements.elementUtils
 
+import com.intellij.openapi.util.IconLoader
 import com.intellij.ui.IconManager
 import com.intellij.ui.PlatformIcons
 import com.rri.lsvplugin.languageElements.elements.*
+import java.nio.file.Path
 import javax.swing.Icon
 
 class ElementDescriptorIconProvider {
@@ -18,32 +20,13 @@ class ElementDescriptorIconProvider {
                 getModifiersIcon(baseIcon, element)
         }
         private fun getBaseIcon(element : BaseElement) : Icon? {
-            if (element.baseIcon == "default") {
-                return when(element.elementType) {
-                    "class" -> {
-                        if (getModifiers(element)?.contains("abstract") == true)
-                            DefaultIconContainer.getIcon("abstractClass")
-                        else
-                            DefaultIconContainer.getIcon("class")
-                    }
-                    "interface" -> iconManager.getPlatformIcon(PlatformIcons.Interface)
-                    "method" -> {
-                        if (getModifiers(element)?.contains("abstract") == true)
-                            DefaultIconContainer.getIcon("abstractMethod")
-                        else
-                            DefaultIconContainer.getIcon("method")
-                    }
-                    null -> null
-                    else -> DefaultIconContainer.getIcon(element.elementType!!)
-                }
-            } else {
-                return iconManager.getIcon(element.baseIcon!!, BaseElement::class.java)
-            }
+            return element.baseIcon?.loadedIcon
         }
         private fun getModifiers(element: BaseElement) : List<String>? {
             if (!element.getUniqueAttributes().containsKey("modifiers"))
                 return null
 
+            @Suppress("UNCHECKED_CAST")
             return (element.getUniqueAttributes()["modifiers"] as List<String>)
         }
         private fun getVisibility(element: BaseElement): Icon? {

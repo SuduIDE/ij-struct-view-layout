@@ -5,6 +5,7 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
 import com.jetbrains.rd.framework.base.deepClonePolymorphic
 import com.rri.lsvplugin.languageElements.elementUtils.ElementDescriptorIconProvider
+import com.rri.lsvplugin.utils.JsonStructureSV
 import javax.swing.Icon
 
 open class BaseElement(val langElement: PsiElement) {
@@ -92,7 +93,7 @@ open class BaseElement(val langElement: PsiElement) {
     var displayLevel: Int = 0
     var elementType: String? = null
     var structure = ElementStructure()
-    var baseIcon: String? = "default"
+    var baseIcon: JsonStructureSV.IconInfo? = null
     var presentableText = PresentableViewText()
     var children: MutableList<BaseElement> = mutableListOf()
     var parent: BaseElement? = null

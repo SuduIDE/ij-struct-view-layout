@@ -27,7 +27,7 @@ class ViewCreator(
         val visibilityFilters = jsonUtil.getVisibilityFilters(langElement) ?: return filtersList
 
         for ((key, value) in visibilityFilters.entries) {
-            filtersList.add(VisibilityFilter(key, value))
+            filtersList.add(VisibilityFilter(key, value, jsonUtil.getIconInfo(langElement, value.icon)))
         }
 
         return filtersList

@@ -41,7 +41,7 @@
       }
     },
     "attribute": {
-      "property": [
+      "properties": [
         {
           "id": "name",
           "token": "XML_NAME"

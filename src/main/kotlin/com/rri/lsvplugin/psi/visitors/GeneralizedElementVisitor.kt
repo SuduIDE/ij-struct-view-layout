@@ -30,10 +30,12 @@ class GeneralizedElementVisitor : IElementVisitor {
                 } ?:
                 jsonUtil.getElementNames(child)?.also {
                     for (elementName in it) {
+                        val elementStructure = jsonUtil.getElementByName(child, elementName)
                         val newBaseElement = elementCreator.createElement(
                             child,
                             elementName,
-                            jsonUtil.getElementByName(child, elementName),
+                            elementStructure,
+                            jsonUtil.getIconInfo(child, elementStructure.baseIcon),
                             curElement
                         )
 
@@ -55,10 +57,12 @@ class GeneralizedElementVisitor : IElementVisitor {
         for (child in langElement.children) {
             jsonUtil.getElementNames(child)?.also {
                 for (elementName in it) {
+                    val elementStructure = jsonUtil.getElementByName(child, elementName)
                     val newBaseElement = elementCreator.createElement(
                         child,
                         elementName,
-                        jsonUtil.getElementByName(child, elementName),
+                        elementStructure,
+                        jsonUtil.getIconInfo(child, elementStructure.baseIcon),
                         curElement
                     )
                    visitElement(newBaseElement, elementCreator, jsonUtil)

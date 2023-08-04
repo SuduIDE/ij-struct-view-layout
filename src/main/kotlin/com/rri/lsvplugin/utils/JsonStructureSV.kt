@@ -2,6 +2,7 @@ package com.rri.lsvplugin.utils
 
 import com.intellij.psi.PsiElement
 import com.squareup.moshi.JsonClass
+import javax.swing.Icon
 
 class JsonStructureSV {
     @JsonClass(generateAdapter = true)
@@ -87,6 +88,28 @@ class JsonStructureSV {
 
                 val property = PropertyInfo(id, token, regexp)
             }.property
+        }
+    }
+
+    data class IconInfo (
+        val id: String,
+        val iconType : SvConstants.IconType?,
+        val icon: String,
+        var loadedIcon : Icon? = null
+    ) {
+        companion object {
+            fun fromJson(map : Map<String, String>) = object {
+                private val id by map
+                private val iconType by map
+                private val icon by map
+
+                val iconInfo = IconInfo(id, SvConstants.IconType.values().firstOrNull { it.name == iconType }, icon)
+            }.iconInfo
+
+        }
+
+        fun loadIcon() {
+            loadedIcon = IconLoader.getIcon(icon)
         }
     }
 

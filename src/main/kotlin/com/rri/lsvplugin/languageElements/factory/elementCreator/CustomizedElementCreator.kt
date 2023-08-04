@@ -5,7 +5,13 @@ import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.utils.JsonStructureSV
 
 class CustomizedElementCreator : IElementCreator {
-    override fun createElement(langElement: PsiElement, typeElement: String, elementStructure: JsonStructureSV.ElementInfo, parent : BaseElement) : BaseElement {
+    override fun createElement(
+        langElement: PsiElement,
+        typeElement: String,
+        elementStructure: JsonStructureSV.ElementInfo,
+        iconInfo: JsonStructureSV.IconInfo?,
+        parent: BaseElement
+    ): BaseElement {
         val element = BaseElement(langElement)
         element.displayLevel = elementStructure.displayLevel
         element.elementType = typeElement
@@ -24,7 +30,7 @@ class CustomizedElementCreator : IElementCreator {
         }
 
         element.structure = BaseElement.ElementStructure(setAttributes, uniqueAttributes)
-        element.baseIcon = elementStructure.baseIcon
+        element.baseIcon = iconInfo
         element.presentableText = element.PresentableViewText(elementStructure.text, elementStructure.description)
         element.parent = parent
 

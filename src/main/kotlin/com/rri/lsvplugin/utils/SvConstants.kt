@@ -6,8 +6,13 @@ class SvConstants {
         const val FILTERS = "filters"
         const val ATTRIBUTES = "attribute"
         const val VISIBILITY_FILTERS = "visibility"
-        const val PROPERTIES = "property"
-        const val LISTS = "list"
-        const val KEYWORDS = "keyword"
+        const val PROPERTIES = "properties"
+        const val LISTS = "lists"
+        const val KEYWORDS = "keywords"
+        const val ICONS = "icons"
+    }
+
+    enum class IconType {
+        Base, Mark, Offset
     }
 }

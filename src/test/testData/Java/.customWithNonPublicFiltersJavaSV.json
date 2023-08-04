@@ -127,11 +127,11 @@
       }
     },
     "attribute": {
-      "list": {
+      "lists": {
         "modifiers": "MODIFIER_LIST",
         "parameters": "PARAMETER_LIST"
       },
-      "property": [
+      "properties": [
         {
           "id": "name",
           "token": "IDENTIFIER"
@@ -141,7 +141,7 @@
           "token": "TYPE"
         }
       ],
-      "keyword": {
+      "keywords": {
         "class_keyword": "CLASS_KEYWORD",
         "interface_keyword": "INTERFACE_KEYWORD",
         "private": "PRIVATE_KEYWORD",
