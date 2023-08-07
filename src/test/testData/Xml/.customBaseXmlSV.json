@@ -13,7 +13,9 @@
             "text"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": {
+          "iconId": "tag"
+        },
         "text": [
           "name"
         ],
@@ -31,7 +33,9 @@
             "attribute_value"
           ]
         },
-        "baseIcon": "",
+        "baseIcon": {
+          "iconId" : ""
+        },
         "text": [
           "name",
           "=",
@@ -54,7 +58,12 @@
           "id": "attribute_value",
           "token": "XML_ATTRIBUTE_VALUE"
         }
-      ]
+      ],
+      "icons" : {
+        "id" : "tag",
+        "icon" : "Tag",
+        "iconType" : "Base"
+      }
     },
     "filters": {
       "visibility": {

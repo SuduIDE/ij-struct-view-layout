@@ -70,6 +70,13 @@ class JsonInfo {
                 properties.add(JsonStructureSV.PropertyInfo.fromJson(property as Map<String, String>))
             }
 
+            val keywords = mutableListOf<JsonStructureSV.KeywordInfo>()
+            (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) as? List<*>)?.forEach {
+                    keyword ->
+                @Suppress("UNCHECKED_CAST")
+                keywords.add(JsonStructureSV.KeywordInfo.fromJson(keyword as Map<String, String>))
+            }
+
             val icons = mutableListOf<JsonStructureSV.IconInfo>()
             (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.ICONS) as? List<*>)?.forEach {
                     icon ->
@@ -80,7 +87,7 @@ class JsonInfo {
             languageStructure[SvConstants.ATTRIBUTES] = mutableMapOf(
                 SvConstants.LISTS to (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.LISTS) ?: mutableMapOf<String, String>()),
                 SvConstants.PROPERTIES to properties,
-                SvConstants.KEYWORDS to (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) ?: mutableMapOf<String, String>()),
+                SvConstants.KEYWORDS to keywords,
                 SvConstants.ICONS to icons
             )
 
@@ -92,7 +99,18 @@ class JsonInfo {
                     JsonStructureSV.VisibilityFilterInfo.fromJson(visibilityFilter.value)
             }
 
-            languageStructure[SvConstants.FILTERS] = mutableMapOf(SvConstants.VISIBILITY_FILTERS to visibilityFilters)
+            @Suppress("UNCHECKED_CAST")
+            val sortingFilterMap = (languageStructure[SvConstants.FILTERS]?.get(SvConstants.SORTING_FILTERS) as? Map<String, Map<String, Any>>)
+            val sortingFilters = mutableMapOf<String, JsonStructureSV.SortingFilterInfo>()
+            sortingFilterMap?.entries?.forEach { sortingFilter ->
+                sortingFilters[sortingFilter.key] =
+                    JsonStructureSV.SortingFilterInfo.fromJson(sortingFilter.value)
+            }
+
+            languageStructure[SvConstants.FILTERS] = mutableMapOf(
+                SvConstants.VISIBILITY_FILTERS to visibilityFilters,
+                SvConstants.SORTING_FILTERS to sortingFilters
+            )
         }
         return tmpUpdatedJsonSV
     }

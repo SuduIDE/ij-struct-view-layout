@@ -7,6 +7,7 @@ import com.intellij.ui.PlatformIcons
 import com.intellij.util.alsoIfNull
 import java.nio.file.Path
 import javax.swing.Icon
+import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.declaredMembers
 import kotlin.reflect.full.staticProperties
@@ -24,13 +25,19 @@ class IconLoader {
 
         private fun fillIconMap() : Map<String, Icon> {
             val iconMap = mutableMapOf<String, Icon>()
-            for (group in AllIcons::class.nestedClasses) {
-                for (icon in group.staticProperties) {
-                    iconMap[group.simpleName + "." + icon.name] = icon.get() as Icon
-                }
+            findAllIcons(AllIcons::class, iconMap)
+            return iconMap
+        }
+
+
+        private fun findAllIcons(currentGroup: KClass<*>, iconMap : MutableMap<String, Icon>) {
+            for (icon in currentGroup.staticProperties) {
+                iconMap[icon.name] = icon.get() as Icon
             }
 
-            return iconMap
+            for (childGroup in currentGroup.nestedClasses) {
+                findAllIcons(childGroup, iconMap)
+            }
         }
 
     }

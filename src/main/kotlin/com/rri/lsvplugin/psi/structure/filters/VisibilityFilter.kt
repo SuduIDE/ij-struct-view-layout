@@ -4,7 +4,6 @@ import com.intellij.ide.util.treeView.smartTree.ActionPresentation
 import com.intellij.ide.util.treeView.smartTree.ActionPresentationData
 import com.intellij.ide.util.treeView.smartTree.Filter
 import com.intellij.ide.util.treeView.smartTree.TreeElement
-import com.rri.lsvplugin.languageElements.elementUtils.DefaultIconContainer
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewElement
 import com.rri.lsvplugin.utils.JsonStructureSV
@@ -78,8 +77,8 @@ class VisibilityFilter(
 
     private fun includeUniqueAttribute(element: BaseElement, attributeValue: List<String>): Boolean {
         return if (element.getUniqueAttributes()[filterInfo.attributeKey] is List<*>)
-            attributeValue.any {
-                (element.getUniqueAttributes()[filterInfo.attributeKey] as List<*>).contains(it.toString())
+            (element.getUniqueAttributes()[filterInfo.attributeKey] as List<*>).any {
+                attributeValue.contains(it.toString())
             }
         else
             attributeValue.contains(element.getUniqueAttributes()[filterInfo.attributeKey])
@@ -87,8 +86,8 @@ class VisibilityFilter(
 
 
     private fun includeSetAttribute(element: BaseElement, attributeValue: List<String>): Boolean {
-        return attributeValue.any {
-            element.getSetAttributes()[filterInfo.attributeKey]!!.contains(it.toString())
+        return element.getSetAttributes()[filterInfo.attributeKey]!!.any {
+           attributeValue.contains(it.toString())
         }
     }
 

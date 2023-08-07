@@ -19,9 +19,6 @@ class CustomizedStructureViewModel(
     private val creator: ViewCreator = ViewCreator(GeneralizedElementVisitor(), CustomizedElementCreator())
 ) : StructureViewModelBase(psiFile, editor, CustomizedStructureViewElement(BaseElement(psiFile), creator)),
     StructureViewModel.ElementInfoProvider {
-    init {
-        withSorters(Sorter.ALPHA_SORTER)
-    }
     override fun isAlwaysShowsPlus(element: StructureViewTreeElement?): Boolean {
         return (element!!.value as BaseElement).children.isNotEmpty()
     }
@@ -32,7 +29,15 @@ class CustomizedStructureViewModel(
     }
 
     override fun getFilters(): Array<out Filter> {
-        val filterList = creator.createFilters(psiFile)
+        val filterList = creator.createVisibilityFilters(psiFile)
+        return Array(filterList.size) {
+            filterList[it]
+        }
+    }
+
+    override fun getSorters(): Array<Sorter> {
+        val filterList = creator.createSortingFilters(psiFile)
+        filterList.add(Sorter.ALPHA_SORTER)
         return Array(filterList.size) {
             filterList[it]
         }

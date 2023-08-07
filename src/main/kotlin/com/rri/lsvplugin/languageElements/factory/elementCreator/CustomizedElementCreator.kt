@@ -2,19 +2,48 @@ package com.rri.lsvplugin.languageElements.factory.elementCreator
 
 import com.intellij.psi.PsiElement
 import com.rri.lsvplugin.languageElements.elements.BaseElement
+import com.rri.lsvplugin.utils.JsonContainerUtil
 import com.rri.lsvplugin.utils.JsonStructureSV
 
 class CustomizedElementCreator : IElementCreator {
     override fun createElement(
         langElement: PsiElement,
         typeElement: String,
-        elementStructure: JsonStructureSV.ElementInfo,
-        iconInfo: JsonStructureSV.IconInfo?,
-        parent: BaseElement
+        parent: BaseElement,
+        jsonUtil: JsonContainerUtil
     ): BaseElement {
+        val elementStructure = jsonUtil.getElementByName(langElement, typeElement)
+
         val element = BaseElement(langElement)
         element.displayLevel = elementStructure.displayLevel
         element.elementType = typeElement
+        setElementStructure(element, elementStructure)
+        setIconStructure(element, elementStructure.baseIcon, jsonUtil)
+        element.presentableText = element.PresentableViewText(elementStructure.text, elementStructure.description)
+        element.parent = parent
+
+        return element
+    }
+
+
+    private fun setIconStructure(
+        element: BaseElement,
+        iconProperties: JsonStructureSV.IconProperties,
+        jsonUtil: JsonContainerUtil
+    ) {
+        val baseIconId = jsonUtil.getIconInfo(element.langElement, iconProperties.iconId)
+        element.baseIcon = BaseElement.IconStructure(
+            baseIconId,
+            iconProperties.attributeKey,
+            iconProperties.attributeValue,
+            jsonUtil.getIconInfo(element.langElement, iconProperties.alternativeIconId)
+        )
+    }
+
+    private fun setElementStructure(
+        element: BaseElement,
+        elementStructure: JsonStructureSV.ElementInfo
+    ) {
         val setAttributes = mutableMapOf<String, MutableList<*>?>()
         if (elementStructure.attributes.containsKey("set")) {
             for (attr in elementStructure.attributes["set"]!!) {
@@ -30,11 +59,6 @@ class CustomizedElementCreator : IElementCreator {
         }
 
         element.structure = BaseElement.ElementStructure(setAttributes, uniqueAttributes)
-        element.baseIcon = iconInfo
-        element.presentableText = element.PresentableViewText(elementStructure.text, elementStructure.description)
-        element.parent = parent
-
-        return element
     }
 
 }

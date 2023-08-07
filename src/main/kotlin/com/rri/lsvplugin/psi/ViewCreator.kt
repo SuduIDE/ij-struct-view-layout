@@ -1,9 +1,11 @@
 package com.rri.lsvplugin.psi
 
 import com.intellij.ide.util.treeView.smartTree.Filter
+import com.intellij.ide.util.treeView.smartTree.Sorter
 import com.intellij.psi.PsiElement
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.languageElements.factory.elementCreator.IElementCreator
+import com.rri.lsvplugin.psi.structure.filters.SortingFilter
 import com.rri.lsvplugin.psi.structure.filters.VisibilityFilter
 import com.rri.lsvplugin.psi.visitors.IElementVisitor
 import com.rri.lsvplugin.utils.JsonContainerUtil
@@ -21,13 +23,25 @@ class ViewCreator(
         visitor.visitElement(element, elementCreator, jsonUtil)
     }
 
-    fun createFilters(langElement: PsiElement) : List<Filter> {
+    fun createVisibilityFilters(langElement: PsiElement) : List<Filter> {
         val filtersList = mutableListOf<Filter>()
 
         val visibilityFilters = jsonUtil.getVisibilityFilters(langElement) ?: return filtersList
 
         for ((key, value) in visibilityFilters.entries) {
             filtersList.add(VisibilityFilter(key, value, jsonUtil.getIconInfo(langElement, value.icon)))
+        }
+
+        return filtersList
+    }
+
+    fun createSortingFilters(langElement: PsiElement) : MutableList<Sorter> {
+        val filtersList = mutableListOf<Sorter>()
+
+        val sortingFilters = jsonUtil.getSortingFilters(langElement) ?: return filtersList
+
+        for ((key, value) in sortingFilters.entries) {
+            filtersList.add(SortingFilter(key, value, jsonUtil.getIconInfo(langElement, value.icon)))
         }
 
         return filtersList

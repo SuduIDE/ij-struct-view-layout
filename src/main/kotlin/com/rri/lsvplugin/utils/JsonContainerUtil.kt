@@ -33,9 +33,9 @@ class JsonContainerUtil {
     private fun isKeywordAttribute(langElement: PsiElement): Boolean {
         val attributeList = getLangElementsMap(langElement)?.get(getLanguage(langElement)) ?: return false
 
-        return (attributeList[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) as? MutableMap<*, *>)?.containsValue(
-            langElement.elementType.toString()
-        ) ?: false
+        return (attributeList[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) as? List<JsonStructureSV.KeywordInfo>)?.any {
+            it.token == langElement.elementType.toString()
+        } ?: false
     }
 
     private fun isPropertyAttribute(langElement: PsiElement): Boolean {
@@ -68,13 +68,13 @@ class JsonContainerUtil {
             .filterValues { it == langElement.elementType.toString() }.keys.elementAt(0)
     }
 
-    fun getKeywordAttribute(langElement: PsiElement): String? {
+    fun getKeywordAttribute(langElement: PsiElement): JsonStructureSV.KeywordInfo? {
         if (!isKeywordAttribute(langElement))
             return null
 
         @Suppress("UNCHECKED_CAST")
-        return (getLangElementsMap(langElement)!![getLanguage(langElement)]!![SvConstants.ATTRIBUTES]!![SvConstants.KEYWORDS]!! as MutableMap<String, *>)
-            .filterValues { it == langElement.elementType.toString() }.keys.elementAt(0)
+        return (getLangElementsMap(langElement)!![getLanguage(langElement)]!![SvConstants.ATTRIBUTES]!![SvConstants.KEYWORDS]!! as List<JsonStructureSV.KeywordInfo>)
+            .firstOrNull { it.token == langElement.elementType.toString() }
     }
 
     fun getPropertyAttribute(langElement: PsiElement): JsonStructureSV.PropertyInfo? {
@@ -90,6 +90,12 @@ class JsonContainerUtil {
         @Suppress("UNCHECKED_CAST")
         return getLangElementsMap(langElement)?.get(getLanguage(langElement))?.get(SvConstants.FILTERS)
             ?.get(SvConstants.VISIBILITY_FILTERS) as? Map<String, JsonStructureSV.VisibilityFilterInfo>
+    }
+
+    fun getSortingFilters(langElement: PsiElement) : Map<String, JsonStructureSV.SortingFilterInfo>? {
+        @Suppress("UNCHECKED_CAST")
+        return getLangElementsMap(langElement)?.get(getLanguage(langElement))?.get(SvConstants.FILTERS)
+            ?.get(SvConstants.SORTING_FILTERS) as? Map<String, JsonStructureSV.SortingFilterInfo>
     }
 
     fun getIconInfo(langElement: PsiElement, baseIconName: String?): JsonStructureSV.IconInfo? {

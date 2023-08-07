@@ -15,6 +15,21 @@ open class BaseElement(val langElement: PsiElement) {
         val uniqueAttributes: MutableMap<String, Any?> = mutableMapOf()
     )
 
+    data class IconStructure(
+        val defaultIcon: JsonStructureSV.IconInfo?,
+        val attributeKey: String?,
+        val attributeValue: List<String>?,
+        val alternativeIcon: JsonStructureSV.IconInfo?
+    )
+
+    data class KeywordStructure(
+        val id : String,
+        val sortValue: Int?,
+        val icon: JsonStructureSV.IconInfo?
+    ) {
+        override fun toString(): String = id
+    }
+
     inner class PresentableViewText(
         private var presentableTextList: List<String> = listOf(),
         private var presentableDescriptionList: List<String> = listOf()
@@ -45,7 +60,7 @@ open class BaseElement(val langElement: PsiElement) {
                 } else if (getUniqueAttributes()[attr] is List<*>) {
                     val uniqueAttributeList = getUniqueAttributes()[attr] as List<*>
                     presentableText.append(addPresentableListText(uniqueAttributeList))
-                } else if (getSetAttributes().containsKey(attr) ) {
+                } else if (getSetAttributes().containsKey(attr)) {
                     if (getSetAttributes()[attr] != null) {
                         val setAttributeList = getSetAttributes()[attr] as List<*>
                         presentableText.append(addPresentableListText(setAttributeList))
@@ -69,14 +84,11 @@ open class BaseElement(val langElement: PsiElement) {
             if (description == null)
                 return false
 
-            if (description is BaseElement) {
-                presentableText.append(description.presentableText.getText())
-            } else presentableText.append(description)
-
+            presentableText.append(description.toString())
             return true
         }
 
-        private fun addPresentableListText(attributeList: List<*>) : String {
+        private fun addPresentableListText(attributeList: List<*>): String {
             val presentableListText = StringBuilder()
             for (elAttr in attributeList) {
                 presentableListText.append(' ')
@@ -93,7 +105,7 @@ open class BaseElement(val langElement: PsiElement) {
     var displayLevel: Int = 0
     var elementType: String? = null
     var structure = ElementStructure()
-    var baseIcon: JsonStructureSV.IconInfo? = null
+    var baseIcon: IconStructure? = null
     var presentableText = PresentableViewText()
     var children: MutableList<BaseElement> = mutableListOf()
     var parent: BaseElement? = null

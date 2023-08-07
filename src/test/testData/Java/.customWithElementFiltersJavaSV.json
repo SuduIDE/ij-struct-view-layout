@@ -12,7 +12,12 @@
             "class_keyword"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": {
+          "iconId": "class",
+          "attributeKey": "modifiers",
+          "attributeValue" : ["abstract"],
+          "alternativeIconId" : "abstractClassIcon"
+        },
         "text": [
           "name"
         ],
@@ -29,7 +34,9 @@
             "interface_keyword"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": {
+          "iconId": "interfaceIcon"
+        },
         "text": [
           "name"
         ],
@@ -47,7 +54,9 @@
             "type"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": {
+          "iconId": "methodIcon"
+        },
         "text": [
           "name",
           "(",
@@ -69,7 +78,9 @@
             "type"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": {
+          "iconId": "field"
+        },
         "text": [
           "name",
           ": ",
@@ -87,7 +98,9 @@
             "type"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": {
+          "iconId" : ""
+        },
         "text": [
           "type"
         ],
@@ -100,7 +113,9 @@
           "set": [],
           "unique": []
         },
-        "baseIcon": "default",
+        "baseIcon": {
+          "iconId" : "aClass"
+        },
         "text": [
           "$",
           "$i"
@@ -116,7 +131,9 @@
             "parameters"
           ]
         },
-        "baseIcon": "default",
+        "baseIcon": {
+          "iconId" : "lambda"
+        },
         "text": [
           "lambda$",
           "$i"
@@ -141,16 +158,105 @@
           "token": "TYPE"
         }
       ],
-      "keywords": {
-        "class_keyword": "CLASS_KEYWORD",
-        "interface_keyword": "INTERFACE_KEYWORD",
-        "private": "PRIVATE_KEYWORD",
-        "public": "PUBLIC_KEYWORD",
-        "final": "FINAL_KEYWORD",
-        "static": "STATIC_KEYWORD",
-        "abstract": "ABSTRACT_KEYWORD"
-      }
-    },
+      "keywords": [
+        {
+          "id" : "class_keyword",
+          "token" : "CLASS_KEYWORD"
+        },
+        {
+          "id" : "interface_keyword",
+          "token" : "INTERFACE_KEYWORD"
+        },
+        {
+          "id" : "private",
+          "token" : "PRIVATE_KEYWORD",
+          "iconId" : "private",
+          "sortValue" : 1
+        },
+        {
+          "id" : "public",
+          "token" : "PUBLIC_KEYWORD",
+          "iconId" : "public",
+          "sortValue" : 2
+        },
+        {
+          "id" : "final",
+          "token" : "FINAL_KEYWORD",
+          "iconId" : "final"
+        },
+        {
+          "id" : "static",
+          "token" : "STATIC_KEYWORD",
+          "iconId" : "static"
+        },
+        {
+          "id" : "abstract",
+          "token" : "ABSTRACT_KEYWORD"
+        }
+      ],
+      "icons": [
+        {
+          "id": "class",
+          "iconType": "Base",
+          "icon": "Class"
+        },
+        {
+          "id" : "abstractClassIcon",
+          "iconType" : "Base",
+          "icon" : "AbstractClass"
+        },
+        {
+          "id" : "interfaceIcon",
+          "iconType" : "Base",
+          "icon" : "Interface"
+        },
+        {
+          "id": "field",
+          "iconType": "Base",
+          "icon": "Field"
+        },
+        {
+          "id": "aClass",
+          "iconType": "Base",
+          "icon": "AnonymousClass"
+        },
+        {
+          "id": "lambda",
+          "iconType": "Base",
+          "icon": "Lambda"
+        },
+        {
+          "id": "methodIcon",
+          "icon": "Method",
+          "iconType": "Base"
+        },
+        {
+          "id": "private",
+          "icon": "Private",
+          "iconType": "Offset"
+        },
+        {
+          "id": "public",
+          "icon": "Public",
+          "iconType": "Offset"
+        },
+        {
+          "id": "static",
+          "icon": "StaticMark",
+          "iconType": "Mark"
+        },
+        {
+          "id": "final",
+          "icon": "FinalMark",
+          "iconType": "Mark"
+        },
+        {
+          "id" : "visibilitySort",
+          "icon" : "VisibilitySort",
+          "iconType" : "Base"
+        }
+      ]
+    }   ,
     "filters": {
       "visibility": {
         "Fields": {
