@@ -110,7 +110,7 @@ For example, in Java this could be MODIFIER_LIST, which lists the modifier keywo
 You can specify __sorts__ and __filters__ to reorder or filter elements.
 
 Filters allow you to display only those elements that meet the specified conditions. Filters can have the following structure: \
-* __"FilterName"__ - имя фильтра, задаваемое пользователем, также оно отображается в structure view:
+* __"FilterName"__ - filter name given by the user, it is also displayed in the structure view:
   * __"elementType"__ - list of element types for which the filter will be applied.
   * __"notElementType"__ - list of element types for which the filter will not be applied.
   * __"attributeKey"__ - elements with this attribute will be filtered.
