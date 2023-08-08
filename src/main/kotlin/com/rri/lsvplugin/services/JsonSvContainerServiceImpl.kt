@@ -3,7 +3,8 @@ package com.rri.lsvplugin.services
 import com.intellij.lang.Language
 import com.intellij.lang.LanguageStructureViewBuilder
 import com.intellij.openapi.components.Service
-import com.intellij.openapi.project.ProjectManager
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.roots.ProjectRootManager
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory
 import com.rri.lsvplugin.utils.JsonInfo
 import com.rri.lsvplugin.utils.LanguageUtil
@@ -14,7 +15,7 @@ import java.nio.file.Path
 import kotlin.io.path.exists
 
 @Service(Service.Level.PROJECT)
-class JsonSvContainerServiceImpl : JsonSvContainerService {
+class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainerService {
     private val jsonSV = JsonInfo()
     private val structureViewFactoryMap = mutableMapOf<String, CustomizedStructureViewFactory>()
     override fun setJsonSV(mapSV: MapTypeSV?) {
@@ -33,7 +34,7 @@ class JsonSvContainerServiceImpl : JsonSvContainerService {
     override fun getFilename(): File = jsonSV.filenameJsonSV
 
     fun getFullPathToCustomSV(): File? {
-        return ProjectManager.getInstance().openProjects[0].basePath?.let { File(it).resolve(jsonSV.filenameJsonSV) }
+        return project.basePath?.let { File(it).resolve(jsonSV.filenameJsonSV) }
     }
 
     fun isCustomSvExist(): Boolean {
@@ -71,16 +72,18 @@ class JsonSvContainerServiceImpl : JsonSvContainerService {
     private fun addStructureViewForLang() {
         for (lang in jsonSV.getMapSV()?.keys!!) {
             val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
-            if (Language.findLanguageByID(langId) != null)
+            if (Language.findLanguageByID(langId) != null) {
                 structureViewFactoryMap[lang] = CustomizedStructureViewFactory()
                 LanguageStructureViewBuilder.INSTANCE.addExplicitExtension(
                     Language.findLanguageByID(langId)!!,
                     structureViewFactoryMap[lang]!!
                 )
+            }
         }
     }
 
     private fun removeStructureViewForLang() {
+        ProjectRootManager.getInstance(project).contentRoots.forEach { it.refresh(true, true) }
         if (jsonSV.getMapSV() == null)
             return
         for (lang in jsonSV.getMapSV()?.keys!!) {

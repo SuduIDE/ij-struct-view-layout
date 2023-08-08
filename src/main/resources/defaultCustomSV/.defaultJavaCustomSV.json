@@ -268,31 +268,31 @@
           "notAttributeValue": [
             "public"
           ],
-          "icon": "private"
+          "iconId": "private"
         },
         "Fields": {
           "elementType": [
             "field"
           ],
-          "icon": "field"
+          "iconId": "field"
         },
         "Anonymous class": {
           "elementType": [
             "aClass"
           ],
-          "icon": "aClass"
+          "iconId": "aClass"
         },
         "Lambdas": {
           "elementType": [
             "lambda"
           ],
-          "icon": "lambda"
+          "iconId": "lambda"
         }
       },
-      "sorting" : {
+      "sorts" : {
         "visibility" : {
           "sortBy" : ["public", "private"],
-          "icon" : "visibilitySort"
+          "iconId" : "visibilitySort"
         }
       }
     }

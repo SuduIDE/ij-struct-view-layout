@@ -1,6 +1,7 @@
 package com.rri.lsvplugin.listeners
 
 import com.intellij.openapi.components.service
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.newvfs.BulkFileListener
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
@@ -12,9 +13,8 @@ class ListenerJsonSV(private val project: Project) : BulkFileListener {
         val containerSV = project.service<JsonSvContainerServiceImpl>()
         for (e in events) {
             if (e.file?.name == containerSV.getFilename().toString()) {
-              containerSV.loadCurrentVersion()
+                containerSV.loadCurrentVersion()
             }
-
         }
         super.after(events)
     }
