@@ -6,7 +6,7 @@ class SvConstants {
         const val FILTERS = "filters"
         const val ATTRIBUTES = "attribute"
         const val VISIBILITY_FILTERS = "visibility"
-        const val SORTING_FILTERS = "sorting"
+        const val SORTING_FILTERS = "sorts"
         const val PROPERTIES = "properties"
         const val LISTS = "lists"
         const val KEYWORDS = "keywords"

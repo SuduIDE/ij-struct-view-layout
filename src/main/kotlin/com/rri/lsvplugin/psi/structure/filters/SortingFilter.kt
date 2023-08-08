@@ -1,9 +1,7 @@
 package com.rri.lsvplugin.psi.structure.filters
 
-import com.intellij.ide.structureView.impl.java.VisibilitySorter
 import com.intellij.ide.util.treeView.smartTree.ActionPresentation
 import com.intellij.ide.util.treeView.smartTree.ActionPresentationData
-import java.util.Comparator
 import com.intellij.ide.util.treeView.smartTree.Sorter
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewElement
@@ -24,7 +22,7 @@ class SortingFilter(private val filterName : String,
     override fun getComparator() = Comparator<Any> { a1, a2 -> a1.accessLevel() - a2.accessLevel() }
 
     private fun Any.accessLevel() : Int {
-        val element = (this as? CustomizedStructureViewElement)?.value ?: return 0
+        val element = (this as? CustomizedStructureViewElement)?.value ?: return filterInfo.defaultValue ?: return 0
         val sortByList = filterInfo.sortBy
         for (attribute in element.getUniqueAttributes().values) {
 
@@ -39,7 +37,7 @@ class SortingFilter(private val filterName : String,
             }
         }
 
-        return 0
+        return filterInfo.defaultValue ?: return 0
     }
 
     override fun isVisible(): Boolean = true

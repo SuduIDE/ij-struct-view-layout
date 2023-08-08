@@ -1,7 +1,7 @@
 package com.rri.lsvplugin.services
 
-import java.io.File
 import com.rri.lsvplugin.utils.MapTypeSV
+import java.io.File
 
 interface JsonSvContainerService {
 

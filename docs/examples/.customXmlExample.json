@@ -1,0 +1,83 @@
+{
+  "XML": {
+    "element": {
+      "tag": {
+        "displayLevel": 1,
+        "baseToken": "XML_TAG",
+        "attributes": {
+          "set": [
+            "Attribute"
+          ],
+          "unique": [
+            "name",
+            "text"
+          ]
+        },
+        "baseIcon": {
+          "iconId" : "tagIcon"
+        },
+        "text": [
+          "name"
+        ],
+        "description": [
+          "Attribute"
+        ]
+      },
+      "Attribute": {
+        "displayLevel": 0,
+        "baseToken": "XML_ATTRIBUTE",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "name",
+            "attribute_value"
+          ]
+        },
+        "baseIcon": {
+          "iconId" : ""
+        },
+        "text": [
+          "name",
+          "=",
+          "attribute_value"
+        ],
+        "description": []
+      }
+    },
+    "attribute": {
+      "properties": [
+        {
+          "id": "name",
+          "token": "XML_NAME",
+          "regexp": "(act)\\w*"
+        },
+        {
+          "id": "text",
+          "token": "XML_TEXT"
+        },
+        {
+          "id": "attribute_value",
+          "token": "XML_ATTRIBUTE_VALUE"
+        }
+      ],
+      "icons" : [
+        {
+          "id" :  "tagIcon",
+          "iconType" : "Base",
+          "icon" : "Tag"
+        }
+      ]
+    },
+    "filters": {
+      "visibility": {
+        "Actions": {
+          "attributeKey": "name",
+          "attributeValue": [
+            "action"
+          ],
+          "iconId": "tagIcon"
+        }
+      }
+    }
+  }
+}

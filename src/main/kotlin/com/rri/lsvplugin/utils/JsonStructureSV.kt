@@ -127,7 +127,7 @@ class JsonStructureSV {
         val attributeKey: String?,
         val attributeValue: List<String>?,
         val notAttributeValue: List<String>?,
-        val icon: String?
+        val iconId: String?
     ) {
         companion object {
             @Suppress("UNCHECKED_CAST")
@@ -138,7 +138,7 @@ class JsonStructureSV {
                 private val attributeKey by defaultMap
                 private val attributeValue by defaultMap
                 private val notAttributeValue by defaultMap
-                private val icon by defaultMap
+                private val iconId by defaultMap
 
                 val visibilityFilter = VisibilityFilterInfo(
                     elementType as? List<String>,
@@ -146,7 +146,7 @@ class JsonStructureSV {
                     attributeKey as? String,
                     attributeValue as? List<String>,
                     notAttributeValue as? List<String>,
-                    icon as? String
+                    iconId as? String
                 )
             }.visibilityFilter
 
@@ -157,18 +157,18 @@ class JsonStructureSV {
     data class SortingFilterInfo(
         val sortBy: List<String>,
         val defaultValue: Int?,
-        val icon: String
+        val iconId: String
     ) {
         companion object {
             fun fromJson(map: Map<String, Any>) = object {
                 val defaultMap = map.withDefault { null }
                 private val sortBy by map
                 private val defaultValue by defaultMap
-                private val icon by map
+                private val iconId by map
 
                 val sortingFilterInfo = SortingFilterInfo(sortBy as List<String>, (defaultValue as? Double?
                         
-                        )?.toInt(), icon as String)
+                        )?.toInt(), iconId as String)
             }.sortingFilterInfo
         }
     }

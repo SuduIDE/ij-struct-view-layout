@@ -29,7 +29,7 @@ class ViewCreator(
         val visibilityFilters = jsonUtil.getVisibilityFilters(langElement) ?: return filtersList
 
         for ((key, value) in visibilityFilters.entries) {
-            filtersList.add(VisibilityFilter(key, value, jsonUtil.getIconInfo(langElement, value.icon)))
+            filtersList.add(VisibilityFilter(key, value, jsonUtil.getIconInfo(langElement, value.iconId)))
         }
 
         return filtersList
@@ -41,7 +41,7 @@ class ViewCreator(
         val sortingFilters = jsonUtil.getSortingFilters(langElement) ?: return filtersList
 
         for ((key, value) in sortingFilters.entries) {
-            filtersList.add(SortingFilter(key, value, jsonUtil.getIconInfo(langElement, value.icon)))
+            filtersList.add(SortingFilter(key, value, jsonUtil.getIconInfo(langElement, value.iconId)))
         }
 
         return filtersList

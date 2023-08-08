@@ -4,11 +4,10 @@ import com.intellij.lang.Language
 import com.intellij.lang.LanguageStructureViewBuilder
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.ProjectManager
-import com.intellij.openapi.util.Disposer
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory
-import com.rri.lsvplugin.utils.*
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.rri.lsvplugin.utils.JsonInfo
+import com.rri.lsvplugin.utils.LanguageUtil
+import com.rri.lsvplugin.utils.MapTypeSV
 import org.jetbrains.annotations.TestOnly
 import java.io.File
 import java.nio.file.Path

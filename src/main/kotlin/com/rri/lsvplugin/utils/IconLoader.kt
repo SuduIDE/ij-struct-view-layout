@@ -4,14 +4,10 @@ import com.intellij.icons.AllIcons
 import com.intellij.openapi.util.IconLoader
 import com.intellij.ui.IconManager
 import com.intellij.ui.PlatformIcons
-import com.intellij.util.alsoIfNull
 import java.nio.file.Path
 import javax.swing.Icon
 import kotlin.reflect.KClass
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.declaredMembers
 import kotlin.reflect.full.staticProperties
-import kotlin.reflect.full.valueParameters
 
 class IconLoader {
     companion object {

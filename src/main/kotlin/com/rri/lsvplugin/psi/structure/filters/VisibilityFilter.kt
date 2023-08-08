@@ -81,7 +81,7 @@ class VisibilityFilter(
                 attributeValue.contains(it.toString())
             }
         else
-            attributeValue.contains(element.getUniqueAttributes()[filterInfo.attributeKey])
+            attributeValue.contains(element.getUniqueAttributes()[filterInfo.attributeKey].toString())
     }
 
 

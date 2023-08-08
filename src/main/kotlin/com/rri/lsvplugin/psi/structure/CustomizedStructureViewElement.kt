@@ -4,8 +4,6 @@ import com.intellij.ide.structureView.StructureViewTreeElement
 import com.intellij.navigation.ItemPresentation
 import com.intellij.openapi.ui.Queryable
 import com.intellij.pom.Navigatable
-import com.intellij.psi.PsiElement
-import com.intellij.psi.util.elementType
 import com.intellij.util.ArrayUtil
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.psi.ViewCreator
