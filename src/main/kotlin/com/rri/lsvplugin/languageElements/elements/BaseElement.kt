@@ -84,7 +84,7 @@ open class BaseElement(val langElement: PsiElement) {
             if (description == null)
                 return false
 
-            presentableText.append(description.toString())
+            presentableText.append(description.toString().replace(Regex("^\"|\"$"), ""))
             return true
         }
 

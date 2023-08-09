@@ -1,10 +1,20 @@
 package com.rri.lsvplugin.services
 
+import com.intellij.ide.impl.StructureViewWrapperImpl
+import com.intellij.ide.navigationToolbar.StructureAwareNavBarModelExtension
+import com.intellij.ide.structureView.TreeBasedStructureViewBuilder
+import com.intellij.ide.structureView.impl.StructureViewFactoryImpl
+import com.intellij.ide.structureView.newStructureView.StructureViewComponent
+import com.intellij.ide.util.StructureViewCompositeModel
 import com.intellij.lang.Language
 import com.intellij.lang.LanguageStructureViewBuilder
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
+import com.intellij.openapi.vfs.VfsUtil
+import com.intellij.psi.PsiManager
+import com.intellij.testFramework.utils.vfs.getPsiFile
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory
 import com.rri.lsvplugin.utils.JsonInfo
 import com.rri.lsvplugin.utils.LanguageUtil
@@ -32,6 +42,8 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
     override fun getMapSV(): MapTypeSV? = jsonSV.getMapSV()
 
     override fun getFilename(): File = jsonSV.filenameJsonSV
+
+    fun getFactoryMap() = structureViewFactoryMap
 
     fun getFullPathToCustomSV(): File? {
         return project.basePath?.let { File(it).resolve(jsonSV.filenameJsonSV) }
@@ -73,6 +85,7 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
         for (lang in jsonSV.getMapSV()?.keys!!) {
             val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
             if (Language.findLanguageByID(langId) != null) {
+                StructureViewComponent.clearStructureViewState(project)
                 structureViewFactoryMap[lang] = CustomizedStructureViewFactory()
                 LanguageStructureViewBuilder.INSTANCE.addExplicitExtension(
                     Language.findLanguageByID(langId)!!,
