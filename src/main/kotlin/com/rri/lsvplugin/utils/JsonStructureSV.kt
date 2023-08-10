@@ -5,6 +5,20 @@ import com.squareup.moshi.JsonClass
 import javax.swing.Icon
 
 class JsonStructureSV {
+
+    @JsonClass(generateAdapter = true)
+    data class DefaultAttributes (
+        val parent : Map<String, List<String>>?
+    ) {
+        companion object {
+            fun fromJson(map: Map<String, Map<String, List<String>>>?) = object {
+                private val parent = map?.get("parent")
+
+                val defaultAttribute = DefaultAttributes(parent)
+            }.defaultAttribute
+        }
+    }
+
     @JsonClass(generateAdapter = true)
     data class ElementInfo(
         val displayLevel: Int,
@@ -12,17 +26,20 @@ class JsonStructureSV {
         val attributes: Map<String, List<String>>,
         val baseIcon: IconProperties,
         val text: List<String>,
-        val description: List<String>
+        val description: List<String>,
+        val defaultAttributes : DefaultAttributes?
     ) {
         companion object {
             @Suppress("UNCHECKED_CAST")
             fun fromJson(map: Map<String, Any>) = object {
+                private val defaultMap = map.withDefault { null }
                 private val displayLevel by map
                 private val baseToken by map
                 private val attributes by map
                 private val baseIcon by map
                 private val text by map
                 private val description by map
+                private val defaultAttributes by defaultMap
 
                 val elementInfo = ElementInfo(
                     (displayLevel as Double).toInt(),
@@ -30,7 +47,8 @@ class JsonStructureSV {
                     attributes as Map<String, List<String>>,
                     IconProperties.fromJson(baseIcon as Map<String, Any>),
                     text as List<String>,
-                    description as List<String>
+                    description as List<String>,
+                    DefaultAttributes.fromJson(defaultAttributes as? Map<String, Map<String, List<String>>>?)
                 )
             }.elementInfo
         }

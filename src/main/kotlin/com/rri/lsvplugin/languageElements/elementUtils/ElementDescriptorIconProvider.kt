@@ -16,12 +16,10 @@ class ElementDescriptorIconProvider {
 
         private fun getBaseIcon(element: BaseElement): Icon? {
             val attributeKey = element.baseIcon?.attributeKey
-            if (element.baseIcon?.defaultIcon?.iconType == SvConstants.IconType.Base &&
-                (attributeKey == null || !(element.getSetAttributes().containsKey(attributeKey)
-                        || element.getUniqueAttributes().containsKey(attributeKey)))
+            if (element.baseIcon?.defaultIcon?.iconType == SvConstants.IconType.Base && (attributeKey == null && element.baseIcon?.attributeValue == null)
             )
                 return element.baseIcon?.defaultIcon?.loadedIcon
-            else if (element.baseIcon?.alternativeIcon?.iconType == SvConstants.IconType.Base) {
+            else if (element.baseIcon?.alternativeIcon?.iconType == SvConstants.IconType.Base ) {
                 if (element.baseIcon?.attributeValue == null) {
                     return element.baseIcon?.defaultIcon?.loadedIcon
                 } else {
@@ -36,13 +34,19 @@ class ElementDescriptorIconProvider {
                             if (attributes.find { it.toString() == value } != null)
                                 return element.baseIcon?.alternativeIcon?.loadedIcon
                         }
-                    } else if (element.baseIcon?.attributeValue!!.contains(element.getUniqueAttributes()[attributeKey].toString()))
+                    } else if (element.baseIcon?.attributeValue!!.contains(element.getUniqueAttributes()[attributeKey].toString())) {
                         return element.baseIcon?.alternativeIcon?.loadedIcon
+                    } else if (element.getDefaultAttributes() != null) {
+                        attributes = element.getDefaultAttributes()
+                        for (value in element.baseIcon?.attributeValue!!) {
+                            if (attributes!!.find { it.toString() == value } != null)
+                                return element.baseIcon?.alternativeIcon?.loadedIcon
+                        }
+                    }
 
                     return element.baseIcon?.defaultIcon?.loadedIcon
                 }
             }
-
             return null
         }
 
@@ -76,6 +80,10 @@ class ElementDescriptorIconProvider {
                 else
                     addIconToList(uniqueAttr, iconType, iconList)
             }
+
+            val defaultKeywords = element.getDefaultAttributes()
+            if (iconList.isEmpty() && defaultKeywords != null)
+                getIconByTypeInList(defaultKeywords, iconType, iconList)
 
             return iconList
         }

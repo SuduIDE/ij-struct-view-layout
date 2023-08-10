@@ -59,7 +59,7 @@ class VisibilityFilter(
         else if (includeUniqueAttribute(element, filterInfo.notAttributeValue!!))
             true
         else if (element.getSetAttributes()[filterInfo.attributeKey] == null)
-            false
+            includeDefaultAttribute(element, filterInfo.notAttributeValue)
         else
             includeSetAttribute(element, filterInfo.notAttributeValue)
     }
@@ -70,7 +70,7 @@ class VisibilityFilter(
         else if (!includeUniqueAttribute(element, filterInfo.attributeValue!!))
             true
         else if (element.getSetAttributes()[filterInfo.attributeKey] == null)
-            false
+            !includeDefaultAttribute(element, filterInfo.attributeValue)
         else
             !includeSetAttribute(element, filterInfo.attributeValue)
     }
@@ -88,6 +88,15 @@ class VisibilityFilter(
     private fun includeSetAttribute(element: BaseElement, attributeValue: List<String>): Boolean {
         return element.getSetAttributes()[filterInfo.attributeKey]!!.any {
            attributeValue.contains(it.toString())
+        }
+    }
+
+    private fun includeDefaultAttribute(element: BaseElement, attributeValue: List<String>) : Boolean {
+        if (element.getDefaultAttributes() == null)
+            return false
+
+        return element.getDefaultAttributes()!!.any {
+            attributeValue.contains(it.toString())
         }
     }
 

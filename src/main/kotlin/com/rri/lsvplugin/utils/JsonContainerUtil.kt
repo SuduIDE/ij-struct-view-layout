@@ -77,6 +77,13 @@ class JsonContainerUtil {
             .firstOrNull { it.token == langElement.elementType.toString() }
     }
 
+    fun getKeywordAttributeByName(keywordName: String, langElement: PsiElement) : JsonStructureSV.KeywordInfo? {
+        val attributeList = getLangElementsMap(langElement)?.get(getLanguage(langElement)) ?: return null
+        @Suppress("UNCHECKED_CAST")
+        return (getLangElementsMap(langElement)!![getLanguage(langElement)]!![SvConstants.ATTRIBUTES]!![SvConstants.KEYWORDS]!! as List<JsonStructureSV.KeywordInfo>)
+            .firstOrNull { it.id == keywordName }
+    }
+
     fun getPropertyAttribute(langElement: PsiElement): JsonStructureSV.PropertyInfo? {
         if (!isPropertyAttribute(langElement))
             return null
@@ -92,7 +99,7 @@ class JsonContainerUtil {
             ?.get(SvConstants.VISIBILITY_FILTERS) as? Map<String, JsonStructureSV.VisibilityFilterInfo>
     }
 
-    fun getSortingFilters(langElement: PsiElement) : Map<String, JsonStructureSV.SortingFilterInfo>? {
+    fun getSortingFilters(langElement: PsiElement): Map<String, JsonStructureSV.SortingFilterInfo>? {
         @Suppress("UNCHECKED_CAST")
         return getLangElementsMap(langElement)?.get(getLanguage(langElement))?.get(SvConstants.FILTERS)
             ?.get(SvConstants.SORTING_FILTERS) as? Map<String, JsonStructureSV.SortingFilterInfo>

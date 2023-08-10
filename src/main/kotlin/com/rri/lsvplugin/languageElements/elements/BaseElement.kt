@@ -24,11 +24,18 @@ open class BaseElement(val langElement: PsiElement) {
 
     data class KeywordStructure(
         val id : String,
+        val text: String,
         val sortValue: Int?,
         val icon: JsonStructureSV.IconInfo?
     ) {
-        override fun toString(): String = id
+        override fun toString(): String {
+            return if (text.isEmpty()) id else text
+        }
     }
+
+    data class DefaultAttributes(
+        val parent : Map<String, List<KeywordStructure>>?
+    )
 
     inner class PresentableViewText(
         private var presentableTextList: List<String> = listOf(),
@@ -68,9 +75,8 @@ open class BaseElement(val langElement: PsiElement) {
                 } else if (!addPartToPresentableText(
                         presentableText,
                         getUniqueAttributes()[attr]
-                    ) && !getUniqueAttributes().containsKey(attr)
-                )
-                    presentableText.append(attr)
+                    ))
+                        presentableText.append(attr)
 
             }
 
@@ -109,6 +115,7 @@ open class BaseElement(val langElement: PsiElement) {
     var presentableText = PresentableViewText()
     var children: MutableList<BaseElement> = mutableListOf()
     var parent: BaseElement? = null
+    var defaultAttributes : DefaultAttributes? = null
 
     fun getPresentableView(): ItemPresentation {
         if (elementType == "file")
@@ -123,6 +130,12 @@ open class BaseElement(val langElement: PsiElement) {
 
     fun getUniqueAttributes(): MutableMap<String, Any?> = structure.uniqueAttributes
     fun getSetAttributes(): MutableMap<String, MutableList<*>?> = structure.setAttributes
+
+    fun getDefaultAttributes() : List<KeywordStructure>? {
+        if (parent == null)
+            return null
+        return defaultAttributes?.parent?.get(parent!!.elementType) ?: defaultAttributes?.parent?.get("else")
+    }
 
     fun clone(): BaseElement {
         val cloneElement = BaseElement(langElement.deepClonePolymorphic())

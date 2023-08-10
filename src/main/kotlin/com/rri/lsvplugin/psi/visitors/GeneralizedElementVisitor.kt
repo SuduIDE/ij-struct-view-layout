@@ -23,7 +23,7 @@ class GeneralizedElementVisitor : IElementVisitor {
                     var icon : JsonStructureSV.IconInfo? = null
                     if (it.iconId != null)
                         icon = jsonUtil.getIconInfo(child, it.iconId)
-                    attributeSupplier.addAttribute(curElement, it.id, BaseElement.KeywordStructure(it.id, it.sortValue, icon))
+                    attributeSupplier.addAttribute(curElement, it.id, BaseElement.KeywordStructure(it.id, child.text, it.sortValue, icon))
                 } ?: jsonUtil.getPropertyAttribute(child)?.also {
                     if (curElement.displayLevel != 0 && it.isNotPartialMatch(child) && attributeSupplier.containsUniqueElement(
                             curElement,
@@ -86,7 +86,7 @@ class GeneralizedElementVisitor : IElementVisitor {
                 var icon : JsonStructureSV.IconInfo? = null
                 if (it.iconId != null)
                     icon = jsonUtil.getIconInfo(child, it.iconId)
-                listOfAttr.add(BaseElement.KeywordStructure(it.id, it.sortValue, icon))
+                listOfAttr.add(BaseElement.KeywordStructure(it.id, child.text, it.sortValue, icon))
             }
             jsonUtil.getPropertyAttribute(child)?.also { listOfAttr.add(child.text) }
         }

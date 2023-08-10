@@ -17,22 +17,23 @@ class CustomizedElementCreator : IElementCreator {
         val element = BaseElement(langElement)
         element.displayLevel = elementStructure.displayLevel
         element.elementType = typeElement
-        setElementStructure(element, elementStructure)
-        setIconStructure(element, elementStructure.baseIcon, jsonUtil)
+        element.structure = getElementStructure(elementStructure)
+        element.baseIcon = getIconStructure(element, elementStructure.baseIcon, jsonUtil)
         element.presentableText = element.PresentableViewText(elementStructure.text, elementStructure.description)
         element.parent = parent
+        element.defaultAttributes = getDefaultAttributes(element, elementStructure, jsonUtil)
 
         return element
     }
 
 
-    private fun setIconStructure(
+    private fun getIconStructure(
         element: BaseElement,
         iconProperties: JsonStructureSV.IconProperties,
         jsonUtil: JsonContainerUtil
-    ) {
+    ): BaseElement.IconStructure {
         val baseIconId = jsonUtil.getIconInfo(element.langElement, iconProperties.iconId)
-        element.baseIcon = BaseElement.IconStructure(
+        return BaseElement.IconStructure(
             baseIconId,
             iconProperties.attributeKey,
             iconProperties.attributeValue,
@@ -40,10 +41,9 @@ class CustomizedElementCreator : IElementCreator {
         )
     }
 
-    private fun setElementStructure(
-        element: BaseElement,
+    private fun getElementStructure(
         elementStructure: JsonStructureSV.ElementInfo
-    ) {
+    ): BaseElement.ElementStructure {
         val setAttributes = mutableMapOf<String, MutableList<*>?>()
         if (elementStructure.attributes.containsKey("set")) {
             for (attr in elementStructure.attributes["set"]!!) {
@@ -58,7 +58,28 @@ class CustomizedElementCreator : IElementCreator {
             }
         }
 
-        element.structure = BaseElement.ElementStructure(setAttributes, uniqueAttributes)
+        return BaseElement.ElementStructure(setAttributes, uniqueAttributes)
     }
 
+    private fun getDefaultAttributes(
+        element: BaseElement,
+        elementStructure: JsonStructureSV.ElementInfo,
+        jsonUtil: JsonContainerUtil
+    ) : BaseElement.DefaultAttributes {
+        val defaultAttributesRelatedParent = elementStructure.defaultAttributes?.parent ?: return BaseElement.DefaultAttributes(null)
+        val defaultAttributeRelatedParentElementMap = mutableMapOf<String, MutableList<BaseElement.KeywordStructure>>()
+        for ((parentType, keywordList) in defaultAttributesRelatedParent) {
+            defaultAttributeRelatedParentElementMap[parentType] = mutableListOf<BaseElement.KeywordStructure>()
+            for (keywordName in keywordList) {
+                val keyword = jsonUtil.getKeywordAttributeByName(keywordName, element.langElement)
+                if (keyword != null) {
+                    var icon: JsonStructureSV.IconInfo? = null
+                    if (keyword.iconId != null)
+                        icon = jsonUtil.getIconInfo(element.langElement,  keyword.iconId)
+                    defaultAttributeRelatedParentElementMap[parentType]?.add(BaseElement.KeywordStructure(keyword.id, "", keyword.sortValue, icon))
+                }
+            }
+        }
+        return BaseElement.DefaultAttributes(defaultAttributeRelatedParentElementMap)
+    }
 }

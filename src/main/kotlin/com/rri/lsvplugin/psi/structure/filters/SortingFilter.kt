@@ -31,9 +31,14 @@ class SortingFilter(private val filterName : String,
                     attribute.firstOrNull { attr -> sortByList.any { sortableAttr -> sortableAttr == attr.toString() && attr is BaseElement.KeywordStructure && attr.sortValue != null } }
                 if (sortableKeyword != null)
                     return (sortableKeyword as BaseElement.KeywordStructure).sortValue!!
-            } else if (attribute is BaseElement.KeywordStructure && attribute.sortValue != null ) {
+            } else if (attribute is BaseElement.KeywordStructure && attribute.sortValue != null  && sortByList.contains(attribute.toString())) {
                     return attribute.sortValue
-
+            }
+        }
+        if (element.getDefaultAttributes() != null) {
+            for (attribute in element.getDefaultAttributes()!!) {
+                if (attribute.sortValue != null && sortByList.contains(attribute.toString()))
+                    return attribute.sortValue
             }
         }
 
