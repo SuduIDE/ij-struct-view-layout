@@ -1,5 +1,7 @@
 package com.rri.lsvplugin.utils
 
+import com.squareup.moshi.JsonClass
+
 class SvConstants {
     companion object {
         const val ELEMENTS = "element"
@@ -13,6 +15,7 @@ class SvConstants {
         const val ICONS = "icons"
     }
 
+    @JsonClass(generateAdapter = true)
     enum class IconType {
         Base, Mark, Offset
     }

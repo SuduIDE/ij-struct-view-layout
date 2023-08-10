@@ -45,6 +45,8 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
 
     fun getFactoryMap() = structureViewFactoryMap
 
+    fun getDefaultJsonSV(): String = jsonSV.getDefaultVersionJson() ?: ""
+
     fun getFullPathToCustomSV(): File? {
         return project.basePath?.let { File(it).resolve(jsonSV.filenameJsonSV) }
     }

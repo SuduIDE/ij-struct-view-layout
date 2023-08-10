@@ -11,11 +11,11 @@ import java.io.File
 class ActionCreateJsonSV : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         val containerSV = e.project?.service<JsonSvContainerServiceImpl>()
-        val fullPathToJsonSV = containerSV?.let { File(e.project?.basePath).resolve(it.getFilename()) }
+        val fullPathToJsonSV = containerSV?.getFullPathToCustomSV()
 
         containerSV?.reset()
         fullPathToJsonSV?.createNewFile()
-        fullPathToJsonSV?.writeText(containerSV.getJsonSV())
+        fullPathToJsonSV?.writeText(containerSV.getDefaultJsonSV())
     }
 
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT

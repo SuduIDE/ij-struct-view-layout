@@ -19,6 +19,8 @@ class JsonInfo {
         }
     }
 
+    fun getDefaultVersionJson() : String? = javaClass.classLoader?.getResourceAsStream(defaultJsonSv.toString())?.reader()?.readText()
+
     fun setMapSV(newMapSV: MapTypeSV?) {
         if (newMapSV != null) {
             mapSV = languageToLowerCase(newMapSV)

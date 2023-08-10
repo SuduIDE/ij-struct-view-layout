@@ -78,6 +78,7 @@ class JsonStructureSV {
         }
     }
 
+    @JsonClass(generateAdapter = true)
     data class IconInfo (
         val id: String,
         val iconType : SvConstants.IconType?,
