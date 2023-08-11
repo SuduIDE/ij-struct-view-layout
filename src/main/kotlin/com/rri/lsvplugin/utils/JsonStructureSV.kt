@@ -8,13 +8,15 @@ class JsonStructureSV {
 
     @JsonClass(generateAdapter = true)
     data class DefaultAttributes (
-        val parent : Map<String, List<String>>?
+        val parent : Map<String, List<String>>?,
+        val children : Map<String, List<String>>?
     ) {
         companion object {
             fun fromJson(map: Map<String, Map<String, List<String>>>?) = object {
                 private val parent = map?.get("parent")
+                private val children = map?.get("children")
 
-                val defaultAttribute = DefaultAttributes(parent)
+                val defaultAttribute = DefaultAttributes(parent, children)
             }.defaultAttribute
         }
     }
@@ -54,6 +56,7 @@ class JsonStructureSV {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     @JsonClass(generateAdapter = true)
     data class IconProperties(
             val iconId: String,
@@ -185,6 +188,7 @@ class JsonStructureSV {
                 private val defaultValue by defaultMap
                 private val iconId by map
 
+                @Suppress("UNCHECKED_CAST")
                 val sortingFilterInfo = SortingFilterInfo(sortBy as List<String>, (defaultValue as? Double?
                         
                         )?.toInt(), iconId as String)

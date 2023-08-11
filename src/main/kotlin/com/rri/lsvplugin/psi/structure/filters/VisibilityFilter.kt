@@ -25,9 +25,10 @@ class VisibilityFilter(
             return true
 
         if (filterInfo.attributeKey != null) {
-            if ((filterInfo.notAttributeValue != null && includeAttributes(element)) || (filterInfo.attributeValue != null && excludeAttributes(
-                    element
-                ))
+            if (
+                (filterInfo.notAttributeValue != null && includeAttributes(element))
+                ||
+                (filterInfo.attributeValue != null && excludeAttributes(element))
             ) {
                 return true
             }
@@ -58,8 +59,11 @@ class VisibilityFilter(
             false
         else if (includeUniqueAttribute(element, filterInfo.notAttributeValue!!))
             true
-        else if (element.getSetAttributes()[filterInfo.attributeKey] == null)
+        else if (element.getSetAttributes()[filterInfo.attributeKey] == null) {
+            if (element.getDefaultAttributes() == null)
+                return false
             includeDefaultAttribute(element, filterInfo.notAttributeValue)
+        }
         else
             includeSetAttribute(element, filterInfo.notAttributeValue)
     }
@@ -67,10 +71,14 @@ class VisibilityFilter(
     private fun excludeAttributes(element: BaseElement): Boolean {
         return if (element.getUniqueAttributes()[filterInfo.attributeKey] == null)
             false
-        else if (!includeUniqueAttribute(element, filterInfo.attributeValue!!))
-            true
-        else if (element.getSetAttributes()[filterInfo.attributeKey] == null)
+        else if (includeUniqueAttribute(element, filterInfo.attributeValue!!))
+            false
+        else if (element.getSetAttributes()[filterInfo.attributeKey] == null) {
+            if (element.getDefaultAttributes() == null)
+                return true
+
             !includeDefaultAttribute(element, filterInfo.attributeValue)
+        }
         else
             !includeSetAttribute(element, filterInfo.attributeValue)
     }
@@ -92,9 +100,6 @@ class VisibilityFilter(
     }
 
     private fun includeDefaultAttribute(element: BaseElement, attributeValue: List<String>) : Boolean {
-        if (element.getDefaultAttributes() == null)
-            return false
-
         return element.getDefaultAttributes()!!.any {
             attributeValue.contains(it.toString())
         }

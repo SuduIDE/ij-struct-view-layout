@@ -66,20 +66,37 @@ class CustomizedElementCreator : IElementCreator {
         elementStructure: JsonStructureSV.ElementInfo,
         jsonUtil: JsonContainerUtil
     ) : BaseElement.DefaultAttributes {
-        val defaultAttributesRelatedParent = elementStructure.defaultAttributes?.parent ?: return BaseElement.DefaultAttributes(null)
-        val defaultAttributeRelatedParentElementMap = mutableMapOf<String, MutableList<BaseElement.KeywordStructure>>()
-        for ((parentType, keywordList) in defaultAttributesRelatedParent) {
-            defaultAttributeRelatedParentElementMap[parentType] = mutableListOf<BaseElement.KeywordStructure>()
+        val defaultAttributesRelatedParent = elementStructure.defaultAttributes?.parent
+        val defaultAttributesRelatedChildren = elementStructure.defaultAttributes?.children
+        return BaseElement.DefaultAttributes(
+            fillDefaultAttributeMap(element, defaultAttributesRelatedParent, jsonUtil),
+            fillDefaultAttributeMap(element, defaultAttributesRelatedChildren, jsonUtil)
+        )
+    }
+
+    private fun fillDefaultAttributeMap(
+        element: BaseElement,
+        defaultAttributes : Map<String, List<String>>?,
+        jsonUtil: JsonContainerUtil
+    ) : Map<String, List<BaseElement.KeywordStructure>>? {
+        if (defaultAttributes == null)
+            return null
+
+        val defaultAttributeElementMap = mutableMapOf<String, MutableList<BaseElement.KeywordStructure>>()
+        for ((parentType, keywordList) in defaultAttributes) {
+            defaultAttributeElementMap[parentType] = mutableListOf<BaseElement.KeywordStructure>()
             for (keywordName in keywordList) {
                 val keyword = jsonUtil.getKeywordAttributeByName(keywordName, element.langElement)
                 if (keyword != null) {
                     var icon: JsonStructureSV.IconInfo? = null
                     if (keyword.iconId != null)
                         icon = jsonUtil.getIconInfo(element.langElement,  keyword.iconId)
-                    defaultAttributeRelatedParentElementMap[parentType]?.add(BaseElement.KeywordStructure(keyword.id, "", keyword.sortValue, icon))
+                    defaultAttributeElementMap[parentType]
+                        ?.add(BaseElement.KeywordStructure(keyword.id, "", keyword.sortValue, icon))
                 }
             }
         }
-        return BaseElement.DefaultAttributes(defaultAttributeRelatedParentElementMap)
+
+        return defaultAttributeElementMap
     }
 }

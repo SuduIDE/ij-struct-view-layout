@@ -34,7 +34,8 @@ open class BaseElement(val langElement: PsiElement) {
     }
 
     data class DefaultAttributes(
-        val parent : Map<String, List<KeywordStructure>>?
+        val parent : Map<String, List<KeywordStructure>>?,
+        val children : Map<String, List<KeywordStructure>>?
     )
 
     inner class PresentableViewText(
@@ -131,10 +132,29 @@ open class BaseElement(val langElement: PsiElement) {
     fun getUniqueAttributes(): MutableMap<String, Any?> = structure.uniqueAttributes
     fun getSetAttributes(): MutableMap<String, MutableList<*>?> = structure.setAttributes
 
+    /**
+     * Return list of keywords for all type default attributes
+     * @return List of keywords for parent and children default attributes
+     */
     fun getDefaultAttributes() : List<KeywordStructure>? {
-        if (parent == null)
-            return null
-        return defaultAttributes?.parent?.get(parent!!.elementType) ?: defaultAttributes?.parent?.get("else")
+        val parentDefaultAttributes =  defaultAttributes?.parent?.get(parent!!.elementType) ?: defaultAttributes?.parent?.get("else")
+        val childrenContainedInDefaultedAttributes = children.filter { defaultAttributes?.children?.containsKey(it.elementType) ?: false}
+        val childrenDefaultAttributes : List<KeywordStructure>?
+
+        if (childrenContainedInDefaultedAttributes.isEmpty())
+            childrenDefaultAttributes = defaultAttributes?.children?.get("else")
+        else {
+            childrenDefaultAttributes = mutableListOf()
+            for (child in childrenContainedInDefaultedAttributes) {
+                childrenDefaultAttributes.addAll(defaultAttributes!!.children!!.get(child.elementType)!!)
+            }
+        }
+        return if (parentDefaultAttributes == null)
+            childrenDefaultAttributes
+        else if (childrenDefaultAttributes == null)
+            parentDefaultAttributes
+        else
+            parentDefaultAttributes.plus(childrenDefaultAttributes)
     }
 
     fun clone(): BaseElement {

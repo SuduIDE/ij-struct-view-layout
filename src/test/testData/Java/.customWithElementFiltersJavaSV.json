@@ -256,7 +256,7 @@
           "iconType" : "Base"
         }
       ]
-    }   ,
+    },
     "filters": {
       "visibility": {
         "Fields": {
