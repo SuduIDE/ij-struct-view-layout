@@ -5,7 +5,7 @@ plugins {
   kotlin("plugin.serialization") version "1.8.21"
 }
 
-group = "com.intership"
+group = "com.internship"
 version = "0.2"
 
 repositories {
@@ -25,8 +25,6 @@ dependencies {
   implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
 }
 
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
   version.set("2023.2")
   type.set("IC") // Target IDE Platform

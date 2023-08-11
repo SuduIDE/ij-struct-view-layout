@@ -1,6 +1,7 @@
 package com.rri.lsvplugin.utils
 
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.IconLoader
 import com.intellij.ui.IconManager
 import com.intellij.ui.PlatformIcons
@@ -13,9 +14,12 @@ class IconLoader {
     companion object {
         private val iconMap : Map<String, Icon> = fillIconMap()
 
-        fun getIcon(iconStr: String) : Icon? {
-            return PlatformIcons.values().firstOrNull { it.name == iconStr }?.let { IconManager.getInstance().getPlatformIcon(it) } ?:
-            iconMap[iconStr] ?: IconLoader.findIcon(Path.of(iconStr).toUri().toURL(), true)
+        fun getIcon(iconStr: String, project : Project) : Icon? {
+            println(project.basePath)
+            return PlatformIcons.values().firstOrNull { it.name == iconStr }?.let { IconManager.getInstance().getPlatformIcon(it) }
+                ?: iconMap[iconStr]
+                ?: IconLoader.findIcon(Path.of(project.basePath).resolve(iconStr).toUri().toURL(), true)
+                ?: IconLoader.findIcon(Path.of(iconStr).toUri().toURL(), true)
         }
 
 

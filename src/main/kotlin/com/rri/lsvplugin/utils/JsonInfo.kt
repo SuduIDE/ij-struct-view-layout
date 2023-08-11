@@ -1,11 +1,12 @@
 package com.rri.lsvplugin.utils
 
+import com.intellij.openapi.project.Project
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.File
 import java.nio.file.Path
 
-class JsonInfo {
+class JsonInfo(private val project: Project){
 
     private var mapSV: MapTypeSV? = null
     val filenameJsonSV: File = File(".customSV.json")
@@ -47,7 +48,7 @@ class JsonInfo {
         for ((languageName, languageStructure) in mapSV!!.entries) {
             @Suppress("UNCHECKED_CAST")
             val iconsList = languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.ICONS) as List<JsonStructureSV.IconInfo>
-            iconsList.forEach { it.loadIcon() }
+            iconsList.forEach { it.loadIcon(project) }
             iconsSV[languageName] = iconsList.associateBy { it.id }
         }
     }

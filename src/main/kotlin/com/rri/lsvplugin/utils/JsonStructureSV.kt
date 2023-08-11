@@ -1,5 +1,6 @@
 package com.rri.lsvplugin.utils
 
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.squareup.moshi.JsonClass
 import javax.swing.Icon
@@ -117,8 +118,8 @@ class JsonStructureSV {
 
         }
 
-        fun loadIcon() {
-            loadedIcon = IconLoader.getIcon(icon)
+        fun loadIcon(project: Project) {
+            loadedIcon = IconLoader.getIcon(icon, project)
         }
     }
 

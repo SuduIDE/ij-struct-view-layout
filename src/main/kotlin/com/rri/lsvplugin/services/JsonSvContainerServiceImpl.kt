@@ -26,7 +26,7 @@ import kotlin.io.path.exists
 
 @Service(Service.Level.PROJECT)
 class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainerService {
-    private val jsonSV = JsonInfo()
+    private val jsonSV = JsonInfo(project)
     private val structureViewFactoryMap = mutableMapOf<String, CustomizedStructureViewFactory>()
     override fun setJsonSV(mapSV: MapTypeSV?) {
         if (mapSV != null)
