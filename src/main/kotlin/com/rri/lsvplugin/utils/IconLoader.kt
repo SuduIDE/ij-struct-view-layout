@@ -15,7 +15,6 @@ class IconLoader {
         private val iconMap : Map<String, Icon> = fillIconMap()
 
         fun getIcon(iconStr: String, project : Project) : Icon? {
-            println(project.basePath)
             return PlatformIcons.values().firstOrNull { it.name == iconStr }?.let { IconManager.getInstance().getPlatformIcon(it) }
                 ?: iconMap[iconStr]
                 ?: IconLoader.findIcon(Path.of(project.basePath).resolve(iconStr).toUri().toURL(), true)

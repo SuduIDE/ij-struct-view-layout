@@ -13,7 +13,6 @@ import kotlin.io.path.Path
 
 abstract class StructureViewBaseTest : LightPlatformCodeInsightFixture4TestCase() {
     protected fun doTest(fileName: String, jsonName: String, expected: String) {
-
         val testVF = myFixture.configureByFile(fileName)
         project.service<JsonSvContainerServiceImpl>().loadCurrentVersion(Path(testDataPath).resolve(jsonName))
 
