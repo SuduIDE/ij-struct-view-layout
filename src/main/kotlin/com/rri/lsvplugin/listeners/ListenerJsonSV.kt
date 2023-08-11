@@ -2,6 +2,8 @@ package com.rri.lsvplugin.listeners
 
 import com.intellij.ide.ActivityTracker
 import com.intellij.ide.SaveAndSyncHandler
+import com.intellij.ide.impl.StructureViewWrapperImpl
+import com.intellij.ide.structureView.StructureViewFactoryEx
 import com.intellij.openapi.components.service
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
@@ -20,6 +22,8 @@ class ListenerJsonSV(private val project: Project) : BulkFileListener {
         for (e in events) {
             if (e.file?.name == containerSV.getFilename().toString()) {
                 containerSV.loadCurrentVersion()
+                val wrapper = StructureViewFactoryEx.getInstanceEx(project).structureViewWrapper as StructureViewWrapperImpl
+                wrapper.rebuildNow("update structure view")
             }
         }
         super.after(events)
