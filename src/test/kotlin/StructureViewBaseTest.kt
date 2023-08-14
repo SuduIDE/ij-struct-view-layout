@@ -3,7 +3,6 @@ import com.intellij.ide.structureView.TreeBasedStructureViewBuilder
 import com.intellij.ide.util.treeView.smartTree.SmartTreeStructure
 import com.intellij.openapi.components.service
 import com.intellij.openapi.ui.Queryable
-import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.psi.PsiFile
 import com.intellij.testFramework.PlatformTestUtil
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
@@ -22,7 +21,7 @@ abstract class StructureViewBaseTest : LightPlatformCodeInsightFixture4TestCase(
         assertTreeEquals(tree, normExpected)
     }
 
-    private fun createTestStructureView(testVF : PsiFile) : SmartTreeStructure {
+    private fun createTestStructureView(testVF: PsiFile): SmartTreeStructure {
         val structureViewBuilder = StructureViewBuilder.PROVIDER.getStructureViewBuilder(
             testVF.fileType,
             testVF.virtualFile, myFixture.project

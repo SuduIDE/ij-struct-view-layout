@@ -5,7 +5,8 @@ _Version : 0.2.2_
 
 ## General information
 
-This plugin is designed to customize the structure view for existing languages and for use in new ones.
+This plugin is designed to customize the structure view for existing languages and for use in new ones. You can change 
+the displayed elements, their text, icons and order.
 
 ## Install
 
@@ -75,7 +76,16 @@ If the value of an element in the list is not an attribute, then it will be disp
 If the listed attributes are elements, then they will display their textual representation. 
 Supported iterative text: "$i" - the number of the element in the parent
 * __"description"__ - sets the display text for elements. Task method similar to __"text"__
-
+* __"defaultAttributes"__ - default attributes, which may be different depending on the element's parents or children.
+  This can be useful when the language has default properties that are assigned to different elements under certain conditions.
+  For example, in Java, if you do not write any modifier before the class, then by default it will have package-private.
+  These attributes can be used in displaying elements in a structure view, in filters or sorts. At the same time, they are used
+  only last, unless otherwise stated. For example, if the specified default attribute has an icon, then it
+  will be used only if there is no attribute with an icon of the same type in the standard attributes.
+  * __parent__ - means that the listed attributes will depend on the parent. This is the attribute definition format
+    such __"parentType" : "["List of keywords]"__, if you write instead of the parent __"else"__, then these attributes will be distributed
+    with other parents.
+  * __children__ - means that the listed attributes will depend on children. The way to set attributes is the same as for parent
 #### Attributes
 
 There are three types of attributes in total: __lists__, __properties__, __keywords__, __icons__. List and keywords have the following structure:
@@ -114,13 +124,15 @@ Filters allow you to display only those elements that meet the specified conditi
   * __"elementType"__ - list of element types for which the filter will be applied.
   * __"notElementType"__ - list of element types for which the filter will not be applied.
   * __"attributeKey"__ - elements with this attribute will be filtered.
-  * __"attributeValue"__ - elements whose key is equal to this value will be filtered.
+  * __"attributeValue"__ - elements whose key is equal to this value will be filtered. You can also specify default attributes here.
+  * __"notAttributeValue"__ - elements whose value of this attribute is equal to this one will not take part in filtering. 
+  You can also specify default attributes here.
   * __"iconId"__ - filter icon id displayed in structure view
 
 Sorting allow you to order items by keywords, which have a value for sorting.
 In general, sorts have the following structure:
 * __"SortName"__ is the sort name given by the user, it is also displayed in the structure view:
-  * __"sortBy"__ - keywords of elements to sort by
+  * __"sortBy"__ - keywords of elements to sort by. You can also specify default attributes here.
   * __"defaultValue"__ - default value, if there are no given keywords, then you can use it to determine the position
     items in sort
   * __"iconId"__ - sorting icon displayed in the structure view panel
@@ -156,7 +168,12 @@ Below is a simple example of a config for XML. For other examples see
         "text": [
           "name"
         ],
-        "description": []
+        "description": [],
+        "defaultAttributes" : {
+          "parent" : {
+            "else" : ["localKeyword"]
+          }
+        }
       }
     },
     "attribute": {
@@ -200,6 +217,12 @@ Below is a simple example of a config for XML. For other examples see
         {
           "id": "abstract",
           "token": "ABSTRACT_KEYWORD"
+        },
+        {
+          "id" : "localKeyword",
+          "token" : "",
+          "iconId" : "localIcon",
+          "sortValue" : 2
         }
       ],
       "icons": [
@@ -274,6 +297,9 @@ Below is a simple example of a config for XML. For other examples see
       "visibility": {
         "Non-public": {
           "attributeKey": "modifiers",
+          "attributeValue" : [
+            "localKeyword"
+          ],
           "notAttributeValue": [
             "public"
           ],
@@ -282,7 +308,7 @@ Below is a simple example of a config for XML. For other examples see
       },
       "sorts" : {
         "visibility" : {
-          "sortBy" : ["public", "private"],
+          "sortBy" : ["public", "private", "localKeyword"],
           "iconId" : "visibilitySort"
         }
       }

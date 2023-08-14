@@ -15,13 +15,22 @@
         "baseIcon": {
           "iconId": "class",
           "attributeKey": "modifiers",
-          "attributeValue" : ["abstract"],
-          "alternativeIconId" : "abstractClassIcon"
+          "attributeValue": [
+            "abstract"
+          ],
+          "alternativeIconId": "abstractClassIcon"
         },
         "text": [
           "name"
         ],
-        "description": []
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
       },
       "interface": {
         "displayLevel": 1,
@@ -40,7 +49,14 @@
         "text": [
           "name"
         ],
-        "description": []
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
       },
       "method": {
         "displayLevel": 1,
@@ -55,7 +71,12 @@
           ]
         },
         "baseIcon": {
-          "iconId": "methodIcon"
+          "iconId": "methodIcon",
+          "attributeKey": "",
+          "attributeValue": [
+            "abstract"
+          ],
+          "alternativeIconId": "abstractMethodIcon"
         },
         "text": [
           "name",
@@ -65,7 +86,18 @@
           ": ",
           "type"
         ],
-        "description": []
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "interface": [
+              "public",
+              "abstract"
+            ],
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
       },
       "field": {
         "displayLevel": 1,
@@ -84,9 +116,17 @@
         "text": [
           "name",
           ": ",
-          "type"
+          "type",
+          " "
         ],
-        "description": []
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
       },
       "parameter": {
         "displayLevel": 0,
@@ -99,7 +139,7 @@
           ]
         },
         "baseIcon": {
-          "iconId" : ""
+          "iconId": ""
         },
         "text": [
           "type"
@@ -114,7 +154,7 @@
           "unique": []
         },
         "baseIcon": {
-          "iconId" : "aClass"
+          "iconId": "aClass"
         },
         "text": [
           "$",
@@ -132,7 +172,7 @@
           ]
         },
         "baseIcon": {
-          "iconId" : "lambda"
+          "iconId": "lambda"
         },
         "text": [
           "lambda$",
@@ -160,38 +200,50 @@
       ],
       "keywords": [
         {
-          "id" : "class_keyword",
-          "token" : "CLASS_KEYWORD"
+          "id": "class_keyword",
+          "token": "CLASS_KEYWORD"
         },
         {
-          "id" : "interface_keyword",
-          "token" : "INTERFACE_KEYWORD"
+          "id": "interface_keyword",
+          "token": "INTERFACE_KEYWORD"
         },
         {
-          "id" : "private",
-          "token" : "PRIVATE_KEYWORD",
-          "iconId" : "private",
-          "sortValue" : 1
+          "id": "private",
+          "token": "PRIVATE_KEYWORD",
+          "iconId": "private",
+          "sortValue": 3
         },
         {
-          "id" : "public",
-          "token" : "PUBLIC_KEYWORD",
-          "iconId" : "public",
-          "sortValue" : 2
+          "id": "public",
+          "token": "PUBLIC_KEYWORD",
+          "iconId": "public",
+          "sortValue": 1
         },
         {
-          "id" : "final",
-          "token" : "FINAL_KEYWORD",
-          "iconId" : "final"
+          "id": "final",
+          "token": "FINAL_KEYWORD",
+          "iconId": "final"
         },
         {
-          "id" : "static",
-          "token" : "STATIC_KEYWORD",
-          "iconId" : "static"
+          "id": "protected",
+          "token": "PROTECTED_KEYWORD",
+          "iconId": "protectedIcon",
+          "sortValue": 4
         },
         {
-          "id" : "abstract",
-          "token" : "ABSTRACT_KEYWORD"
+          "id": "staticKeyword",
+          "token": "STATIC_KEYWORD",
+          "iconId": "static"
+        },
+        {
+          "id": "abstract",
+          "token": "ABSTRACT_KEYWORD"
+        },
+        {
+          "id": "localKeyword",
+          "token": "",
+          "iconId": "localIcon",
+          "sortValue": 2
         }
       ],
       "icons": [
@@ -201,14 +253,14 @@
           "icon": "Class"
         },
         {
-          "id" : "abstractClassIcon",
-          "iconType" : "Base",
-          "icon" : "AbstractClass"
+          "id": "abstractClassIcon",
+          "iconType": "Base",
+          "icon": "AbstractClass"
         },
         {
-          "id" : "interfaceIcon",
-          "iconType" : "Base",
-          "icon" : "Interface"
+          "id": "interfaceIcon",
+          "iconType": "Base",
+          "icon": "Interface"
         },
         {
           "id": "field",
@@ -231,6 +283,11 @@
           "iconType": "Base"
         },
         {
+          "id": "abstractMethodIcon",
+          "iconType": "Base",
+          "icon": "AbstractMethod"
+        },
+        {
           "id": "private",
           "icon": "Private",
           "iconType": "Offset"
@@ -238,6 +295,11 @@
         {
           "id": "public",
           "icon": "Public",
+          "iconType": "Offset"
+        },
+        {
+          "id": "protectedIcon",
+          "icon": "Protected",
           "iconType": "Offset"
         },
         {
@@ -251,9 +313,14 @@
           "iconType": "Mark"
         },
         {
-          "id" : "visibilitySort",
-          "icon" : "VisibilitySort",
-          "iconType" : "Base"
+          "id": "visibilitySort",
+          "icon": "VisibilitySort",
+          "iconType": "Base"
+        },
+        {
+          "id": "localIcon",
+          "iconType": "Offset",
+          "icon": "Local"
         }
       ]
     },
@@ -265,6 +332,10 @@
             "interface"
           ],
           "attributeKey": "modifiers",
+          "attributeValue": [
+            "private",
+            "localKeyword"
+          ],
           "notAttributeValue": [
             "public"
           ],
@@ -289,10 +360,15 @@
           "iconId": "lambda"
         }
       },
-      "sorts" : {
-        "visibility" : {
-          "sortBy" : ["public", "private"],
-          "iconId" : "visibilitySort"
+      "sorts": {
+        "visibility": {
+          "sortBy": [
+            "public",
+            "private",
+            "localKeyword",
+            "protected"
+          ],
+          "iconId": "visibilitySort"
         }
       }
     }

@@ -26,9 +26,9 @@ class VisibilityFilter(
 
         if (filterInfo.attributeKey != null) {
             if (
-                (filterInfo.notAttributeValue != null && includeAttributes(element))
-                ||
                 (filterInfo.attributeValue != null && excludeAttributes(element))
+                ||
+                (filterInfo.notAttributeValue != null && includeAttributes(element))
             ) {
                 return true
             }

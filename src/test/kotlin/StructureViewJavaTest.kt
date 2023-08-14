@@ -3,50 +3,61 @@ import org.junit.Test
 class StructureViewJavaTest : StructureViewBaseTest() {
 
     @Test
-    fun `baseJavaTest`(): Unit = doTest("ElementTesting/BaseTestJava.java", "ElementTesting/.customBaseJavaSV.json",
+    fun `baseJavaTest`(): Unit = doTest(
+        "ElementTesting/BaseTestJava.java", "ElementTesting/.customBaseJavaSV.json",
         """
         file text=BaseTestJava.java
          interface text=BaseTestInterface
           method text=testMethod(int): void
          class text=BaseTestJava
           field text=test: int
-        """)
+        """
+    )
 
     @Test
-    fun `textJavaTest`() : Unit = doTest("ElementTesting/BaseTestJava.java", "ElementTesting/.customTextJavaSV.json",
+    fun `textJavaTest`(): Unit = doTest(
+        "ElementTesting/BaseTestJava.java", "ElementTesting/.customTextJavaSV.json",
         """
         file text=BaseTestJava.java
          interface text=BaseTestInterface
           method text=testMethod(int testArg): void
          class text=BaseTestJava class- test description
           field text=public static final test: int
-        """)
+        """
+    )
+
     @Test
-    fun `displayLevelJavaTest`() : Unit = doTest("ElementTesting/BaseTestJava.java", "ElementTesting/.customDisplayLevelJavaSV.json",
+    fun `displayLevelJavaTest`(): Unit = doTest(
+        "ElementTesting/BaseTestJava.java", "ElementTesting/.customDisplayLevelJavaSV.json",
         """
         file text=BaseTestJava.java
          class text=BaseTestJava
          field text=test: int 
          method text=testMethod(int): void
-        """)
-
+        """
+    )
 
     @Test
-    fun `elementFileterJavaTest`(): Unit = doTest("FilterTesting/TestJava.java", "FilterTesting/.customElementFilterSV.json",
+    fun `elementFileterJavaTest`(): Unit = doTest(
+        "FilterTesting/TestJava.java", "FilterTesting/.customElementFilterSV.json",
         """
         file text=TestJava.java
          interface text=InterfaceTest
-        """.trimIndent())
+        """.trimIndent()
+    )
 
     @Test
-    fun `notElementFilterJavaTest`(): Unit = doTest("FilterTesting/TestJava.java", "FilterTesting/.customNotElementFilterSV.json",
+    fun `notElementFilterJavaTest`(): Unit = doTest(
+        "FilterTesting/TestJava.java", "FilterTesting/.customNotElementFilterSV.json",
         """
         file text=TestJava.java
          interface text=InterfaceTest
-        """.trimIndent())
+        """.trimIndent()
+    )
 
     @Test
-    fun `attributeFilterJavaTest`(): Unit = doTest("FilterTesting/TestJava.java", "FilterTesting/.customAttributeFilterSV.json",
+    fun `attributeFilterJavaTest`(): Unit = doTest(
+        "FilterTesting/TestJava.java", "FilterTesting/.customAttributeFilterSV.json",
         """
         file text=TestJava.java
          class text=FinalTestJava
@@ -55,10 +66,12 @@ class StructureViewJavaTest : StructureViewBaseTest() {
           method text=testPublicMethod(): void
           field text=testPublicProtectedIntField: int 
           field text=testStringField: String
-        """.trimIndent())
+        """.trimIndent()
+    )
 
     @Test
-    fun `visibilityFilterJavaTest`(): Unit = doTest("FilterTesting/TestJava.java", "FilterTesting/.customVisibilityFilterSV.json",
+    fun `visibilityFilterJavaTest`(): Unit = doTest(
+        "FilterTesting/TestJava.java", "FilterTesting/.customVisibilityFilterSV.json",
         """
         file text=TestJava.java
          class text=FinalTestJava
@@ -69,10 +82,12 @@ class StructureViewJavaTest : StructureViewBaseTest() {
           method text=testPublicMethod(): void
           field text=testPublicProtectedIntField: int 
           field text=testStringField: String
-        """.trimIndent())
+        """.trimIndent()
+    )
 
     @Test
-    fun `sortingJavaTest`(): Unit = doTest("FilterTesting/TestJava.java", "FilterTesting/.customSortingSV.json",
+    fun `sortingJavaTest`(): Unit = doTest(
+        "FilterTesting/TestJava.java", "FilterTesting/.customSortingSV.json",
         """
         file text=TestJava.java
          class text=FinalTestJava
@@ -94,8 +109,8 @@ class StructureViewJavaTest : StructureViewBaseTest() {
           method text=testPrivateMethod(String): String
           field text=testProtectedIntField: int 
          interface text=InterfaceTest
-        """.trimIndent())
-
+        """.trimIndent()
+    )
 
 
     override fun getTestDataPath(): String {
