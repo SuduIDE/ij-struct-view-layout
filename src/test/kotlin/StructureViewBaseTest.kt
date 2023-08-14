@@ -4,6 +4,7 @@ import com.intellij.ide.util.treeView.smartTree.SmartTreeStructure
 import com.intellij.openapi.components.service
 import com.intellij.openapi.ui.Queryable
 import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.psi.PsiFile
 import com.intellij.testFramework.PlatformTestUtil
 import com.intellij.testFramework.fixtures.LightPlatformCodeInsightFixture4TestCase
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewModel
@@ -16,13 +17,21 @@ abstract class StructureViewBaseTest : LightPlatformCodeInsightFixture4TestCase(
         val testVF = myFixture.configureByFile(fileName)
         project.service<JsonSvContainerServiceImpl>().loadCurrentVersion(Path(testDataPath).resolve(jsonName))
 
+        val tree = createTestStructureView(testVF)
+        val normExpected = expected.trimIndent()
+        assertTreeEquals(tree, normExpected)
+    }
+
+    private fun createTestStructureView(testVF : PsiFile) : SmartTreeStructure {
         val structureViewBuilder = StructureViewBuilder.PROVIDER.getStructureViewBuilder(
-            testVF!!.fileType,
+            testVF.fileType,
             testVF.virtualFile, myFixture.project
         )
         val structureViewModel = (structureViewBuilder as TreeBasedStructureViewBuilder).createStructureViewModel(null)
-        val abstractTreeStructure = SmartTreeStructure(project, structureViewModel as CustomizedStructureViewModel)
+        return SmartTreeStructure(project, structureViewModel as CustomizedStructureViewModel)
+    }
 
+    private fun assertTreeEquals(abstractTreeStructure: SmartTreeStructure, expected: String) {
         val printInfo = Queryable.PrintInfo(
             arrayOf("element"),
             arrayOf("text")
@@ -32,12 +41,11 @@ abstract class StructureViewBaseTest : LightPlatformCodeInsightFixture4TestCase(
             abstractTreeStructure.rootElement,
             0,
             null,
-            27,
+            -1,
             ' ',
             printInfo
         )
 
-//        println(stringPresentationTree.trim())
         TestCase.assertEquals(expected.trim(), stringPresentationTree.trim())
     }
 

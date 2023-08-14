@@ -15,13 +15,22 @@
         "baseIcon": {
           "iconId": "class",
           "attributeKey": "modifiers",
-          "attributeValue" : ["abstract"],
-          "alternativeIconId" : "abstractClassIcon"
+          "attributeValue": [
+            "abstract"
+          ],
+          "alternativeIconId": "abstractClassIcon"
         },
         "text": [
           "name"
         ],
-        "description": []
+        "description": ["class_keyword", "- test description"],
+        "defaultAttributes": {
+          "parent": {
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
       },
       "interface": {
         "displayLevel": 1,
@@ -42,31 +51,6 @@
         ],
         "description": []
       },
-      "method": {
-        "displayLevel": 1,
-        "baseToken": "METHOD",
-        "attributes": {
-          "set": [],
-          "unique": [
-            "modifiers",
-            "name",
-            "parameters",
-            "type"
-          ]
-        },
-        "baseIcon": {
-          "iconId": "methodIcon"
-        },
-        "text": [
-          "name",
-          "(",
-          "parameters",
-          ")",
-          ": ",
-          "type"
-        ],
-        "description": []
-      },
       "field": {
         "displayLevel": 1,
         "baseToken": "FIELD",
@@ -82,11 +66,21 @@
           "iconId": "field"
         },
         "text": [
+          "modifiers",
+          " ",
           "name",
           ": ",
-          "type"
+          "type",
+          " "
         ],
-        "description": []
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
       },
       "parameter": {
         "displayLevel": 0,
@@ -102,51 +96,49 @@
           "iconId" : ""
         },
         "text": [
-          "type"
+          "type", " ", "name"
         ],
         "description": []
       },
-      "aClass": {
+      "method": {
         "displayLevel": 1,
-        "baseToken": "ANONYMOUS_CLASS",
-        "attributes": {
-          "set": [],
-          "unique": []
-        },
-        "baseIcon": {
-          "iconId" : "aClass"
-        },
-        "text": [
-          "$",
-          "$i"
-        ],
-        "description": []
-      },
-      "lambda": {
-        "displayLevel": 1,
-        "baseToken": "LAMBDA_EXPRESSION",
+        "baseToken": "METHOD",
         "attributes": {
           "set": [],
           "unique": [
-            "parameters"
+            "modifiers",
+            "name",
+            "parameters",
+            "type"
           ]
         },
         "baseIcon": {
-          "iconId" : "lambda"
+          "iconId": "methodIcon",
+          "attributeKey": "",
+          "attributeValue" : ["abstract"],
+          "alternativeIconId" : "abstractMethodIcon"
         },
         "text": [
-          "lambda$",
-          "$i"
+          "name",
+          "(",
+          "parameters",
+          ")",
+          ": ",
+          "type"
         ],
-        "description": [
-          "(<lambda expression>)"
-        ]
+        "description": [],
+        "defaultAttributes" : {
+          "parent" : {
+            "interface" : ["public", "abstract"],
+            "else" : ["localKeyword"]
+          }
+        }
       }
     },
     "attribute": {
       "lists": {
         "modifiers": "MODIFIER_LIST",
-        "parameters": "PARAMETER_LIST"
+        "parameters" : "PARAMETER_LIST"
       },
       "properties": [
         {
@@ -160,34 +152,32 @@
       ],
       "keywords": [
         {
-          "id" : "class_keyword",
-          "token" : "CLASS_KEYWORD"
+          "id": "class_keyword",
+          "token": "CLASS_KEYWORD"
         },
         {
-          "id" : "interface_keyword",
-          "token" : "INTERFACE_KEYWORD"
+          "id": "interface_keyword",
+          "token": "INTERFACE_KEYWORD"
         },
         {
-          "id" : "private",
-          "token" : "PRIVATE_KEYWORD",
-          "iconId" : "private",
-          "sortValue" : 1
+          "id": "public",
+          "token": "PUBLIC_KEYWORD",
+          "iconId": "public"
         },
         {
-          "id" : "public",
-          "token" : "PUBLIC_KEYWORD",
-          "iconId" : "public",
-          "sortValue" : 2
+          "id": "final",
+          "token": "FINAL_KEYWORD",
+          "iconId": "final"
         },
         {
-          "id" : "final",
-          "token" : "FINAL_KEYWORD",
-          "iconId" : "final"
+          "id": "staticKeyword",
+          "token": "STATIC_KEYWORD",
+          "iconId": "static"
         },
         {
-          "id" : "static",
-          "token" : "STATIC_KEYWORD",
-          "iconId" : "static"
+          "id": "localKeyword",
+          "token": "",
+          "iconId": "localIcon"
         },
         {
           "id" : "abstract",
@@ -206,34 +196,14 @@
           "icon" : "AbstractClass"
         },
         {
-          "id" : "interfaceIcon",
-          "iconType" : "Base",
-          "icon" : "Interface"
+          "id": "interfaceIcon",
+          "iconType": "Base",
+          "icon": "Interface"
         },
         {
           "id": "field",
           "iconType": "Base",
           "icon": "Field"
-        },
-        {
-          "id": "aClass",
-          "iconType": "Base",
-          "icon": "AnonymousClass"
-        },
-        {
-          "id": "lambda",
-          "iconType": "Base",
-          "icon": "Lambda"
-        },
-        {
-          "id": "methodIcon",
-          "icon": "Method",
-          "iconType": "Base"
-        },
-        {
-          "id": "private",
-          "icon": "Private",
-          "iconType": "Offset"
         },
         {
           "id": "public",
@@ -251,31 +221,23 @@
           "iconType": "Mark"
         },
         {
-          "id" : "visibilitySort",
-          "icon" : "VisibilitySort",
-          "iconType" : "Base"
+          "id": "localIcon",
+          "iconType": "Offset",
+          "icon": "Local"
+        },
+        {
+          "id": "methodIcon",
+          "icon": "Method",
+          "iconType": "Base"
+        },
+        {
+          "id" : "abstractMethodIcon",
+          "iconType": "Base",
+          "icon" : "AbstractMethod"
         }
       ]
     },
     "filters": {
-      "visibility": {
-        "Fields": {
-          "elementType": [
-            "field"
-          ],
-          "attributeKey": "modifiers",
-          "attributeValue": [
-            "public"
-          ],
-          "icon": "field"
-        },
-        "Lambdas" : {
-          "elementType": [
-            "lambda"
-          ],
-          "icon" : "lambda"
-        }
-      }
     }
   }
 }

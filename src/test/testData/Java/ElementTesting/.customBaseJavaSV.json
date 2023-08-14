@@ -1,0 +1,241 @@
+{
+  "JAVA": {
+    "element": {
+      "class": {
+        "displayLevel": 1,
+        "baseToken": "CLASS",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "modifiers",
+            "name",
+            "class_keyword"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "class",
+          "attributeKey": "modifiers",
+          "attributeValue": [
+            "abstract"
+          ],
+          "alternativeIconId": "abstractClassIcon"
+        },
+        "text": [
+          "name"
+        ],
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
+      },
+      "interface": {
+        "displayLevel": 1,
+        "baseToken": "CLASS",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "modifiers",
+            "name",
+            "interface_keyword"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "interfaceIcon"
+        },
+        "text": [
+          "name"
+        ],
+        "description": []
+      },
+      "field": {
+        "displayLevel": 1,
+        "baseToken": "FIELD",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "modifiers",
+            "name",
+            "type"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "field"
+        },
+        "text": [
+          "name",
+          ": ",
+          "type",
+          " "
+        ],
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
+      },
+      "parameter": {
+        "displayLevel": 0,
+        "baseToken": "PARAMETER",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "name",
+            "type"
+          ]
+        },
+        "baseIcon": {
+          "iconId" : ""
+        },
+        "text": [
+          "type"
+        ],
+        "description": []
+      },
+      "method": {
+        "displayLevel": 1,
+        "baseToken": "METHOD",
+        "attributes": {
+          "set": [],
+          "unique": [
+            "modifiers",
+            "name",
+            "parameters",
+            "type"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "methodIcon",
+          "attributeKey": "",
+          "attributeValue" : ["abstract"],
+          "alternativeIconId" : "abstractMethodIcon"
+        },
+        "text": [
+          "name",
+          "(",
+          "parameters",
+          ")",
+          ": ",
+          "type"
+        ],
+        "description": [],
+        "defaultAttributes" : {
+          "parent" : {
+            "interface" : ["public", "abstract"],
+            "else" : ["localKeyword"]
+          }
+        }
+      }
+    },
+    "attribute": {
+      "lists": {
+        "modifiers": "MODIFIER_LIST",
+        "parameters" : "PARAMETER_LIST"
+      },
+      "properties": [
+        {
+          "id": "name",
+          "token": "IDENTIFIER"
+        },
+        {
+          "id": "type",
+          "token": "TYPE"
+        }
+      ],
+      "keywords": [
+        {
+          "id": "class_keyword",
+          "token": "CLASS_KEYWORD"
+        },
+        {
+          "id": "interface_keyword",
+          "token": "INTERFACE_KEYWORD"
+        },
+        {
+          "id": "public",
+          "token": "PUBLIC_KEYWORD",
+          "iconId": "public"
+        },
+        {
+          "id": "final",
+          "token": "FINAL_KEYWORD",
+          "iconId": "final"
+        },
+        {
+          "id": "staticKeyword",
+          "token": "STATIC_KEYWORD",
+          "iconId": "static"
+        },
+        {
+          "id": "localKeyword",
+          "token": "",
+          "iconId": "localIcon"
+        },
+        {
+          "id" : "abstract",
+          "token" : "ABSTRACT_KEYWORD"
+        }
+      ],
+      "icons": [
+        {
+          "id": "class",
+          "iconType": "Base",
+          "icon": "Class"
+        },
+        {
+          "id" : "abstractClassIcon",
+          "iconType" : "Base",
+          "icon" : "AbstractClass"
+        },
+        {
+          "id": "interfaceIcon",
+          "iconType": "Base",
+          "icon": "Interface"
+        },
+        {
+          "id": "field",
+          "iconType": "Base",
+          "icon": "Field"
+        },
+        {
+          "id": "public",
+          "icon": "Public",
+          "iconType": "Offset"
+        },
+        {
+          "id": "static",
+          "icon": "StaticMark",
+          "iconType": "Mark"
+        },
+        {
+          "id": "final",
+          "icon": "FinalMark",
+          "iconType": "Mark"
+        },
+        {
+          "id": "localIcon",
+          "iconType": "Offset",
+          "icon": "Local"
+        },
+        {
+          "id": "methodIcon",
+          "icon": "Method",
+          "iconType": "Base"
+        },
+        {
+          "id" : "abstractMethodIcon",
+          "iconType": "Base",
+          "icon" : "AbstractMethod"
+        }
+      ]
+    },
+    "filters": {
+    }
+  }
+}

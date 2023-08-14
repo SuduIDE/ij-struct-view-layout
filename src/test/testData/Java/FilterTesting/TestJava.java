@@ -1,16 +1,11 @@
 package testData;
 
-class TestJava {
+public class TestJava {
     private int testIntField = 10;
-
     protected int testProtectedIntField = 11;
-
     public int testPublicProtectedIntField = 12;
-
-    static String testStringField = "sss";
-
+    public static String testStringField = "sss";
     final String testFinalStringField = "teetet";
-
 
     public void testPublicMethod() {
         var anonymousClass = new FinalTestJava() {
@@ -21,7 +16,6 @@ class TestJava {
                 System.out.println("print a");
             }
         };
-
         var anonymousClass2 = new testDerivedClass() {
             int sas = 11;
 
@@ -41,12 +35,9 @@ class TestJava {
     }
 }
 
-
-
 public abstract class FinalTestJava {
     public void print();
 }
-
 
 interface InterfaceTest {
 
