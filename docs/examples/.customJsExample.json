@@ -1,0 +1,377 @@
+[
+  {
+    "settings": {
+      "languages" : [
+        "flow js",
+        "javaScript"
+      ],
+      "showFile": false
+    },
+    "element": {
+      "class": {
+        "displayLevel": 1,
+        "baseToken": "JS:FLOW_JS_CLASS",
+        "attributes": {
+          "unique": [
+            "attributesList",
+            "name",
+            "classKeyword"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "classIcon"
+        },
+        "text": [
+          "name"
+        ],
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "file": [
+              "localKeyword"
+            ]
+          }
+        }
+      },
+      "interface": {
+        "displayLevel": 1,
+        "baseToken": "JS:TYPESCRIPT_INTERFACE",
+        "attributes": {
+          "unique": [
+            "attributesList",
+            "name",
+            "interfaceKeyword"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "interfaceIcon"
+        },
+        "text": [
+          "name"
+        ],
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "file": [
+              "localKeyword"
+            ]
+          }
+        }
+      },
+      "fieldStatement": {
+        "displayLevel": 1,
+        "baseToken": "JS:FIELD_STATEMENT",
+        "attributes": {
+          "unique": [
+            "attributesList",
+            "field"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "fieldIcon"
+        },
+        "text": [
+          "field"
+        ],
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "class": [
+              "publicKeyword"
+            ]
+          }
+        }
+      },
+      "field": {
+        "displayLevel": 0,
+        "baseToken": "JS:FIELD",
+        "attributes": {
+          "unique": [
+            "name",
+            "type"
+          ]
+        },
+        "baseIcon": {
+          "iconId": ""
+        },
+        "text": [
+          "name",
+          ": ",
+          "type"
+        ],
+        "description": []
+      },
+      "function": {
+        "displayLevel": 1,
+        "baseToken": "JS:FLOW_JS_FUNCTION",
+        "attributes": {
+          "unique": [
+            "attributesList",
+            "name",
+            "parameterList"
+          ],
+          "optional": [
+            "type"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "functionIcon"
+        },
+        "text": [
+          "name",
+          "(",
+          "parameterList",
+          ")",
+          " ",
+          "type"
+        ],
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "class": [
+              "publicKeyword"
+            ],
+            "classVariable": [
+              "publicKeyword"
+            ]
+          }
+        }
+      },
+      "functionExpression": {
+        "displayLevel": -1,
+        "baseToken": "JS:FLOW_JS_FUNCTION_EXPRESSION",
+        "attributes": {
+          "unique": [
+            "attributesList",
+            "parameterList"
+          ],
+          "optional": [
+            "type"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "functionIcon"
+        },
+        "text": [
+          "(",
+          "parameterList",
+          ")",
+          " ",
+          "type"
+        ],
+        "description": []
+      },
+      "classExpression": {
+        "displayLevel": -1,
+        "baseToken": "JS:FLOW_JS_CLASS_EXPRESSION",
+        "attributes": {
+          "unique": [
+            "attributesList",
+            "classKeyword"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "classIcon"
+        },
+        "text": [],
+        "description": []
+      },
+      "parameter": {
+        "displayLevel": 0,
+        "baseToken": "JS:FORMAL_PARAMETER",
+        "attributes": {
+          "unique": [
+            "name"
+          ],
+          "optional": [
+            "type"
+          ]
+        },
+        "baseIcon": {
+          "iconId": ""
+        },
+        "text": [
+          "name"
+        ],
+        "description": []
+      },
+      "classVariable": {
+        "displayLevel": 1,
+        "baseToken": "JS:VARIABLE",
+        "attributes": {
+          "unique": [
+            "name",
+            "classExpression"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "classIcon"
+        },
+        "text": [
+          "name"
+        ],
+        "description": []
+      },
+      "functionVariable": {
+        "displayLevel": 1,
+        "baseToken": "JS:VARIABLE",
+        "attributes": {
+          "unique": [
+            "name",
+            "functionExpression"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "functionIcon"
+        },
+        "text": [
+          "name",
+          "functionExpression"
+        ],
+        "description": []
+      },
+      "property": {
+        "displayLevel": 1,
+        "baseToken": "JS:PROPERTY",
+        "attributes": {
+          "unique": [
+            "name"
+          ],
+          "optional": [
+            "functionExpression"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "propertyIcon",
+          "attributeKey": "functionExpression",
+          "alternativeIconId": "methodIcon"
+        },
+        "text": [
+          "name",
+          "functionExpression"
+        ],
+        "description": []
+      }
+    },
+    "attribute": {
+      "lists": {
+        "attributesList": "JS:ATTRIBUTE_LIST",
+        "parameterList": "JS:TYPESCRIPT_PARAMETER_LIST"
+      },
+      "properties": [
+        {
+          "id": "name",
+          "token": "JS:IDENTIFIER"
+        },
+        {
+          "id": "type",
+          "token": "JS:SINGLE_TYPE"
+        }
+      ],
+      "keywords": [
+        {
+          "id": "classKeyword",
+          "token": "JS:CLASS_KEYWORD"
+        },
+        {
+          "id": "interfaceKeyword",
+          "token": "JS:INTERFACE_KEYWORD"
+        },
+        {
+          "id": "localKeyword",
+          "token": "",
+          "iconId": "localIcon"
+        },
+        {
+          "id": "publicKeyword",
+          "token": "JS:PUBLIC_KEYWORD",
+          "iconId": "publicIcon"
+        },
+        {
+          "id": "privateKeyword",
+          "token": "JS:PRIVATE_KEYWORD",
+          "iconId": "privateIcon"
+        }
+      ],
+      "icons": [
+        {
+          "id": "classIcon",
+          "iconType": "Base",
+          "icon": "Class"
+        },
+        {
+          "id": "interfaceIcon",
+          "iconType": "Base",
+          "icon": "Interface"
+        },
+        {
+          "id": "fieldIcon",
+          "iconType": "Base",
+          "icon": "Field"
+        },
+        {
+          "id": "propertyIcon",
+          "iconType": "Base",
+          "icon": "Property"
+        },
+        {
+          "id": "functionIcon",
+          "iconType": "Base",
+          "icon": "Function"
+        },
+        {
+          "id": "methodIcon",
+          "iconType": "Base",
+          "icon": "Method"
+        },
+        {
+          "id": "variableIcon",
+          "iconType": "Base",
+          "icon": "Variable"
+        },
+        {
+          "id": "publicIcon",
+          "iconType": "Offset",
+          "icon": "Public"
+        },
+        {
+          "id": "privateIcon",
+          "iconType": "Offset",
+          "icon": "Private"
+        },
+        {
+          "id": "localIcon",
+          "iconType": "Offset",
+          "icon": "Local"
+        }
+      ]
+    },
+    "filters": {
+      "visibility": {
+        "Non-public": {
+          "notElementType": [
+            "class",
+            "interface",
+            "variable"
+          ],
+          "attributeKey": "attributeList",
+          "attributeValue": [
+            "privateKeyword",
+            "localKeyword"
+          ],
+          "notAttributeValue": [
+            "publicKeyword"
+          ],
+          "iconId": "privateIcon"
+        },
+        "Fields": {
+          "elementType": [
+            "field",
+            "variable"
+          ],
+          "iconId": "fieldIcon"
+        }
+      }
+    }
+  }
+]

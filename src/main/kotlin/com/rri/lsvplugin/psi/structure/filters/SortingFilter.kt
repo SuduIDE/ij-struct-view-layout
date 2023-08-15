@@ -3,6 +3,7 @@ package com.rri.lsvplugin.psi.structure.filters
 import com.intellij.ide.util.treeView.smartTree.ActionPresentation
 import com.intellij.ide.util.treeView.smartTree.ActionPresentationData
 import com.intellij.ide.util.treeView.smartTree.Sorter
+import com.rri.lsvplugin.languageElements.elements.Attributes
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewElement
 import com.rri.lsvplugin.utils.JsonStructureSV
@@ -24,14 +25,14 @@ class SortingFilter(private val filterName : String,
     private fun Any.accessLevel() : Int {
         val element = (this as? CustomizedStructureViewElement)?.value ?: return filterInfo.defaultValue ?: return 0
         val sortByList = filterInfo.sortBy
-        for (attribute in element.getUniqueAttributes().values) {
+        for (attribute in element.uniqueAttributes.values) {
 
             if (attribute is List<*>) {
                 val sortableKeyword =
-                    attribute.firstOrNull { attr -> sortByList.any { sortableAttr -> sortableAttr == attr.toString() && attr is BaseElement.KeywordStructure && attr.sortValue != null } }
+                    attribute.firstOrNull { attr -> sortByList.any { sortableAttr -> sortableAttr == attr.toString() && attr is Attributes.KeywordStructure && attr.sortValue != null } }
                 if (sortableKeyword != null)
-                    return (sortableKeyword as BaseElement.KeywordStructure).sortValue!!
-            } else if (attribute is BaseElement.KeywordStructure && attribute.sortValue != null  && sortByList.contains(attribute.toString())) {
+                    return (sortableKeyword as Attributes.KeywordStructure).sortValue!!
+            } else if (attribute is Attributes.KeywordStructure && attribute.sortValue != null  && sortByList.contains(attribute.toString())) {
                     return attribute.sortValue
             }
         }

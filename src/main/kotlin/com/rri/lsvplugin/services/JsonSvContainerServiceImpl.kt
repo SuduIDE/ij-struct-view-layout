@@ -19,6 +19,7 @@ import com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory
 import com.rri.lsvplugin.utils.JsonInfo
 import com.rri.lsvplugin.utils.LanguageUtil
 import com.rri.lsvplugin.utils.MapTypeSV
+import com.rri.lsvplugin.utils.SvConstants
 import org.jetbrains.annotations.TestOnly
 import java.io.File
 import java.nio.file.Path
@@ -28,9 +29,9 @@ import kotlin.io.path.exists
 class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainerService {
     private val jsonSV = JsonInfo(project)
     private val structureViewFactoryMap = mutableMapOf<String, CustomizedStructureViewFactory>()
-    override fun setJsonSV(mapSV: MapTypeSV?) {
-        if (mapSV != null)
-            jsonSV.setMapSV(mapSV)
+    override fun setJsonSV(languagesSV: MapTypeSV?) {
+        if (languagesSV != null)
+            jsonSV.setMapSV(languagesSV)
     }
 
     override fun reset() {
@@ -84,15 +85,20 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
     }
 
     private fun addStructureViewForLang() {
-        for (lang in jsonSV.getMapSV()?.keys!!) {
-            val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
-            if (Language.findLanguageByID(langId) != null) {
-                StructureViewComponent.clearStructureViewState(project)
-                structureViewFactoryMap[lang] = CustomizedStructureViewFactory()
-                LanguageStructureViewBuilder.INSTANCE.addExplicitExtension(
-                    Language.findLanguageByID(langId)!!,
-                    structureViewFactoryMap[lang]!!
-                )
+        for (langStructures in jsonSV.getMapSV()!!) {
+            val languageList = langStructures[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
+            if (languageList != null) {
+                for (lang in languageList) {
+                    val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
+                    if (Language.findLanguageByID(langId) != null) {
+                        StructureViewComponent.clearStructureViewState(project)
+                        structureViewFactoryMap[lang] = CustomizedStructureViewFactory()
+                        LanguageStructureViewBuilder.INSTANCE.addExplicitExtension(
+                            Language.findLanguageByID(langId)!!,
+                            structureViewFactoryMap[lang]!!
+                        )
+                    }
+                }
             }
         }
     }
@@ -101,14 +107,20 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
         ProjectRootManager.getInstance(project).contentRoots.forEach { it.refresh(true, true) }
         if (jsonSV.getMapSV() == null)
             return
-        for (lang in jsonSV.getMapSV()?.keys!!) {
-            val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
-            if (Language.findLanguageByID(langId) != null && structureViewFactoryMap.contains(lang)) {
-                LanguageStructureViewBuilder.INSTANCE.removeExplicitExtension(
-                    Language.findLanguageByID(langId)!!,
-                    structureViewFactoryMap[lang]!!
-                )
-                structureViewFactoryMap.remove(lang)
+
+        for (langStructures in jsonSV.getMapSV()!!) {
+            val languageList = langStructures[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
+            if (languageList != null) {
+                for (lang in languageList) {
+                    val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
+                    if (Language.findLanguageByID(langId) != null && structureViewFactoryMap.contains(lang)) {
+                        LanguageStructureViewBuilder.INSTANCE.removeExplicitExtension(
+                            Language.findLanguageByID(langId)!!,
+                            structureViewFactoryMap[lang]!!
+                        )
+                        structureViewFactoryMap.remove(lang)
+                    }
+                }
             }
         }
     }

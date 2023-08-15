@@ -1,0 +1,59 @@
+[
+  {
+    "settings" : {
+      "languages": [
+        "yaml"
+      ],
+      "showFile": false
+    },
+    "element": {
+      "ext_url": {
+        "displayLevel": 1,
+        "baseToken": "Key value pair",
+        "attributes": {
+          "set": [
+            "tag",
+            "text"
+          ],
+          "unique": [
+            "front_key"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "tagIcon"
+        },
+        "text": [
+          "front_key"
+        ],
+        "description": [
+          "tag",
+          " ",
+          "text"
+        ]
+      }
+    },
+    "attribute": {
+      "properties": [
+        {
+          "id": "front_key",
+          "token": "scalar key"
+        },
+        {
+          "id": "text",
+          "token": "text"
+        },
+        {
+          "id": "tag",
+          "token": "tag"
+        }
+      ],
+      "icons": [
+        {
+          "id": "tagIcon",
+          "iconType": "Base",
+          "icon": "Tag"
+        }
+      ]
+    }
+  }
+]

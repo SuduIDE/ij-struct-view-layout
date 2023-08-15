@@ -1,5 +1,11 @@
-{
-  "JAVA": {
+[
+  {
+    "settings" : {
+      "languages": [
+        "java"
+      ],
+      "showFile": false
+    },
     "element": {
       "class": {
         "displayLevel": 1,
@@ -331,4 +337,4 @@
       }
     }
   }
-}
+]

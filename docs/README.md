@@ -143,8 +143,14 @@ Below is a simple example of a config for XML. For other examples see
 [in examples](./examples/)
 
 ```json
-{
-  "JAVA": {
+[
+  {
+    "settings" : {
+      "languages": [
+        "java"
+      ],
+      "showFile": false
+    },
     "element": {
       "class": {
         "displayLevel": 1,
@@ -314,5 +320,5 @@ Below is a simple example of a config for XML. For other examples see
       }
     }
   }
-}
+]
 ```

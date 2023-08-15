@@ -5,7 +5,7 @@ import java.io.File
 
 interface JsonSvContainerService {
 
-    fun setJsonSV(mapSV: MapTypeSV?)
+    fun setJsonSV(languagesSV: MapTypeSV?)
     fun reset()
     fun getJsonSV(): String
 

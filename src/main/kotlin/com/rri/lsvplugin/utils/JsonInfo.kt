@@ -8,7 +8,7 @@ import java.nio.file.Path
 
 class JsonInfo(private val project: Project){
 
-    private var mapSV: MapTypeSV? = null
+    private var languagesSV: MapTypeSV? = null
     val filenameJsonSV: File = File(".customSV.json")
     private val defaultJsonSv: Path = Path.of("defaultCustomSV/.defaultJavaCustomSV.json")
     private var iconsSV : MutableMap<String, Map<String, JsonStructureSV.IconInfo>> = mutableMapOf()
@@ -22,18 +22,18 @@ class JsonInfo(private val project: Project){
 
     fun getDefaultVersionJson() : String? = javaClass.classLoader?.getResourceAsStream(defaultJsonSv.toString())?.reader()?.readText()
 
-    fun setMapSV(newMapSV: MapTypeSV?) {
-        if (newMapSV != null) {
-            mapSV = languageToLowerCase(newMapSV)
+    fun setMapSV(newLanguagesSV: MapTypeSV?) {
+        if (newLanguagesSV != null) {
+            languagesSV = languageToLowerCase(newLanguagesSV)
             loadIconsForLanguages()
         }
     }
 
-    fun getMapSV(): MapTypeSV? = mapSV
+    fun getMapSV(): MapTypeSV? = languagesSV
 
     fun getJsonSV(): String {
         return Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build().adapter(Any::class.java).indent("    ")
-            .toJson(mapSV)
+            .toJson(languagesSV)
     }
 
 
@@ -45,11 +45,13 @@ class JsonInfo(private val project: Project){
     }
 
     private fun loadIconsForLanguages() {
-        for ((languageName, languageStructure) in mapSV!!.entries) {
+        for (languageStructure in languagesSV!!) {
             @Suppress("UNCHECKED_CAST")
             val iconsList = languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.ICONS) as List<JsonStructureSV.IconInfo>
             iconsList.forEach { it.loadIcon(project) }
-            iconsSV[languageName] = iconsList.associateBy { it.id }
+
+            val languageNameList = languageStructure[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
+            languageNameList?.forEach { languageName -> iconsSV[languageName] = iconsList.associateBy { it.id } }
         }
     }
 
@@ -58,7 +60,7 @@ class JsonInfo(private val project: Project){
         val tmpUpdatedJsonSV = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build().adapter(Any::class.java)
             .fromJson(jsonSV) as MapTypeSV
 
-        for (languageStructure in tmpUpdatedJsonSV.values) {
+        for (languageStructure in tmpUpdatedJsonSV) {
             val newElements = mutableMapOf<String, JsonStructureSV.ElementInfo>()
             languageStructure[SvConstants.ELEMENTS]?.forEach { element ->
                 @Suppress("UNCHECKED_CAST")
@@ -118,9 +120,14 @@ class JsonInfo(private val project: Project){
         return tmpUpdatedJsonSV
     }
 
-    private fun languageToLowerCase(mapSV : MapTypeSV) : MapTypeSV {
-        return  mapSV.mapKeys { it.key.lowercase() }.toMutableMap()
+    private fun languageToLowerCase(languagesSV : MapTypeSV) : MapTypeSV {
+        var languagesList : List<String>
+        for (languageSV in languagesSV) {
+            languagesList = (languageSV[SvConstants.SETTINGS]!![SvConstants.LANGUAGES] as? MutableList<String>)?.map { it.lowercase() } ?: mutableListOf()
+            languageSV[SvConstants.SETTINGS] = mutableMapOf("showFile" to languageSV[SvConstants.SETTINGS]!!["showFile"] as Boolean, SvConstants.LANGUAGES to languagesList)
+        }
+        return languagesSV
     }
 }
 
-typealias MapTypeSV = MutableMap<String, MutableMap<String, MutableMap<String, out Any>>>
+typealias MapTypeSV = MutableList<MutableMap<String, MutableMap<String, out Any>>>

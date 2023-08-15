@@ -1,5 +1,11 @@
-{
-  "JAVA": {
+[
+  {
+    "settings" : {
+      "languages": [
+        "java"
+      ],
+      "showFile": false
+    },
     "element": {
       "class": {
         "displayLevel": 1,
@@ -23,7 +29,14 @@
         "text": [
           "name"
         ],
-        "description": []
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
       },
       "interface": {
         "displayLevel": 1,
@@ -42,7 +55,14 @@
         "text": [
           "name"
         ],
-        "description": []
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
       },
       "method": {
         "displayLevel": 1,
@@ -58,8 +78,10 @@
         },
         "baseIcon": {
           "iconId": "methodIcon",
-          "attributeKey": "modifiers",
-          "attributeValue": "abstract",
+          "attributeKey": "",
+          "attributeValue": [
+            "abstract"
+          ],
           "alternativeIconId": "abstractMethodIcon"
         },
         "text": [
@@ -70,7 +92,18 @@
           ": ",
           "type"
         ],
-        "description": []
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "interface": [
+              "public",
+              "abstract"
+            ],
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
       },
       "field": {
         "displayLevel": 1,
@@ -89,9 +122,17 @@
         "text": [
           "name",
           ": ",
-          "type"
+          "type",
+          " "
         ],
-        "description": []
+        "description": [],
+        "defaultAttributes": {
+          "parent": {
+            "else": [
+              "localKeyword"
+            ]
+          }
+        }
       },
       "parameter": {
         "displayLevel": 0,
@@ -176,13 +217,13 @@
           "id": "private",
           "token": "PRIVATE_KEYWORD",
           "iconId": "private",
-          "sortValue": 1
+          "sortValue": 3
         },
         {
           "id": "public",
           "token": "PUBLIC_KEYWORD",
           "iconId": "public",
-          "sortValue": 2
+          "sortValue": 1
         },
         {
           "id": "final",
@@ -190,13 +231,25 @@
           "iconId": "final"
         },
         {
-          "id": "static",
+          "id": "protected",
+          "token": "PROTECTED_KEYWORD",
+          "iconId": "protectedIcon",
+          "sortValue": 4
+        },
+        {
+          "id": "staticKeyword",
           "token": "STATIC_KEYWORD",
           "iconId": "static"
         },
         {
           "id": "abstract",
           "token": "ABSTRACT_KEYWORD"
+        },
+        {
+          "id": "localKeyword",
+          "token": "",
+          "iconId": "localIcon",
+          "sortValue": 2
         }
       ],
       "icons": [
@@ -251,6 +304,11 @@
           "iconType": "Offset"
         },
         {
+          "id": "protectedIcon",
+          "icon": "Protected",
+          "iconType": "Offset"
+        },
+        {
           "id": "static",
           "icon": "StaticMark",
           "iconType": "Mark"
@@ -264,6 +322,11 @@
           "id": "visibilitySort",
           "icon": "VisibilitySort",
           "iconType": "Base"
+        },
+        {
+          "id": "localIcon",
+          "iconType": "Offset",
+          "icon": "Local"
         }
       ]
     },
@@ -275,6 +338,10 @@
             "interface"
           ],
           "attributeKey": "modifiers",
+          "attributeValue": [
+            "private",
+            "localKeyword"
+          ],
           "notAttributeValue": [
             "public"
           ],
@@ -303,11 +370,13 @@
         "visibility": {
           "sortBy": [
             "public",
-            "private"
+            "private",
+            "localKeyword",
+            "protected"
           ],
           "iconId": "visibilitySort"
         }
       }
     }
   }
-}
+]

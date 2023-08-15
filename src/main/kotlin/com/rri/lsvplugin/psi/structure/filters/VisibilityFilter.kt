@@ -34,9 +34,9 @@ class VisibilityFilter(
             }
 
             if (filterInfo.notAttributeValue == null && filterInfo.attributeValue == null)
-                return !element.getUniqueAttributes()
-                    .containsKey(filterInfo.attributeKey) && !element.getSetAttributes()
-                    .containsKey(filterInfo.attributeKey)
+                return  !element.uniqueAttributes.containsKey(filterInfo.attributeKey)
+                        &&
+                        !element.setAttributes.containsKey(filterInfo.attributeKey)
         }
 
         return false
@@ -55,11 +55,11 @@ class VisibilityFilter(
     override fun isReverted(): Boolean = true
 
     private fun includeAttributes(element: BaseElement): Boolean {
-        return if (element.getUniqueAttributes()[filterInfo.attributeKey] == null)
+        return if (element.uniqueAttributes[filterInfo.attributeKey] == null)
             false
         else if (includeUniqueAttribute(element, filterInfo.notAttributeValue!!))
             true
-        else if (element.getSetAttributes()[filterInfo.attributeKey] == null) {
+        else if (element.setAttributes[filterInfo.attributeKey] == null) {
             if (element.getDefaultAttributes() == null)
                 return false
             includeDefaultAttribute(element, filterInfo.notAttributeValue)
@@ -69,11 +69,11 @@ class VisibilityFilter(
     }
 
     private fun excludeAttributes(element: BaseElement): Boolean {
-        return if (element.getUniqueAttributes()[filterInfo.attributeKey] == null)
+        return if (element.uniqueAttributes[filterInfo.attributeKey] == null)
             false
         else if (includeUniqueAttribute(element, filterInfo.attributeValue!!))
             false
-        else if (element.getSetAttributes()[filterInfo.attributeKey] == null) {
+        else if (element.setAttributes[filterInfo.attributeKey] == null) {
             if (element.getDefaultAttributes() == null)
                 return true
 
@@ -84,17 +84,17 @@ class VisibilityFilter(
     }
 
     private fun includeUniqueAttribute(element: BaseElement, attributeValue: List<String>): Boolean {
-        return if (element.getUniqueAttributes()[filterInfo.attributeKey] is List<*>)
-            (element.getUniqueAttributes()[filterInfo.attributeKey] as List<*>).any {
+        return if (element.uniqueAttributes[filterInfo.attributeKey] is List<*>)
+            (element.uniqueAttributes[filterInfo.attributeKey] as List<*>).any {
                 attributeValue.contains(it.toString())
             }
         else
-            attributeValue.contains(element.getUniqueAttributes()[filterInfo.attributeKey].toString())
+            attributeValue.contains(element.uniqueAttributes[filterInfo.attributeKey].toString())
     }
 
 
     private fun includeSetAttribute(element: BaseElement, attributeValue: List<String>): Boolean {
-        return element.getSetAttributes()[filterInfo.attributeKey]!!.any {
+        return element.setAttributes[filterInfo.attributeKey]!!.any {
            attributeValue.contains(it.toString())
         }
     }

@@ -1,6 +1,7 @@
 package com.rri.lsvplugin.psi.visitors
 
 import com.intellij.psi.PsiElement
+import com.rri.lsvplugin.languageElements.elements.Attributes
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.languageElements.factory.elementCreator.IElementCreator
 import com.rri.lsvplugin.utils.JsonContainerUtil
@@ -23,9 +24,9 @@ class GeneralizedElementVisitor : IElementVisitor {
                     var icon : JsonStructureSV.IconInfo? = null
                     if (it.iconId != null)
                         icon = jsonUtil.getIconInfo(child, it.iconId)
-                    attributeSupplier.addAttribute(curElement, it.id, BaseElement.KeywordStructure(it.id, child.text, it.sortValue, icon))
+                    attributeSupplier.addAttribute(curElement, it.id, Attributes.KeywordStructure(it.id, child.text, it.sortValue, icon))
                 } ?: jsonUtil.getPropertyAttribute(child)?.also {
-                    if (curElement.displayLevel != 0 && it.isNotPartialMatch(child) && attributeSupplier.containsUniqueElement(
+                    if (curElement.displayLevel != 0 && it.isNotPartialMatch(child) && attributeSupplier.containsAttribute(
                             curElement,
                             it.id
                         )
@@ -46,8 +47,8 @@ class GeneralizedElementVisitor : IElementVisitor {
                         if (!newBaseElement.isFull())
                             continue
 
-                        if (!attributeSupplier.addAttribute(curElement, elementName, newBaseElement))
-                            curElement.children.add(newBaseElement)
+                        attributeSupplier.addAttribute(curElement, elementName, newBaseElement)
+                        curElement.children.add(newBaseElement)
                     }
                 } ?: queueChildren.add(Pair(curElement, child))
 
@@ -63,7 +64,8 @@ class GeneralizedElementVisitor : IElementVisitor {
         jsonUtil: JsonContainerUtil
     ): List<Any> {
         val listOfAttr = mutableListOf<Any>()
-        for (child in langElement.children) {
+        var child = langElement.firstChild
+        while(child != null) {
             jsonUtil.getElementNames(child)?.also {
                 for (elementName in it) {
                     val newBaseElement = elementCreator.createElement(
@@ -86,9 +88,11 @@ class GeneralizedElementVisitor : IElementVisitor {
                 var icon : JsonStructureSV.IconInfo? = null
                 if (it.iconId != null)
                     icon = jsonUtil.getIconInfo(child, it.iconId)
-                listOfAttr.add(BaseElement.KeywordStructure(it.id, child.text, it.sortValue, icon))
+                listOfAttr.add(Attributes.KeywordStructure(it.id, child.text, it.sortValue, icon))
             }
             jsonUtil.getPropertyAttribute(child)?.also { listOfAttr.add(child.text) }
+
+            child = child.nextSibling
         }
 
         return listOfAttr

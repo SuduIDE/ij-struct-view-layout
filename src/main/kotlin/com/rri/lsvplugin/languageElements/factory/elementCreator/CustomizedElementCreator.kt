@@ -1,6 +1,7 @@
 package com.rri.lsvplugin.languageElements.factory.elementCreator
 
 import com.intellij.psi.PsiElement
+import com.rri.lsvplugin.languageElements.elements.Attributes
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.utils.JsonContainerUtil
 import com.rri.lsvplugin.utils.JsonStructureSV
@@ -17,7 +18,7 @@ class CustomizedElementCreator : IElementCreator {
         val element = BaseElement(langElement)
         element.displayLevel = elementStructure.displayLevel
         element.elementType = typeElement
-        element.structure = getElementStructure(elementStructure)
+        getElementStructure(elementStructure).clone(element)
         element.baseIcon = getIconStructure(element, elementStructure.baseIcon, jsonUtil)
         element.presentableText = element.PresentableViewText(elementStructure.text, elementStructure.description)
         element.parent = parent
@@ -43,7 +44,7 @@ class CustomizedElementCreator : IElementCreator {
 
     private fun getElementStructure(
         elementStructure: JsonStructureSV.ElementInfo
-    ): BaseElement.ElementStructure {
+    ): Attributes {
         val setAttributes = mutableMapOf<String, MutableList<*>?>()
         if (elementStructure.attributes.containsKey("set")) {
             for (attr in elementStructure.attributes["set"]!!) {
@@ -58,17 +59,24 @@ class CustomizedElementCreator : IElementCreator {
             }
         }
 
-        return BaseElement.ElementStructure(setAttributes, uniqueAttributes)
+        val optionalAttributes = mutableMapOf<String, Any?>()
+        if (elementStructure.attributes.containsKey("optional")) {
+            for (attr in elementStructure.attributes["optional"]!!) {
+                optionalAttributes[attr] = null
+            }
+        }
+
+        return Attributes(setAttributes, uniqueAttributes, optionalAttributes)
     }
 
     private fun getDefaultAttributes(
         element: BaseElement,
         elementStructure: JsonStructureSV.ElementInfo,
         jsonUtil: JsonContainerUtil
-    ) : BaseElement.DefaultAttributes {
+    ) : Attributes.DefaultAttributes {
         val defaultAttributesRelatedParent = elementStructure.defaultAttributes?.parent
         val defaultAttributesRelatedChildren = elementStructure.defaultAttributes?.children
-        return BaseElement.DefaultAttributes(
+        return Attributes.DefaultAttributes(
             fillDefaultAttributeMap(element, defaultAttributesRelatedParent, jsonUtil),
             fillDefaultAttributeMap(element, defaultAttributesRelatedChildren, jsonUtil)
         )
@@ -78,13 +86,13 @@ class CustomizedElementCreator : IElementCreator {
         element: BaseElement,
         defaultAttributes : Map<String, List<String>>?,
         jsonUtil: JsonContainerUtil
-    ) : Map<String, List<BaseElement.KeywordStructure>>? {
+    ) : Map<String, List<Attributes.KeywordStructure>>? {
         if (defaultAttributes == null)
             return null
 
-        val defaultAttributeElementMap = mutableMapOf<String, MutableList<BaseElement.KeywordStructure>>()
+        val defaultAttributeElementMap = mutableMapOf<String, MutableList<Attributes.KeywordStructure>>()
         for ((parentType, keywordList) in defaultAttributes) {
-            defaultAttributeElementMap[parentType] = mutableListOf<BaseElement.KeywordStructure>()
+            defaultAttributeElementMap[parentType] = mutableListOf()
             for (keywordName in keywordList) {
                 val keyword = jsonUtil.getKeywordAttributeByName(keywordName, element.langElement)
                 if (keyword != null) {
@@ -92,7 +100,7 @@ class CustomizedElementCreator : IElementCreator {
                     if (keyword.iconId != null)
                         icon = jsonUtil.getIconInfo(element.langElement,  keyword.iconId)
                     defaultAttributeElementMap[parentType]
-                        ?.add(BaseElement.KeywordStructure(keyword.id, "", keyword.sortValue, icon))
+                        ?.add(Attributes.KeywordStructure(keyword.id, "", keyword.sortValue, icon))
                 }
             }
         }

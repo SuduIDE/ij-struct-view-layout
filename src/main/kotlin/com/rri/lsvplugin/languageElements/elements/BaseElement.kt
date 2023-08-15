@@ -8,34 +8,13 @@ import com.rri.lsvplugin.languageElements.elementUtils.ElementDescriptorIconProv
 import com.rri.lsvplugin.utils.JsonStructureSV
 import javax.swing.Icon
 
-open class BaseElement(val langElement: PsiElement) {
-
-    data class ElementStructure(
-        val setAttributes: MutableMap<String, MutableList<*>?> = mutableMapOf(),
-        val uniqueAttributes: MutableMap<String, Any?> = mutableMapOf()
-    )
+open class BaseElement(val langElement: PsiElement) : Attributes(){
 
     data class IconStructure(
         val defaultIcon: JsonStructureSV.IconInfo?,
         val attributeKey: String?,
         val attributeValue: List<String>?,
         val alternativeIcon: JsonStructureSV.IconInfo?
-    )
-
-    data class KeywordStructure(
-        val id : String,
-        val text: String,
-        val sortValue: Int?,
-        val icon: JsonStructureSV.IconInfo?
-    ) {
-        override fun toString(): String {
-            return if (text.isEmpty()) id else text
-        }
-    }
-
-    data class DefaultAttributes(
-        val parent : Map<String, List<KeywordStructure>>?,
-        val children : Map<String, List<KeywordStructure>>?
     )
 
     inner class PresentableViewText(
@@ -65,18 +44,10 @@ open class BaseElement(val langElement: PsiElement) {
                             thisPos++
                     }
                     presentableText.append(thisPos.toString())
-                } else if (getUniqueAttributes()[attr] is List<*>) {
-                    val uniqueAttributeList = getUniqueAttributes()[attr] as List<*>
-                    presentableText.append(addPresentableListText(uniqueAttributeList))
-                } else if (getSetAttributes().containsKey(attr)) {
-                    if (getSetAttributes()[attr] != null) {
-                        val setAttributeList = getSetAttributes()[attr] as List<*>
-                        presentableText.append(addPresentableListText(setAttributeList))
-                    }
-                } else if (!addPartToPresentableText(
-                        presentableText,
-                        getUniqueAttributes()[attr]
-                    ))
+                } else if (getAttribute(attr) is List<*>) {
+                    val attributeList = getAttribute(attr) as List<*>
+                    presentableText.append(addPresentableListText(attributeList))
+                } else if (!addPartToPresentableText( presentableText, getAttribute(attr)) && !isOptional(attr))
                         presentableText.append(attr)
 
             }
@@ -111,12 +82,10 @@ open class BaseElement(val langElement: PsiElement) {
 
     var displayLevel: Int = 0
     var elementType: String? = null
-    var structure = ElementStructure()
     var baseIcon: IconStructure? = null
     var presentableText = PresentableViewText()
     var children: MutableList<BaseElement> = mutableListOf()
     var parent: BaseElement? = null
-    var defaultAttributes : DefaultAttributes? = null
 
     fun getPresentableView(): ItemPresentation {
         if (elementType == "file")
@@ -129,14 +98,7 @@ open class BaseElement(val langElement: PsiElement) {
         )
     }
 
-    fun getUniqueAttributes(): MutableMap<String, Any?> = structure.uniqueAttributes
-    fun getSetAttributes(): MutableMap<String, MutableList<*>?> = structure.setAttributes
-
-    /**
-     * Return list of keywords for all type default attributes
-     * @return List of keywords for parent and children default attributes
-     */
-    fun getDefaultAttributes() : List<KeywordStructure>? {
+    override fun getDefaultAttributes() : List<KeywordStructure>? {
         val parentDefaultAttributes =  defaultAttributes?.parent?.get(parent!!.elementType) ?: defaultAttributes?.parent?.get("else")
         val childrenContainedInDefaultedAttributes = children.filter { defaultAttributes?.children?.containsKey(it.elementType) ?: false}
         val childrenDefaultAttributes : List<KeywordStructure>?
@@ -161,15 +123,15 @@ open class BaseElement(val langElement: PsiElement) {
         val cloneElement = BaseElement(langElement.deepClonePolymorphic())
         cloneElement.displayLevel = displayLevel
         cloneElement.elementType = elementType
-        cloneElement.structure = structure
         cloneElement.baseIcon = baseIcon
+        super.clone(cloneElement)
         for (child in children)
             cloneElement.children.add(child.clone())
         return cloneElement
     }
 
     fun isFull(): Boolean {
-        for (attr in structure.uniqueAttributes.values)
+        for (attr in uniqueAttributes.values)
             if (attr == null)
                 return false
 
@@ -182,7 +144,7 @@ open class BaseElement(val langElement: PsiElement) {
     override fun equals(other: Any?): Boolean {
         if (other !is BaseElement)
             return false
-        return elementType.equals(other.elementType) && other.structure == structure && other.children == children
+        return elementType.equals(other.elementType) && other.children == children && super.equals(other)
     }
 
     override fun toString(): String = presentableText.getText()

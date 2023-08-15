@@ -13,6 +13,8 @@ class SvConstants {
         const val LISTS = "lists"
         const val KEYWORDS = "keywords"
         const val ICONS = "icons"
+        const val SETTINGS = "settings"
+        const val LANGUAGES = "languages"
     }
 
     @JsonClass(generateAdapter = true)

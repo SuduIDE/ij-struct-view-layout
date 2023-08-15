@@ -1,5 +1,11 @@
-{
-  "XML": {
+[
+  {
+    "settings" : {
+      "languages": [
+        "xml"
+      ],
+      "showFile": false
+    },
     "element": {
       "tag": {
         "displayLevel": 1,
@@ -80,4 +86,4 @@
       }
     }
   }
-}
+]

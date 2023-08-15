@@ -27,7 +27,7 @@ dependencies {
 
 intellij {
   version.set("2023.2")
-  type.set("IC") // Target IDE Platform
+  type.set("IU") // Target IDE Platform
 //  plugins.set(listOf())
   plugins.set(listOf("com.intellij.java"))
 }
