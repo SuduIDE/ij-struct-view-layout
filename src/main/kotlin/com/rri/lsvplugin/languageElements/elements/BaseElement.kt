@@ -100,10 +100,11 @@ open class BaseElement(val langElement: PsiElement) : Attributes(){
 
     override fun getDefaultAttributes() : List<KeywordStructure>? {
         val parentDefaultAttributes =  defaultAttributes?.parent?.get(parent!!.elementType) ?: defaultAttributes?.parent?.get("else")
-        val childrenContainedInDefaultedAttributes = children.filter { defaultAttributes?.children?.containsKey(it.elementType) ?: false}
         val childrenDefaultAttributes : List<KeywordStructure>?
-
-        if (childrenContainedInDefaultedAttributes.isEmpty())
+        val childrenContainedInDefaultedAttributes = children.filter { defaultAttributes?.children?.containsKey(it.elementType) ?: false}
+        if (children.isEmpty())
+            childrenDefaultAttributes  = defaultAttributes?.children?.get("leaf")
+        else if (childrenContainedInDefaultedAttributes.isEmpty())
             childrenDefaultAttributes = defaultAttributes?.children?.get("else")
         else {
             childrenDefaultAttributes = mutableListOf()

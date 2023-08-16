@@ -29,7 +29,7 @@
         "text": [
           "name"
         ],
-        "description": ["class_keyword", "- test description"],
+        "description": ["class", "- test description"],
         "defaultAttributes": {
           "parent": {
             "else": [

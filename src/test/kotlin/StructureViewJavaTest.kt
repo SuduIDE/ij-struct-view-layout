@@ -22,7 +22,7 @@ class StructureViewJavaTest : StructureViewBaseTest() {
          interface text=BaseTestInterface
           method text=testMethod(int testArg): void
          class text=BaseTestJava class- test description
-          field text=public static final test: int
+          field text=public staticKeyword final test: int
         """
     )
 
