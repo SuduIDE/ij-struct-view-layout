@@ -97,13 +97,17 @@ class JsonContainerUtil {
             .firstOrNull { it.id == keywordName }
     }
 
-    fun getPropertyAttribute(langElement: PsiElement): JsonStructureSV.PropertyInfo? {
+    fun getPropertyAttribute(langElement: PsiElement): List<JsonStructureSV.PropertyInfo>? {
         if (!isPropertyAttribute(langElement))
             return null
 
         @Suppress("UNCHECKED_CAST")
-        return (getLanguageStructure(langElement)!![SvConstants.ATTRIBUTES]!![SvConstants.PROPERTIES]!! as List<JsonStructureSV.PropertyInfo>)
-            .firstOrNull { it.token == langElement.elementType.toString() }
+        val keywordList = (getLanguageStructure(langElement)!![SvConstants.ATTRIBUTES]!![SvConstants.PROPERTIES]!! as List<JsonStructureSV.PropertyInfo>)
+            .filter { it.token == langElement.elementType.toString() }
+        if (keywordList.isEmpty())
+            return null
+
+        return keywordList
     }
 
     fun getVisibilityFilters(langElement: PsiElement): Map<String, JsonStructureSV.VisibilityFilterInfo>? {

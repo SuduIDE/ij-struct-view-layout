@@ -83,19 +83,21 @@ class JsonStructureSV {
         val id: String,
         val token: String,
         val regexp: String?,
+        val notMatchedDisplayLevel: Int?
     ) {
 
         fun isNotPartialMatch(langElement: PsiElement) : Boolean {
             return regexp != null && Regex(regexp).find(langElement.text) == null
         }
         companion object {
-            fun fromJson(map: Map<String, String>) = object {
+            fun fromJson(map: Map<String, Any>) = object {
                 private val defaultMap = map.withDefault { null }
                 private val id by map
                 private val token by map
                 private val regexp by defaultMap
+                private val notMatchedDisplayLevel by defaultMap
 
-                val property = PropertyInfo(id, token, regexp)
+                val property = PropertyInfo(id as String, token as String, regexp as? String, (notMatchedDisplayLevel as? Double)?.toInt())
             }.property
         }
     }

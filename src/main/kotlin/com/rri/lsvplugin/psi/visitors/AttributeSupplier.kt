@@ -17,6 +17,9 @@ class AttributeSupplier : IAttributeSupplier {
             else
                 (curElement.setAttributes[attributeName] as MutableList<Any>).add(attributeValue)
             return true
+        } else if  (containsExclusiveAttribute(curElement, attributeName)) {
+            curElement.exclusiveAttributes[attributeName] = attributeValue
+            return true
         }
         return false
     }
@@ -27,6 +30,10 @@ class AttributeSupplier : IAttributeSupplier {
 
     private fun containsOptionalAttribute(element: BaseElement, attributeName: String) : Boolean {
         return element.optionalAttributes.containsKey(attributeName) && element.optionalAttributes[attributeName] == null
+    }
+
+    private fun containsExclusiveAttribute(element: BaseElement, attributeName: String) : Boolean {
+        return element.exclusiveAttributes.containsKey(attributeName) && element.exclusiveAttributes[attributeName] == null
     }
 
     override fun containsAttribute(element: BaseElement, attributeName: String): Boolean {

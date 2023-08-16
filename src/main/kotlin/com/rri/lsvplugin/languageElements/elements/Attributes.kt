@@ -6,6 +6,7 @@ open class Attributes(
     var setAttributes: MutableMap<String, MutableList<*>?> = mutableMapOf(),
     var uniqueAttributes: MutableMap<String, Any?> = mutableMapOf(),
     var optionalAttributes: MutableMap<String, Any?> = mutableMapOf(),
+    var exclusiveAttributes: MutableMap<String, Any?> = mutableMapOf(),
 ) {
     data class KeywordStructure(
         val id: String,
@@ -14,7 +15,7 @@ open class Attributes(
         val icon: JsonStructureSV.IconInfo?
     ) {
         override fun toString(): String {
-            return if (text.isEmpty()) id else text
+            return id
         }
     }
 
@@ -57,6 +58,7 @@ open class Attributes(
         other.setAttributes = setAttributes
         other.optionalAttributes = optionalAttributes
         other.defaultAttributes = defaultAttributes
+        other.exclusiveAttributes = exclusiveAttributes
     }
 
 

@@ -74,6 +74,12 @@ class ElementDescriptorIconProvider {
                 else
                     addIconToList(uniqueAttr, iconType, iconList)
             }
+            for (optionalAttr in element.optionalAttributes.values) {
+                if (optionalAttr is List<*>)
+                    getIconByTypeInList(optionalAttr, iconType, iconList)
+                else
+                    addIconToList(optionalAttr, iconType, iconList)
+            }
 
             val defaultKeywords = element.getDefaultAttributes()
             if (iconList.isEmpty() && defaultKeywords != null)

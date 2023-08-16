@@ -66,7 +66,14 @@ class CustomizedElementCreator : IElementCreator {
             }
         }
 
-        return Attributes(setAttributes, uniqueAttributes, optionalAttributes)
+        val exclusiveAttributes = mutableMapOf<String, Any?>()
+        if (elementStructure.attributes.containsKey("exclusive")) {
+            for (attr in elementStructure.attributes["exclusive"]!!) {
+                exclusiveAttributes[attr] = null
+            }
+        }
+
+        return Attributes(setAttributes, uniqueAttributes, optionalAttributes, exclusiveAttributes)
     }
 
     private fun getDefaultAttributes(

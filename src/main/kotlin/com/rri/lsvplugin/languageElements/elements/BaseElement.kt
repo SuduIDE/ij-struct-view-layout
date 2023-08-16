@@ -135,6 +135,10 @@ open class BaseElement(val langElement: PsiElement) : Attributes(){
             if (attr == null)
                 return false
 
+        for (attr in exclusiveAttributes.values)
+            if (attr != null)
+                return false
+
         return true
     }
 

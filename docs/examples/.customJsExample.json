@@ -138,7 +138,7 @@
         }
       },
       "functionExpression": {
-        "displayLevel": -1,
+        "displayLevel": 0,
         "baseToken": "JS:FLOW_JS_FUNCTION_EXPRESSION",
         "attributes": {
           "unique": [
@@ -195,6 +195,23 @@
         ],
         "description": []
       },
+      "classDefinitionExpression": {
+        "displayLevel": 2,
+        "baseToken": "JS:DEFINITION_EXPRESSION",
+        "attributes": {
+          "unique": [
+            "thisKeyword",
+            "name"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "fieldIcon"
+        },
+        "text": [
+          "name"
+        ],
+        "description": []
+      },
       "classVariable": {
         "displayLevel": 1,
         "baseToken": "JS:VARIABLE",
@@ -209,6 +226,27 @@
         },
         "text": [
           "name"
+        ],
+        "description": [],
+        "defaultAttributes": {
+          "parent" : {
+            "else" : ["localKeyword"]
+          }
+        }
+      },
+      "functionDefinitionExpression": {
+        "displayLevel": 1,
+        "baseToken": "JS:DEFINITION_EXPRESSION",
+        "attributes": {
+          "unique": [
+            "name", "functionExpression"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "functionIcon"
+        },
+        "text": [
+          "name", "functionExpression"
         ],
         "description": []
       },
@@ -227,6 +265,25 @@
         "text": [
           "name",
           "functionExpression"
+        ],
+        "description": []
+      },
+      "variable": {
+        "displayLevel": 1,
+        "baseToken": "JS:VARIABLE",
+        "attributes": {
+          "unique": [
+            "name"
+          ],
+          "exclusive" : [
+            "classExpression", "functionExpression"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "variableIcon"
+        },
+        "text": [
+          "name"
         ],
         "description": []
       },
@@ -291,6 +348,15 @@
           "id": "privateKeyword",
           "token": "JS:PRIVATE_KEYWORD",
           "iconId": "privateIcon"
+        },
+        {
+          "id": "thisKeyword",
+          "token": "JS:THIS_KEYWORD"
+        },
+        {
+          "id": "constKeyword",
+          "token": "JS:CONST_KEYWORD",
+          "iconId": "constIcon"
         }
       ],
       "icons": [
@@ -343,6 +409,11 @@
           "id": "localIcon",
           "iconType": "Offset",
           "icon": "Local"
+        },
+        {
+          "id": "constIcon",
+          "iconType": "Mark",
+          "icon": "FinalMark"
         }
       ]
     },
@@ -351,23 +422,18 @@
         "Non-public": {
           "notElementType": [
             "class",
-            "interface",
-            "variable"
+            "interface"
           ],
-          "attributeKey": "attributeList",
+          "attributeKey": "attributesList",
           "attributeValue": [
-            "privateKeyword",
-            "localKeyword"
-          ],
-          "notAttributeValue": [
-            "publicKeyword"
+            "privateKeyword"
           ],
           "iconId": "privateIcon"
         },
         "Fields": {
           "elementType": [
-            "field",
-            "variable"
+            "variable",
+            "classDefinitionExpression"
           ],
           "iconId": "fieldIcon"
         }

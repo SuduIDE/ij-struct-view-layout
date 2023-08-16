@@ -26,14 +26,16 @@ class GeneralizedElementVisitor : IElementVisitor {
                         icon = jsonUtil.getIconInfo(child, it.iconId)
                     attributeSupplier.addAttribute(curElement, it.id, Attributes.KeywordStructure(it.id, child.text, it.sortValue, icon))
                 } ?: jsonUtil.getPropertyAttribute(child)?.also {
-                    if (curElement.displayLevel != 0 && it.isNotPartialMatch(child) && attributeSupplier.containsAttribute(
-                            curElement,
-                            it.id
+                    for (keyword in it) {
+                        if (curElement.displayLevel != 0 && keyword.isNotPartialMatch(child) && attributeSupplier.containsAttribute(
+                                curElement,
+                                keyword.id
+                            )
                         )
-                    )
-                        curElement.displayLevel = -1
+                            curElement.displayLevel = keyword.notMatchedDisplayLevel ?: 0
 
-                    attributeSupplier.addAttribute(curElement, it.id, child.text)
+                        attributeSupplier.addAttribute(curElement, keyword.id, child.text)
+                    }
                 } ?: jsonUtil.getElementNames(child)?.also {
                     for (elementName in it) {
                         val newBaseElement = elementCreator.createElement(
