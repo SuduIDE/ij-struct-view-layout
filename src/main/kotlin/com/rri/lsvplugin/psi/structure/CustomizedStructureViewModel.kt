@@ -20,7 +20,8 @@ class CustomizedStructureViewModel(
 ) : StructureViewModelBase(psiFile, editor, CustomizedStructureViewElement(BaseElement(psiFile), creator)),
     StructureViewModel.ElementInfoProvider {
     override fun isAlwaysShowsPlus(element: StructureViewTreeElement?): Boolean {
-        return (element!!.value as BaseElement).children.isNotEmpty()
+        //return (element!!.value as BaseElement).children.isNotEmpty()
+        return false
     }
     override fun isAlwaysLeaf(element: StructureViewTreeElement?): Boolean = false
 

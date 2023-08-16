@@ -1,17 +1,17 @@
 [
   {
-    "settings" : {
+    "settings": {
       "languages": [
         "yaml"
       ],
       "showFile": false
     },
     "element": {
-      "ext_url": {
+      "regular":  {
         "displayLevel": 1,
         "baseToken": "Key value pair",
         "attributes": {
-          "set": [
+          "optional": [
             "tag",
             "text"
           ],
@@ -20,7 +20,9 @@
           ]
         },
         "baseIcon": {
-          "iconId": "tagIcon"
+          "iconId": "tagIcon",
+          "attributeKey" : "leafKeyword",
+          "alternativeIconId" : "leafIcon"
         },
         "text": [
           "front_key"
@@ -29,10 +31,51 @@
           "tag",
           " ",
           "text"
-        ]
+        ],
+        "defaultAttributes" : {
+          "children" : {
+            "leaf" : ["leafKeyword"]
+          }
+        }
+      },
+      "sequenceItem" : {
+        "displayLevel": 1,
+        "baseToken": "Sequence item",
+        "attributes": {
+          "exclusive" : ["text"]
+        },
+        "baseIcon": {
+          "iconId": "tagIcon"
+        },
+        "text": [
+          "Sequence Item"
+        ],
+        "description": []
+      },
+      "sequenceItemWithText" : {
+        "displayLevel": 1,
+        "baseToken": "Sequence item",
+        "attributes": {
+          "unique" : [
+            "text"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "leafIcon"
+        },
+        "text": [
+          "text"
+        ],
+        "description": []
       }
     },
     "attribute": {
+      "keywords" : [
+        {
+          "id" : "leafKeyword",
+          "token" : ""
+        }
+      ],
       "properties": [
         {
           "id": "front_key",
@@ -50,8 +93,13 @@
       "icons": [
         {
           "id": "tagIcon",
+          "iconType" : "Base",
+          "icon" : "Tag"
+        },
+        {
+          "id" : "leafIcon",
           "iconType": "Base",
-          "icon": "Tag"
+          "icon" : "Property"
         }
       ]
     }
