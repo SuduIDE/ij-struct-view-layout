@@ -8,7 +8,6 @@
     },
     "element": {
       "tag": {
-        "displayLevel": 1,
         "baseToken": "XML_TAG",
         "attributes": {
           "set": [

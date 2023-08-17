@@ -27,12 +27,16 @@ class GeneralizedElementVisitor : IElementVisitor {
                     attributeSupplier.addAttribute(curElement, it.id, Attributes.KeywordStructure(it.id, child.text, it.sortValue, icon))
                 } ?: jsonUtil.getPropertyAttribute(child)?.also {
                     for (keyword in it) {
-                        if (curElement.displayLevel != 0 && keyword.isNotPartialMatch(child) && attributeSupplier.containsAttribute(
-                                curElement,
-                                keyword.id
-                            )
-                        )
+                        if (curElement.displayLevel != 0
+                            &&
+                            keyword.isNotPartialMatch(child)
+                            &&
+                            attributeSupplier.containsAttribute(curElement, keyword.id)
+                            ) {
                             curElement.displayLevel = keyword.notMatchedDisplayLevel ?: 0
+                            if (curElement.displayLevel > 0)
+                                curElement.displayLevel = 0
+                        }
 
                         attributeSupplier.addAttribute(curElement, keyword.id, child.text)
                     }

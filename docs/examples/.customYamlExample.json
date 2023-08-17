@@ -4,11 +4,22 @@
       "languages": [
         "yaml"
       ],
-      "showFile": false
+      "showFile": true
     },
     "element": {
+      "document" : {
+        "baseToken": "Document ---",
+        "attributes": {
+        },
+        "baseIcon": {
+          "iconId": "tagIcon"
+        },
+        "text": [
+          "YAML document"
+        ],
+        "description": []
+      },
       "regular":  {
-        "displayLevel": 1,
         "baseToken": "Key value pair",
         "attributes": {
           "optional": [
@@ -39,7 +50,6 @@
         }
       },
       "sequenceItem" : {
-        "displayLevel": 1,
         "baseToken": "Sequence item",
         "attributes": {
           "exclusive" : ["text"]
@@ -53,7 +63,6 @@
         "description": []
       },
       "sequenceItemWithText" : {
-        "displayLevel": 1,
         "baseToken": "Sequence item",
         "attributes": {
           "unique" : [

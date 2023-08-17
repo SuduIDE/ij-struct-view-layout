@@ -8,7 +8,6 @@
     },
     "element": {
       "class": {
-        "displayLevel": 1,
         "baseToken": "CLASS",
         "attributes": {
           "set": [],
@@ -39,7 +38,6 @@
         }
       },
       "interface": {
-        "displayLevel": 1,
         "baseToken": "CLASS",
         "attributes": {
           "set": [],
@@ -65,7 +63,6 @@
         }
       },
       "method": {
-        "displayLevel": 1,
         "baseToken": "METHOD",
         "attributes": {
           "set": [],
@@ -106,7 +103,6 @@
         }
       },
       "field": {
-        "displayLevel": 1,
         "baseToken": "FIELD",
         "attributes": {
           "set": [],
@@ -153,7 +149,6 @@
         "description": []
       },
       "aClass": {
-        "displayLevel": 1,
         "baseToken": "ANONYMOUS_CLASS",
         "attributes": {
           "set": [],
@@ -169,7 +164,6 @@
         "description": []
       },
       "lambda": {
-        "displayLevel": 1,
         "baseToken": "LAMBDA_EXPRESSION",
         "attributes": {
           "set": [],

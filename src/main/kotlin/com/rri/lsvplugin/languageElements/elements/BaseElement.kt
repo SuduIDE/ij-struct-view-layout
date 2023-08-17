@@ -3,19 +3,22 @@ package com.rri.lsvplugin.languageElements.elements
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.navigation.ItemPresentation
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.jetbrains.rd.framework.base.deepClonePolymorphic
 import com.rri.lsvplugin.languageElements.elementUtils.ElementDescriptorIconProvider
 import com.rri.lsvplugin.utils.JsonStructureSV
 import javax.swing.Icon
 
 open class BaseElement(val langElement: PsiElement) : Attributes(){
-
     data class IconStructure(
         val defaultIcon: JsonStructureSV.IconInfo?,
         val attributeKey: String?,
         val attributeValue: List<String>?,
         val alternativeIcon: JsonStructureSV.IconInfo?
-    )
+    ) {
+        fun getDefaultIcon() = defaultIcon?.loadedIcon
+        fun getAlternativeIcon() = alternativeIcon?.loadedIcon
+    }
 
     inner class PresentableViewText(
         private var presentableTextList: List<String> = listOf(),
@@ -80,16 +83,26 @@ open class BaseElement(val langElement: PsiElement) : Attributes(){
         }
     }
 
-    var displayLevel: Int = 0
+    var displayLevel: Int = 1
+    var displayOnlyLevel: Int = 0
+    var currentLevel: Int = 0
     var elementType: String? = null
     var baseIcon: IconStructure? = null
     var presentableText = PresentableViewText()
     var children: MutableList<BaseElement> = mutableListOf()
     var parent: BaseElement? = null
 
+
+    init {
+        if (langElement is PsiFile) {
+            elementType = "file"
+            uniqueAttributes["name"] = langElement.name
+            uniqueAttributes["filepath"] = langElement.containingDirectory.virtualFile.path
+            presentableText = PresentableViewText(listOf("name", " ", "filepath"), listOf())
+        }
+    }
+
     fun getPresentableView(): ItemPresentation {
-        if (elementType == "file")
-            return PresentationData("", null, null, null)
         return PresentationData(
             presentableText.getText(),
             presentableText.getDescription(),

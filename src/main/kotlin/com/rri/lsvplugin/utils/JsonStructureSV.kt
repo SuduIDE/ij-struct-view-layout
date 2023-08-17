@@ -24,7 +24,8 @@ class JsonStructureSV {
 
     @JsonClass(generateAdapter = true)
     data class ElementInfo(
-        val displayLevel: Int,
+        val displayLevel: Int?,
+        val displayOnlyLevel: Int?,
         val baseToken: String,
         val attributes: Map<String, List<String>>,
         val baseIcon: IconProperties,
@@ -36,7 +37,8 @@ class JsonStructureSV {
             @Suppress("UNCHECKED_CAST")
             fun fromJson(map: Map<String, Any>) = object {
                 private val defaultMap = map.withDefault { null }
-                private val displayLevel by map
+                private val displayLevel by defaultMap
+                private val displayOnlyLevel by defaultMap
                 private val baseToken by map
                 private val attributes by map
                 private val baseIcon by map
@@ -45,7 +47,8 @@ class JsonStructureSV {
                 private val defaultAttributes by defaultMap
 
                 val elementInfo = ElementInfo(
-                    (displayLevel as Double).toInt(),
+                    (displayLevel as? Double)?.toInt(),
+                    (displayOnlyLevel as? Double)?.toInt(),
                     baseToken as String,
                     attributes as Map<String, List<String>>,
                     IconProperties.fromJson(baseIcon as Map<String, Any>),

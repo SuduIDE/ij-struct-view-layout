@@ -4,6 +4,7 @@ import com.intellij.ide.structureView.StructureViewModel
 import com.intellij.ide.structureView.StructureViewModelBase
 import com.intellij.ide.structureView.StructureViewTreeElement
 import com.intellij.ide.util.treeView.smartTree.Filter
+import com.intellij.ide.util.treeView.smartTree.NodeProvider
 import com.intellij.ide.util.treeView.smartTree.Sorter
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiElement
@@ -12,16 +13,18 @@ import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.languageElements.factory.elementCreator.CustomizedElementCreator
 import com.rri.lsvplugin.psi.ViewCreator
 import com.rri.lsvplugin.psi.visitors.GeneralizedElementVisitor
+import com.rri.lsvplugin.utils.JsonContainerUtil
 
 class CustomizedStructureViewModel(
     private val psiFile: PsiFile,
     private val editor: Editor?,
-    private val creator: ViewCreator = ViewCreator(GeneralizedElementVisitor(), CustomizedElementCreator())
+    private val jsonUtil: JsonContainerUtil,
+    private val creator: ViewCreator = ViewCreator(GeneralizedElementVisitor(), CustomizedElementCreator(), jsonUtil)
 ) : StructureViewModelBase(psiFile, editor, CustomizedStructureViewElement(BaseElement(psiFile), creator)),
     StructureViewModel.ElementInfoProvider {
+
     override fun isAlwaysShowsPlus(element: StructureViewTreeElement?): Boolean {
-        //return (element!!.value as BaseElement).children.isNotEmpty()
-        return false
+        return (element!!.value as BaseElement).children.isNotEmpty()
     }
     override fun isAlwaysLeaf(element: StructureViewTreeElement?): Boolean = false
 
@@ -46,9 +49,6 @@ class CustomizedStructureViewModel(
 
     override fun getRoot(): CustomizedStructureViewElement {
         val fileElement = BaseElement(psiFile)
-        fileElement.elementType = "file"
-        fileElement.uniqueAttributes["name"] = psiFile.name
-        fileElement.presentableText = fileElement.PresentableViewText(listOf("name"), listOf())
         return CustomizedStructureViewElement(fileElement, creator)
     }
 }

@@ -16,7 +16,8 @@ class CustomizedElementCreator : IElementCreator {
         val elementStructure = jsonUtil.getElementByName(langElement, typeElement)
 
         val element = BaseElement(langElement)
-        element.displayLevel = elementStructure.displayLevel
+        element.displayLevel = elementStructure.displayLevel ?: 1
+        element.displayOnlyLevel = elementStructure.displayOnlyLevel ?: 0
         element.elementType = typeElement
         getElementStructure(elementStructure).clone(element)
         element.baseIcon = getIconStructure(element, elementStructure.baseIcon, jsonUtil)

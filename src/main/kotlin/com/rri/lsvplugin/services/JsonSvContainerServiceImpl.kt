@@ -104,7 +104,6 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
     }
 
     private fun removeStructureViewForLang() {
-        ProjectRootManager.getInstance(project).contentRoots.forEach { it.refresh(true, true) }
         if (jsonSV.getMapSV() == null)
             return
 

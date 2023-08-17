@@ -2,6 +2,7 @@ package com.rri.lsvplugin.utils
 
 import com.intellij.openapi.components.service
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.util.elementType
 import com.jetbrains.rd.util.firstOrNull
 import com.rri.lsvplugin.services.JsonSvContainerServiceImpl
@@ -125,5 +126,9 @@ class JsonContainerUtil {
     fun getIconInfo(langElement: PsiElement, baseIconName: String?): JsonStructureSV.IconInfo? {
         return (getLanguageStructure(langElement)?.get(SvConstants.ATTRIBUTES)
             ?.get(SvConstants.ICONS) as List<JsonStructureSV.IconInfo>).firstOrNull { it.id == baseIconName }
+    }
+
+    fun isShowFile(file: PsiElement): Boolean {
+        return (getLanguageStructure(file)?.get(SvConstants.SETTINGS)?.get("showFile") as? Boolean) ?: false
     }
 }

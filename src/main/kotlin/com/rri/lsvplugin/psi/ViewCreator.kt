@@ -15,10 +15,8 @@ import java.util.*
 class ViewCreator(
     private val visitor: IElementVisitor,
     private val elementCreator: IElementCreator,
+    private val jsonUtil: JsonContainerUtil
 ) {
-
-    private val jsonUtil = JsonContainerUtil()
-
     fun visitElement(element: BaseElement) {
         visitor.visitElement(element, elementCreator, jsonUtil)
     }
@@ -68,7 +66,10 @@ class ViewCreator(
                     curElement.parent = curElement.parent?.parent
                 }
 
-                curElement.parent?.children?.add(curElement)
+                curElement.currentLevel = curElement.parent?.currentLevel ?: 0
+                curElement.currentLevel++
+                if (curElement.displayOnlyLevel == 0 || curElement.currentLevel == curElement.displayOnlyLevel)
+                    curElement.parent?.children?.add(curElement)
             }
 
         }

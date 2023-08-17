@@ -41,36 +41,80 @@ After executing this action, the config will be automatically opened in the wind
 
 ### Main points of customization
 
-In the config at the top level is the language for which the structure view will be customized. 
-Each language has a set of basic elements with which the structure view is customized. Namely:
+The config is a list of structure view settings for each. Each element contains a structure with the following parameters
+at the top level
 
+* __settings__ - contains a list of languages for which configuration will take place, as well as global structure view settings
 * __elements__ - what will be displayed in the structure view (or not)
 * __attributes__ - what elements consist of (names, modifiers, types, etc.)
 * __filters__ - filters allow you to hide or display certain elements according to specified conditions, 
 and you can also set sorting by specific keywords (for example, by visibility modifiers)
 
 To get both the names of tokens and languages, you can use the PsiViewer plugin, it also allows you to define the hierarchy of elements in the language
+Skeleton config with required top-level elements:
+```json
+[
+  {
+    "settings": {
+    },
+    "element": {
+    },
+    "attribute": {
+    },
+    "filters": {
+    }
+  }
+]
+```
+#### Settings
+
+This section contains a list of languages and settings that specify some behavior of the structure view 
+(at the moment, you can set the file display):
+
+```json
+"settings": {
+  "languages" : [
+    //list of languages in any case.
+  ],
+  "showFile" : false or true
+  // if showFile is false, then the file will not be displayed in the structure view
+  // else will display the file name and its current directory
+},
+```
+
 #### Elements 
 
 Each element must have a strict structure that allows it to be fully described for display in the structure view.
 Namely, each element must have (or not) describe the field data:
 
-* __"displayLevel"__ - defines the level in the hierarchy in the structure view relative to the parent.
+* __"displayLevel"__ - defines the level in the hierarchy in the structure view relative to the parent. 
+Optional parameter, default value is 1.
     * -1 - do not display the element, while the children rise to its level
     * 0 - element not showing
     * 1 - element at the base level, the parent-child relationship does not change
     * \>1 - an element is moved up a given level in the hierarchy
+* __"displayOnlyLevel"__ - if it is necessary to set the level only at which elements of this type will be displayed, then this parameter should be used. Optional parameter, can have the following values:
+  * 0 - no specific level, items are displayed on all levels
+  * \>0 - elements of this type are displayed only at the specified level
 * __"baseToken"__ -  AST-tree token in the given language, according to which the element will be created in the structure view
-* __"attributes"__ - stores a list of attributes that the element contains. There can be two types:
+* __"attributes"__ - stores a list of attributes that the element contains. These attributes can be used when displaying
+  text, icons and element filtering. There are four types of attributes in total:
   * __"set"__ - an implicit set when the language enumerates elements or attributes without explicitly identifying the list
   * __"unique"__ - contains unique attributes in the singular, such as a name, type, or other element
+  * __"optional"__ - contains a list of attributes that are not necessarily found on the element.
+  * __"exclusive"__ - contains a list of attributes that should not be found on an element of this type. Used only when forming an element. 
+If one of the attributes is found, the element will not be created
 * __"baseIcon"__ - sets the base icon for this type of elements, if the conditions specified by the user are met, then an alternative icon will be displayed.
 It has the following structure:
-  * __"iconId"__ - id of the default icon set in attributes (see below)
+  * __"iconId"__ - id of the default icon set in attributes (see below). Required icon type - "Base"
   * __"attributeKey"__ - attribute of the element on which the condition will be checked. Optional parameter
   * __"attributeValue"__ - attribute values in the form of a list, if there is at least one match, then an alternative icon will be used. 
     If the specified attribute is another element, then the comparison will be based on the textual representation of this element. Optional parameter
-  * __"alternativeIconId"__ - alternative icon id. Will be displayed only if the attribute is set and its value matches that of the element
+  * __"alternativeIconId"__ - alternative icon id with type "Base". Will be used in the following cases:
+    * If attributeKey is given and no list of attribute values is given, and attributeKey is present on the element
+    * If attributeKey and attributeValue are given, and attributekey is contained in the element and its value is present in the list
+      attributeValue
+    * If the values from attributeValue are in the default attributes
 * __"text"__ - sets the display text for elements. It is presented as a list, the elements of which are the specified attributes of the element. 
 If the value of an element in the list is not an attribute, then it will be displayed as plain text. 
 If the listed attributes are elements, then they will display their textual representation. 
@@ -85,7 +129,66 @@ Supported iterative text: "$i" - the number of the element in the parent
   * __parent__ - means that the listed attributes will depend on the parent. This is the attribute definition format
     such __"parentType" : "["List of keywords]"__, if you write instead of the parent __"else"__, then these attributes will be distributed
     with other parents.
-  * __children__ - means that the listed attributes will depend on children. The way to set attributes is the same as for parent
+  * __children__ - means that the listed attributes will depend on children. The way to set attributes is the same as for parent.
+    You can also set default attributes if the element is a leaf. To do this, it is enough to set __"leaf"__ as the value of the child and list the corresponding attributes
+
+Element structure example:
+
+```json5
+{
+  "elementName": {
+    "displayLevel": 1,
+    //optional parameter
+    "displayOnlyLevel": 0,
+    "baseToken" : "ELEMENT_TOKEN",
+    //optional parameter
+    "attributes": {
+      // optional attribute type 
+      "set": [
+        //list of attributes    
+      ],
+      // optional attribute type
+      "unique": [
+        //list of attributes
+      ],
+      // optional attribute type
+      "optional": [
+        //list of attributes
+      ],
+      "exclusive": [
+        //list of attributes
+      ] 
+    },
+    "baseIcon" : {
+      "iconId": "iconId", // see below
+      // optional
+      "attributeKey" : "attributeName",
+      // optional
+      "attributeValue": [
+        //possible attribute values
+      ],
+      "alternativeIconId" : "alternativeIconId"
+    },
+    "text" : [
+      // attribute name or plain text
+    ],
+    "description" : [],
+    "defaultAttributes" : {
+      "parent" : {
+        "parentElementType" : [
+          //list of keywords
+        ],
+        "else" : []
+      },
+      "children" : {
+        "childrenElementType" : [],
+        "leaf" : [],
+        "else" : []
+      }
+    }
+  }
+}
+```
 #### Attributes
 
 There are three types of attributes in total: __lists__, __properties__, __keywords__, __icons__. List and keywords have the following structure:
@@ -96,6 +199,7 @@ For example, in Java this could be MODIFIER_LIST, which lists the modifier keywo
   * __"id"__ - property name, which may not depend on the language in any way: name, type, etc.
   * __"token"__ - the name of the token in the language being used
   * __"regexp"__ - an optional parameter containing a regular expression that allows you to use only those tokens whose text matches the expression
+  * __"notMatchedDisplayLevel"__ - display level of the element, if its property does not match. Доступные значения __0__ или __1__.
 * __keywords__ - list of keywords specific to the language being used, such as the words class, public, etc. Consists of the following fields:
   * __"id"__ - the name of the token that will be used in the elements
   * __"token"__ - the name of the token used in the language
@@ -113,7 +217,40 @@ For example, in Java this could be MODIFIER_LIST, which lists the modifier keywo
     * __"AllIcons"__ - a list of all icons can be found [here](https://jetbrains.design/intellij/resources/icons_list/).
       Icons are contained in groups corresponding to their purpose. However, in order to get any icon, it is enough to specify
       her name, in which the first letter will be capitalized
-    * __"UserPath"__ - full path to the icon, no larger than 48x48 px.
+    * __"UserPath"__ - full or relative (project) pathto the icon, no larger than 48x48 px.
+
+The general structure for setting attributes:
+```json5
+{
+  "lists": {
+    "listId": "TOKEN_LIST"
+  },
+  "properties": [
+    {
+      "id": "propertyId",
+      "token": "PROPERTY_TOKEN",
+      //optional
+      "regexp": ".*",
+      "notMatchedDisplayLevel": -1
+    }
+  ],
+  "keywords": [
+    {
+      "id": "keywordId",
+      "token": "KEYWORD_TOKEN",
+      "iconId": "iconId",
+      "sortValue": 1
+    }
+  ],
+  "icons": [
+    {
+      "iconId": "iconId",
+      "iconType": "Base",
+      "icon": "Icon"
+    }
+  ]
+}
+```
 
 #### Filters
 
@@ -137,187 +274,156 @@ In general, sorts have the following structure:
     items in sort
   * __"iconId"__ - sorting icon displayed in the structure view panel
 
+The structure of filters and sorts:
+
+```json5
+{
+  "visibility": {
+    "FilterName": {
+      "elementType" : [
+        //list of elementTypes
+      ],
+      "notElementType": [
+        //list of elementTypes
+      ],
+      "attributeKey": "attributesKeyName",
+      "attributeValue": [
+        //list of attribute values
+      ],
+      "iconId": "filterIconId"
+    }
+  },
+  "sorts" : {
+    "sortingName": {
+      "sortBy": [
+        // list of keywords
+      ],
+      "defaultValue" : 0,
+      "iconId": "sortingIconId"
+    }
+  }
+}
+```
+
 #### Examples
 
-Below is a simple example of a config for XML. For other examples see
+Below is a simple example of a config for YAML. For other examples see
 [in examples](./examples/)
 
 ```json
 [
   {
-    "settings" : {
+    "settings": {
       "languages": [
-        "java"
+        "yaml"
       ],
-      "showFile": false
+      "showFile": true
     },
     "element": {
-      "class": {
-        "displayLevel": 1,
-        "baseToken": "CLASS",
+      "document" : {
+        "baseToken": "Document ---",
         "attributes": {
-          "set": [],
+        },
+        "baseIcon": {
+          "iconId": "tagIcon"
+        },
+        "text": [
+          "YAML document"
+        ],
+        "description": []
+      },
+      "regular":  {
+        "baseToken": "Key value pair",
+        "attributes": {
+          "optional": [
+            "tag",
+            "text"
+          ],
           "unique": [
-            "modifiers",
-            "name",
-            "class_keyword"
+            "front_key"
           ]
         },
         "baseIcon": {
-          "iconId": "classIcon",
-          "attributeKey": "modifiers",
-          "attributeValue": [
-            "abstract"
-          ],
-          "alternativeIconId": "abstractClassIcon"
+          "iconId": "tagIcon",
+          "attributeKey" : "leafKeyword",
+          "alternativeIconId" : "leafIcon"
         },
         "text": [
-          "name"
+          "front_key"
         ],
-        "description": [],
+        "description": [
+          "tag",
+          " ",
+          "text"
+        ],
         "defaultAttributes" : {
-          "parent" : {
-            "else" : ["localKeyword"]
+          "children" : {
+            "leaf" : ["leafKeyword"]
           }
         }
+      },
+      "sequenceItem" : {
+        "baseToken": "Sequence item",
+        "attributes": {
+          "exclusive" : ["text"]
+        },
+        "baseIcon": {
+          "iconId": "tagIcon"
+        },
+        "text": [
+          "Sequence Item"
+        ],
+        "description": []
+      },
+      "sequenceItemWithText" : {
+        "baseToken": "Sequence item",
+        "attributes": {
+          "unique" : [
+            "text"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "leafIcon"
+        },
+        "text": [
+          "text"
+        ],
+        "description": []
       }
     },
     "attribute": {
-      "lists": {
-        "modifiers": "MODIFIER_LIST",
-        "parameters": "PARAMETER_LIST"
-      },
-      "properties": [
+      "keywords" : [
         {
-          "id": "name",
-          "token": "IDENTIFIER"
+          "id" : "leafKeyword",
+          "token" : ""
         }
       ],
-      "keywords": [
+      "properties": [
         {
-          "id": "class_keyword",
-          "token": "CLASS_KEYWORD"
+          "id": "front_key",
+          "token": "scalar key"
         },
         {
-          "id": "private",
-          "token": "PRIVATE_KEYWORD",
-          "iconId": "private",
-          "sortValue": 1
+          "id": "text",
+          "token": "text"
         },
         {
-          "id": "public",
-          "token": "PUBLIC_KEYWORD",
-          "iconId": "public",
-          "sortValue": 2
-        },
-        {
-          "id": "final",
-          "token": "FINAL_KEYWORD",
-          "iconId": "final"
-        },
-        {
-          "id": "static",
-          "token": "STATIC_KEYWORD",
-          "iconId": "static"
-        },
-        {
-          "id": "abstract",
-          "token": "ABSTRACT_KEYWORD"
-        },
-        {
-          "id" : "localKeyword",
-          "token" : "",
-          "iconId" : "localIcon",
-          "sortValue" : 2
+          "id": "tag",
+          "token": "tag"
         }
       ],
       "icons": [
         {
-          "id": "classIcon",
+          "id": "tagIcon",
+          "iconType" : "Base",
+          "icon" : "Tag"
+        },
+        {
+          "id" : "leafIcon",
           "iconType": "Base",
-          "icon": "Class"
-        },
-        {
-          "id": "abstractClassIcon",
-          "iconType": "Base",
-          "icon": "AbstractClass"
-        },
-        {
-          "id": "interfaceIcon",
-          "iconType": "Base",
-          "icon": "Interface"
-        },
-        {
-          "id": "field",
-          "iconType": "Base",
-          "icon": "Field"
-        },
-        {
-          "id": "aClass",
-          "iconType": "Base",
-          "icon": "AnonymousClass"
-        },
-        {
-          "id": "lambda",
-          "iconType": "Base",
-          "icon": "Lambda"
-        },
-        {
-          "id": "methodIcon",
-          "icon": "Method",
-          "iconType": "Base"
-        },
-        {
-          "id": "abstractMethodIcon",
-          "iconType": "Base",
-          "icon": "AbstractMethod"
-        },
-        {
-          "id": "private",
-          "icon": "Private",
-          "iconType": "Offset"
-        },
-        {
-          "id": "public",
-          "icon": "Public",
-          "iconType": "Offset"
-        },
-        {
-          "id": "static",
-          "icon": "StaticMark",
-          "iconType": "Mark"
-        },
-        {
-          "id": "final",
-          "icon": "FinalMark",
-          "iconType": "Mark"
-        },
-        {
-          "id": "visibilitySort",
-          "icon": "VisibilitySort",
-          "iconType": "Base"
+          "icon" : "Property"
         }
       ]
-    },
-    "filters": {
-      "visibility": {
-        "Non-public": {
-          "attributeKey": "modifiers",
-          "attributeValue" : [
-            "localKeyword"
-          ],
-          "notAttributeValue": [
-            "public"
-          ],
-          "iconId": "private"
-        }
-      },
-      "sorts" : {
-        "visibility" : {
-          "sortBy" : ["public", "private", "localKeyword"],
-          "iconId" : "visibilitySort"
-        }
-      }
     }
   }
 ]

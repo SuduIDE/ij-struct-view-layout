@@ -17,31 +17,34 @@ class ElementDescriptorIconProvider {
 
         private fun getBaseIcon(element: BaseElement): Icon? {
             val attributeKey = element.baseIcon?.attributeKey
+            val attributeValue = element.baseIcon?.attributeValue
+            val alternativeIcon = element.baseIcon?.getAlternativeIcon()
+            val defaultIcon = element.baseIcon?.getDefaultIcon()
             if (element.baseIcon?.alternativeIcon?.iconType == SvConstants.IconType.Base && attributeKey != null) {
-                if (element.baseIcon?.attributeValue == null && element.getAttribute(attributeKey) != null) {
-                    return element.baseIcon?.alternativeIcon?.loadedIcon
-                } else if (element.baseIcon?.attributeValue != null) {
+                if (attributeValue == null && element.getAttribute(attributeKey) != null) {
+                    return alternativeIcon
+                } else if (attributeValue != null) {
                     val attributes = element.getAttribute(attributeKey)
-                    if (attributes is List<*>) {
-                        if (attributes.any { element.baseIcon!!.attributeValue!!.contains(it.toString()) })
-                            return element.baseIcon?.alternativeIcon?.loadedIcon
-
-                    } else if (element.baseIcon?.attributeValue!!.contains(attributes)) {
-                        return element.baseIcon?.alternativeIcon?.loadedIcon
-                    } else if (element.getDefaultAttributes() != null && element.getDefaultAttributes()!!
-                            .any { element.baseIcon!!.attributeValue!!.contains(it.toString()) }
-                    ) {
-                        return element.baseIcon?.alternativeIcon?.loadedIcon
+                    if (attributes is List<*> && attributes.any { attributeValue.contains(it.toString())}) {
+                        return alternativeIcon
+                    } else if (attributeValue.contains(attributes) || defaultAttributesContainsAttributeValue(element, attributeValue)) {
+                        return alternativeIcon
                     }
 
-                    return element.baseIcon?.defaultIcon?.loadedIcon
+                    return defaultIcon
                 }
-            }
+            } else if (element.baseIcon?.alternativeIcon?.iconType == SvConstants.IconType.Base && attributeValue != null && defaultAttributesContainsAttributeValue(element, attributeValue))
+                return alternativeIcon
 
             if (element.baseIcon?.defaultIcon?.iconType == SvConstants.IconType.Base)
-                return element.baseIcon?.defaultIcon?.loadedIcon
+                return defaultIcon
 
             return null
+        }
+
+        private fun defaultAttributesContainsAttributeValue(element: BaseElement, attributeValue: List<String>) : Boolean {
+            return element.getDefaultAttributes() != null && element.getDefaultAttributes()!!
+                .any { attributeValue.contains(it.toString())}
         }
 
         private fun getOffsetIcons(element: BaseElement, baseIcon: Icon): Icon {
