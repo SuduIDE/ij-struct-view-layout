@@ -6,7 +6,7 @@ class StructureViewJavaTest : StructureViewBaseTest() {
     fun `baseJavaTest`(): Unit = doTest(
         "ElementTesting/BaseTestJava.java", "ElementTesting/.customBaseJavaSV.json",
         """
-        file text=BaseTestJava.java
+        file text=BaseTestJava.java /src/ElementTesting
          interface text=BaseTestInterface
           method text=testMethod(int): void
          class text=BaseTestJava
@@ -18,7 +18,7 @@ class StructureViewJavaTest : StructureViewBaseTest() {
     fun `textJavaTest`(): Unit = doTest(
         "ElementTesting/BaseTestJava.java", "ElementTesting/.customTextJavaSV.json",
         """
-        file text=BaseTestJava.java
+        file text=BaseTestJava.java /src/ElementTesting
          interface text=BaseTestInterface
           method text=testMethod(int testArg): void
          class text=BaseTestJava class- test description
@@ -30,7 +30,7 @@ class StructureViewJavaTest : StructureViewBaseTest() {
     fun `displayLevelJavaTest`(): Unit = doTest(
         "ElementTesting/BaseTestJava.java", "ElementTesting/.customDisplayLevelJavaSV.json",
         """
-        file text=BaseTestJava.java
+        file text=BaseTestJava.java /src/ElementTesting
          class text=BaseTestJava
          field text=test: int 
          method text=testMethod(int): void
@@ -41,7 +41,7 @@ class StructureViewJavaTest : StructureViewBaseTest() {
     fun `elementFileterJavaTest`(): Unit = doTest(
         "FilterTesting/TestJava.java", "FilterTesting/.customElementFilterSV.json",
         """
-        file text=TestJava.java
+        file text=TestJava.java /src/FilterTesting
          interface text=InterfaceTest
         """.trimIndent()
     )
@@ -50,7 +50,7 @@ class StructureViewJavaTest : StructureViewBaseTest() {
     fun `notElementFilterJavaTest`(): Unit = doTest(
         "FilterTesting/TestJava.java", "FilterTesting/.customNotElementFilterSV.json",
         """
-        file text=TestJava.java
+        file text=TestJava.java /src/FilterTesting
          interface text=InterfaceTest
         """.trimIndent()
     )
@@ -59,7 +59,7 @@ class StructureViewJavaTest : StructureViewBaseTest() {
     fun `attributeFilterJavaTest`(): Unit = doTest(
         "FilterTesting/TestJava.java", "FilterTesting/.customAttributeFilterSV.json",
         """
-        file text=TestJava.java
+        file text=TestJava.java /src/FilterTesting
          class text=FinalTestJava
           method text=print(): void
          class text=TestJava
@@ -73,7 +73,7 @@ class StructureViewJavaTest : StructureViewBaseTest() {
     fun `visibilityFilterJavaTest`(): Unit = doTest(
         "FilterTesting/TestJava.java", "FilterTesting/.customVisibilityFilterSV.json",
         """
-        file text=TestJava.java
+        file text=TestJava.java /src/FilterTesting
          class text=FinalTestJava
           method text=print(): void
          interface text=InterfaceTest
@@ -89,7 +89,7 @@ class StructureViewJavaTest : StructureViewBaseTest() {
     fun `sortingJavaTest`(): Unit = doTest(
         "FilterTesting/TestJava.java", "FilterTesting/.customSortingSV.json",
         """
-        file text=TestJava.java
+        file text=TestJava.java /src/FilterTesting
          class text=FinalTestJava
           method text=print(): void
          class text=TestJava

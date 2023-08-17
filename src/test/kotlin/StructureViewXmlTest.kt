@@ -6,7 +6,7 @@ class StructureViewXmlTest : StructureViewBaseTest() {
     fun `baseXmlTest`(): Unit = doTest(
         "TestXML.xml", ".customBaseXmlSV.json",
         """
-        file text=TestXML.xml
+        file text=TestXML.xml /src
          tag text=bookstore specialty='novel'
           tag text=book style='autobiography'
           tag text=book style='textbook'
