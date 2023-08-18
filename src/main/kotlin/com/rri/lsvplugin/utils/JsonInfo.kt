@@ -61,68 +61,73 @@ class JsonInfo(private val project: Project) {
     }
 
     private fun convertJsonToMapSV(jsonSV: String): MapTypeSV? {
-        @Suppress("UNCHECKED_CAST")
-        val tmpUpdatedJsonSV = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build().adapter(Any::class.java)
-            .fromJson(jsonSV) as MapTypeSV
-
-        for (languageStructure in tmpUpdatedJsonSV) {
-            val newElements = mutableMapOf<String, JsonStructureSV.ElementInfo>()
-            languageStructure[SvConstants.ELEMENTS]?.forEach { element ->
-                @Suppress("UNCHECKED_CAST")
-                newElements[element.key] = JsonStructureSV.ElementInfo.fromJson(element.value as Map<String, Any>)
-            }
-            languageStructure[SvConstants.ELEMENTS] = newElements
-
-            val properties = mutableListOf<JsonStructureSV.PropertyInfo>()
-            (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.PROPERTIES) as? List<*>)?.forEach { property ->
-                @Suppress("UNCHECKED_CAST")
-                properties.add(JsonStructureSV.PropertyInfo.fromJson(property as Map<String, String>))
-            }
-
-            val keywords = mutableListOf<JsonStructureSV.KeywordInfo>()
-            (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) as? List<*>)?.forEach { keyword ->
-                @Suppress("UNCHECKED_CAST")
-                keywords.add(JsonStructureSV.KeywordInfo.fromJson(keyword as Map<String, String>))
-            }
-
-            val icons = mutableListOf<JsonStructureSV.IconInfo>()
-            (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.ICONS) as? List<*>)?.forEach { icon ->
-                @Suppress("UNCHECKED_CAST")
-                icons.add(JsonStructureSV.IconInfo.fromJson(icon as Map<String, String>))
-            }
-
-            languageStructure[SvConstants.ATTRIBUTES] = mutableMapOf(
-                SvConstants.LISTS to (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.LISTS)
-                    ?: mutableMapOf<String, String>()),
-                SvConstants.PROPERTIES to properties,
-                SvConstants.KEYWORDS to keywords,
-                SvConstants.ICONS to icons
-            )
-
+        try {
             @Suppress("UNCHECKED_CAST")
-            val visibilityFiltersMap =
-                (languageStructure[SvConstants.FILTERS]?.get(SvConstants.VISIBILITY_FILTERS) as? Map<String, Map<String, Any>>)
-            val visibilityFilters = mutableMapOf<String, JsonStructureSV.VisibilityFilterInfo>()
-            visibilityFiltersMap?.entries?.forEach { visibilityFilter ->
-                visibilityFilters[visibilityFilter.key] =
-                    JsonStructureSV.VisibilityFilterInfo.fromJson(visibilityFilter.value)
-            }
+            val tmpUpdatedJsonSV = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build().adapter(Any::class.java)
+                .fromJson(jsonSV) as MapTypeSV
 
-            @Suppress("UNCHECKED_CAST")
-            val sortingFilterMap =
-                (languageStructure[SvConstants.FILTERS]?.get(SvConstants.SORTING_FILTERS) as? Map<String, Map<String, Any>>)
-            val sortingFilters = mutableMapOf<String, JsonStructureSV.SortingFilterInfo>()
-            sortingFilterMap?.entries?.forEach { sortingFilter ->
-                sortingFilters[sortingFilter.key] =
-                    JsonStructureSV.SortingFilterInfo.fromJson(sortingFilter.value)
-            }
+            for (languageStructure in tmpUpdatedJsonSV) {
+                val newElements = mutableMapOf<String, JsonStructureSV.ElementInfo>()
+                languageStructure[SvConstants.ELEMENTS]?.forEach { element ->
+                    @Suppress("UNCHECKED_CAST")
+                    newElements[element.key] = JsonStructureSV.ElementInfo.fromJson(element.value as Map<String, Any>)
+                }
+                languageStructure[SvConstants.ELEMENTS] = newElements
 
-            languageStructure[SvConstants.FILTERS] = mutableMapOf(
-                SvConstants.VISIBILITY_FILTERS to visibilityFilters,
-                SvConstants.SORTING_FILTERS to sortingFilters
-            )
+                val properties = mutableListOf<JsonStructureSV.PropertyInfo>()
+                (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.PROPERTIES) as? List<*>)?.forEach { property ->
+                    @Suppress("UNCHECKED_CAST")
+                    properties.add(JsonStructureSV.PropertyInfo.fromJson(property as Map<String, String>))
+                }
+
+                val keywords = mutableListOf<JsonStructureSV.KeywordInfo>()
+                (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) as? List<*>)?.forEach { keyword ->
+                    @Suppress("UNCHECKED_CAST")
+                    keywords.add(JsonStructureSV.KeywordInfo.fromJson(keyword as Map<String, String>))
+                }
+
+                val icons = mutableListOf<JsonStructureSV.IconInfo>()
+                (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.ICONS) as? List<*>)?.forEach { icon ->
+                    @Suppress("UNCHECKED_CAST")
+                    icons.add(JsonStructureSV.IconInfo.fromJson(icon as Map<String, String>))
+                }
+
+                languageStructure[SvConstants.ATTRIBUTES] = mutableMapOf(
+                    SvConstants.LISTS to (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.LISTS)
+                        ?: mutableMapOf<String, String>()),
+                    SvConstants.PROPERTIES to properties,
+                    SvConstants.KEYWORDS to keywords,
+                    SvConstants.ICONS to icons
+                )
+
+                @Suppress("UNCHECKED_CAST")
+                val visibilityFiltersMap =
+                    (languageStructure[SvConstants.FILTERS]?.get(SvConstants.VISIBILITY_FILTERS) as? Map<String, Map<String, Any>>)
+                val visibilityFilters = mutableMapOf<String, JsonStructureSV.VisibilityFilterInfo>()
+                visibilityFiltersMap?.entries?.forEach { visibilityFilter ->
+                    visibilityFilters[visibilityFilter.key] =
+                        JsonStructureSV.VisibilityFilterInfo.fromJson(visibilityFilter.value)
+                }
+
+                @Suppress("UNCHECKED_CAST")
+                val sortingFilterMap =
+                    (languageStructure[SvConstants.FILTERS]?.get(SvConstants.SORTING_FILTERS) as? Map<String, Map<String, Any>>)
+                val sortingFilters = mutableMapOf<String, JsonStructureSV.SortingFilterInfo>()
+                sortingFilterMap?.entries?.forEach { sortingFilter ->
+                    sortingFilters[sortingFilter.key] =
+                        JsonStructureSV.SortingFilterInfo.fromJson(sortingFilter.value)
+                }
+
+                languageStructure[SvConstants.FILTERS] = mutableMapOf(
+                    SvConstants.VISIBILITY_FILTERS to visibilityFilters,
+                    SvConstants.SORTING_FILTERS to sortingFilters
+                )
+            }
+            return tmpUpdatedJsonSV
+        } catch (error: Exception) {
+            ErrorNotification.notifyError(project, "Incorrect config format")
         }
-        return tmpUpdatedJsonSV
+        return null
     }
 
     private fun languageToLowerCase(languagesSV: MapTypeSV): MapTypeSV {
