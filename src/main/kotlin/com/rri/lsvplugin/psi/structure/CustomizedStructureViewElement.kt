@@ -47,7 +47,4 @@ class CustomizedStructureViewElement(
                 if (element.presentableText.getDescription() != "")  (" " + element.presentableText.getDescription()) else ""
 
     }
-
-    override fun navigationRequest(): NavigationRequest? = (element.langElement as Navigatable).navigationRequest()
-
 }

@@ -84,7 +84,7 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
 
     private fun addStructureViewForLang() {
         for (langStructures in jsonSV.getMapSV()!!) {
-            val languageList = langStructures[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
+            @Suppress("UNCHECKED_CAST") val languageList = langStructures[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
             if (languageList != null) {
                 for (lang in languageList) {
                     val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
@@ -105,7 +105,7 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
             return
 
         for (langStructures in jsonSV.getMapSV()!!) {
-            val languageList = langStructures[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
+            @Suppress("UNCHECKED_CAST") val languageList = langStructures[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
             if (languageList != null) {
                 for (lang in languageList) {
                     val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)

@@ -55,7 +55,7 @@ class JsonInfo(private val project: Project) {
                 languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.ICONS) as List<JsonStructureSV.IconInfo>
             iconsList.forEach { it.loadIcon(project) }
 
-            val languageNameList = languageStructure[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
+            @Suppress("UNCHECKED_CAST") val languageNameList = languageStructure[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
             languageNameList?.forEach { languageName -> iconsSV[languageName] = iconsList.associateBy { it.id } }
         }
     }
@@ -133,6 +133,7 @@ class JsonInfo(private val project: Project) {
     private fun languageToLowerCase(languagesSV: MapTypeSV): MapTypeSV {
         var languagesList: List<String>
         for (languageSV in languagesSV) {
+            @Suppress("UNCHECKED_CAST")
             languagesList =
                 (languageSV[SvConstants.SETTINGS]!![SvConstants.LANGUAGES] as? MutableList<String>)?.map { it.lowercase() }
                     ?: mutableListOf()

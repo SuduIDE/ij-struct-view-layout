@@ -18,7 +18,7 @@ class JsonContainerUtil {
         val languageStructures = getLangElementsMap(langElement)
         if (languageStructures != null) {
             for (languageStructure in languageStructures) {
-                val languagesList = (languageStructure as Map<String, Map<String, Any>>)[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
+                @Suppress("UNCHECKED_CAST") val languagesList = languageStructure[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
                 if (languagesList?.contains(getLanguage(langElement)) == true)
                     return languageStructure
             }
@@ -47,6 +47,7 @@ class JsonContainerUtil {
     private fun isKeywordAttribute(langElement: PsiElement): Boolean {
         val languageStructure =  getLanguageStructure(langElement) ?: return false
 
+        @Suppress("UNCHECKED_CAST")
         return (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) as? List<JsonStructureSV.KeywordInfo>)?.any {
             it.token == langElement.elementType.toString()
         } ?: false
@@ -124,6 +125,7 @@ class JsonContainerUtil {
     }
 
     fun getIconInfo(langElement: PsiElement, baseIconName: String?): JsonStructureSV.IconInfo? {
+        @Suppress("UNCHECKED_CAST")
         return (getLanguageStructure(langElement)?.get(SvConstants.ATTRIBUTES)
             ?.get(SvConstants.ICONS) as List<JsonStructureSV.IconInfo>).firstOrNull { it.id == baseIconName }
     }
