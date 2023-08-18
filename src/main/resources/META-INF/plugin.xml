@@ -37,11 +37,12 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-<!--        <lang.psiStructureViewFactory language="JAVA"-->
-<!--                                      implementationClass="com.rri.lsvplugin.psi.structure.CustomizedStructureViewFactory" />-->
         <projectService serviceInterface="com.rri.lsvplugin.services.JsonSvContainerService"
                         serviceImplementation="com.rri.lsvplugin.services.JsonSvContainerServiceImpl"/>
         <postStartupActivity implementation="com.rri.lsvplugin.services.PostStartupService"/>
+
+        <notificationGroup id="Error Notification Group"
+                           displayType="BALLOON"/>
     </extensions>
 
 

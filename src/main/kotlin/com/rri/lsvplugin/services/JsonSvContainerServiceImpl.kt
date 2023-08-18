@@ -2,12 +2,14 @@ package com.rri.lsvplugin.services
 
 import com.intellij.ide.impl.StructureViewWrapperImpl
 import com.intellij.ide.navigationToolbar.StructureAwareNavBarModelExtension
+import com.intellij.ide.structureView.StructureViewFactoryEx
 import com.intellij.ide.structureView.TreeBasedStructureViewBuilder
 import com.intellij.ide.structureView.impl.StructureViewFactoryImpl
 import com.intellij.ide.structureView.newStructureView.StructureViewComponent
 import com.intellij.ide.util.StructureViewCompositeModel
 import com.intellij.lang.Language
 import com.intellij.lang.LanguageStructureViewBuilder
+import com.intellij.lang.PsiStructureViewFactory
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
@@ -59,29 +61,25 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
 
     fun loadCurrentVersion() {
         removeStructureViewForLang()
-        ////
         if (!isCustomSvExist()) {
             setJsonSV(null)
             return
         }
 
         val fullPathToJsonSV = getFullPathToCustomSV()
-        jsonSV.loadAndConvertJson(fullPathToJsonSV)
-        ////
-        addStructureViewForLang()
+        if (jsonSV.loadAndConvertJson(fullPathToJsonSV))
+            addStructureViewForLang()
     }
 
     @TestOnly
     fun loadCurrentVersion(pathJsonStructureSV: Path) {
         removeStructureViewForLang()
-        ////
         if (!pathJsonStructureSV.exists()) {
             setJsonSV(null)
             return
         }
-        jsonSV.loadAndConvertJson(pathJsonStructureSV.toFile())
-        ////
-        addStructureViewForLang()
+        if (jsonSV.loadAndConvertJson(pathJsonStructureSV.toFile()))
+            addStructureViewForLang()
     }
 
     private fun addStructureViewForLang() {
@@ -91,7 +89,6 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
                 for (lang in languageList) {
                     val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
                     if (Language.findLanguageByID(langId) != null) {
-                        StructureViewComponent.clearStructureViewState(project)
                         structureViewFactoryMap[lang] = CustomizedStructureViewFactory()
                         LanguageStructureViewBuilder.INSTANCE.addExplicitExtension(
                             Language.findLanguageByID(langId)!!,

@@ -85,12 +85,18 @@ class JsonStructureSV {
     data class PropertyInfo(
         val id: String,
         val token: String,
-        val regexp: String?,
+        var regexp: String?,
         val notMatchedDisplayLevel: Int?
     ) {
 
         fun isNotPartialMatch(langElement: PsiElement) : Boolean {
-            return regexp != null && Regex(regexp).find(langElement.text) == null
+            try {
+                return regexp != null && Regex(regexp!!).find(langElement.text) == null
+            } catch (error: Exception) {
+                regexp = null
+                ErrorNotification.notifyError(langElement.project, "Regular expression is incorrectly specified, regexp search disabled ")
+            }
+            return false
         }
         companion object {
             fun fromJson(map: Map<String, Any>) = object {
