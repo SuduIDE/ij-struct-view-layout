@@ -91,7 +91,7 @@ class JsonStructureSV {
 
         fun isNotPartialMatch(langElement: PsiElement) : Boolean {
             try {
-                return regexp != null && Regex(regexp!!).find(langElement.text) == null
+                return regexp != null && Regex(regexp!!, RegexOption.IGNORE_CASE).find(langElement.text) == null
             } catch (error: Exception) {
                 regexp = null
                 ErrorNotification.notifyError(langElement.project, "Regular expression is incorrectly specified, regexp search disabled ")

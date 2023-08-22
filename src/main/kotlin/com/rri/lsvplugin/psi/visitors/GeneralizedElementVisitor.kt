@@ -26,19 +26,19 @@ class GeneralizedElementVisitor : IElementVisitor {
                         icon = jsonUtil.getIconInfo(child, it.iconId)
                     attributeSupplier.addAttribute(curElement, it.id, Attributes.KeywordStructure(it.id, child.text, it.sortValue, icon))
                 } ?: jsonUtil.getPropertyAttribute(child)?.also {
-                    for (keyword in it) {
+                    for (property in it) {
                         if (curElement.displayLevel != 0
                             &&
-                            keyword.isNotPartialMatch(child)
+                            property.isNotPartialMatch(child)
                             &&
-                            attributeSupplier.containsAttribute(curElement, keyword.id)
+                            attributeSupplier.containsAttribute(curElement, property.id)
                             ) {
-                            curElement.displayLevel = keyword.notMatchedDisplayLevel ?: 0
+                            curElement.displayLevel = property.notMatchedDisplayLevel ?: 0
                             if (curElement.displayLevel > 0)
                                 curElement.displayLevel = 0
                         }
 
-                        attributeSupplier.addAttribute(curElement, keyword.id, child.text)
+                        attributeSupplier.addAttribute(curElement, property.id, Attributes.PropertyStructure(property.id, child.text))
                     }
                 } ?: jsonUtil.getElementNames(child)?.also {
                     for (elementName in it) {

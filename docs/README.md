@@ -52,7 +52,7 @@ and you can also set sorting by specific keywords (for example, by visibility mo
 
 To get both the names of tokens and languages, you can use the PsiViewer plugin, it also allows you to define the hierarchy of elements in the language
 Skeleton config with required top-level elements:
-```json
+```json5
 [
   {
     "settings": {
@@ -71,15 +71,17 @@ Skeleton config with required top-level elements:
 This section contains a list of languages and settings that specify some behavior of the structure view 
 (at the moment, you can set the file display):
 
-```json
-"settings": {
-  "languages" : [
-    //list of languages in any case.
-  ],
-  "showFile" : false or true
-  // if showFile is false, then the file will not be displayed in the structure view
-  // else will display the file name and its current directory
-},
+```json5
+{
+  "settings": {
+    "languages": [
+      //list of languages in any case.
+    ],
+    "showFile": false // or true
+    // if showFile is false, then the file will not be displayed in the structure view
+    // else will display the file name and its current directory
+  },
+}
 ```
 
 #### Elements 

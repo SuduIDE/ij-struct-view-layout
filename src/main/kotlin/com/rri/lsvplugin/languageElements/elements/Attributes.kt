@@ -19,6 +19,15 @@ open class Attributes(
         }
     }
 
+    data class PropertyStructure(
+        val id: String,
+        val text: String
+    ) {
+        override fun toString(): String {
+            return text
+        }
+    }
+
     data class DefaultAttributes(
         val parent: Map<String, List<KeywordStructure>>?,
         val children: Map<String, List<KeywordStructure>>?

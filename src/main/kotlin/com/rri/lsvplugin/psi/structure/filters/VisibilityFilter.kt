@@ -4,8 +4,10 @@ import com.intellij.ide.util.treeView.smartTree.ActionPresentation
 import com.intellij.ide.util.treeView.smartTree.ActionPresentationData
 import com.intellij.ide.util.treeView.smartTree.Filter
 import com.intellij.ide.util.treeView.smartTree.TreeElement
+import com.rri.lsvplugin.languageElements.elements.Attributes
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewElement
+import com.rri.lsvplugin.utils.ErrorNotification
 import com.rri.lsvplugin.utils.JsonStructureSV
 
 
@@ -84,14 +86,27 @@ class VisibilityFilter(
     }
 
     private fun includeUniqueAttribute(element: BaseElement, attributeValue: List<String>): Boolean {
-        return if (element.uniqueAttributes[filterInfo.attributeKey] is List<*>)
-            (element.uniqueAttributes[filterInfo.attributeKey] as List<*>).any {
-                attributeValue.contains(it.toString())
-            }
-        else
-            attributeValue.contains(element.uniqueAttributes[filterInfo.attributeKey].toString())
+        try {
+            return if (element.uniqueAttributes[filterInfo.attributeKey] is List<*>)
+                (element.uniqueAttributes[filterInfo.attributeKey] as List<*>).any {
+                    findAttribute(it, attributeValue)
+                }
+            else
+                findAttribute(element.uniqueAttributes[filterInfo.attributeKey], attributeValue)
+        } catch (error: Exception) {
+            ErrorNotification.notifyError(element.langElement.project, "Regular expression is incorrectly specified, regexp search disabled ")
+            return true
+        }
     }
 
+    private fun findAttribute(attribute: Any?, attributeValue: List<String>) : Boolean {
+        if (attribute !is Attributes.PropertyStructure)
+            return  attributeValue.contains(attribute.toString())
+
+        return attributeValue.firstOrNull {
+            Regex(it, RegexOption.IGNORE_CASE).find(attribute.toString()) != null
+        } != null
+    }
 
     private fun includeSetAttribute(element: BaseElement, attributeValue: List<String>): Boolean {
         return element.setAttributes[filterInfo.attributeKey]!!.any {
