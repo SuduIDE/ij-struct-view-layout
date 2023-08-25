@@ -50,7 +50,7 @@ open class BaseElement(val langElement: PsiElement) : Attributes(){
                 } else if (getAttribute(attr) is List<*>) {
                     val attributeList = getAttribute(attr) as List<*>
                     presentableText.append(addPresentableListText(attributeList))
-                } else if (!addPartToPresentableText( presentableText, getAttribute(attr)) && !isOptional(attr))
+                } else if (!addPartToPresentableText( presentableText, getAttribute(attr)) && !isAttribute(attr))
                         presentableText.append(attr)
 
             }

@@ -54,6 +54,9 @@ open class Attributes(
         return getDefaultAttributes()?.firstOrNull { it.toString() == attributeName }
     }
 
+    fun isAttribute(attributeName: String) : Boolean = uniqueAttributes.containsKey(attributeName)
+                                                       || setAttributes.containsKey(attributeName)
+                                                       || optionalAttributes.containsKey(attributeName)
     fun isOptional(attributeName: String) : Boolean = optionalAttributes.containsKey(attributeName)
 
     override fun equals(other: Any?): Boolean {
