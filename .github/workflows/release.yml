@@ -12,7 +12,6 @@ jobs:
       matrix:
         java: ['17']
         os: [ ubuntu-latest, windows-latest ]
-        os-names: [ubuntu, windows]
 
     runs-on: ${{ matrix.os }}
 
@@ -45,5 +44,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           file: "./build/distributions/*.zip"
-          tag_name: FSV-${{ matrix.os-names}}-${{ github.ref_name }}
+          tag_name: FSV-${{ matrix.os}}-${{ github.ref_name }}
           draft: false
