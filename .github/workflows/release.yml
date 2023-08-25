@@ -35,8 +35,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: FSV-${{ github.ref_name }}
-          release_name: FSV-${{ github.ref_name }}
+          tag_name: FSV-${{ matrix.os }}-${{ github.ref_name }}
+          release_name: FSV-${{ matrix.os }}-${{ github.ref_name }}
 
       - name: Upload Release
         uses: xresloader/upload-to-github-release@v1

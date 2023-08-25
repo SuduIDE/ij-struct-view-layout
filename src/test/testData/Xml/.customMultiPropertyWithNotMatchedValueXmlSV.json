@@ -7,7 +7,7 @@
       "showFile": false
     },
     "element": {
-      "tag": {
+      "priceTag": {
         "displayLevel": 1,
         "baseToken": "XML_TAG",
         "attributes": {
@@ -15,7 +15,7 @@
             "Attribute"
           ],
           "unique": [
-            "name",
+            "price",
             "text"
           ]
         },
@@ -23,7 +23,29 @@
           "iconId": "tag"
         },
         "text": [
-          "name"
+          "text"
+        ],
+        "description": [
+          "Attribute"
+        ]
+      },
+      "titleTag": {
+        "displayLevel": 1,
+        "baseToken": "XML_TAG",
+        "attributes": {
+          "set": [
+            "Attribute"
+          ],
+          "unique": [
+            "title",
+            "text"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "tag"
+        },
+        "text": [
+          "text"
         ],
         "description": [
           "Attribute"
@@ -53,8 +75,15 @@
     "attribute": {
       "properties": [
         {
-          "id": "name",
-          "token": "XML_NAME"
+          "id": "title",
+          "token": "XML_NAME",
+          "regexp": "title",
+          "notMatchedDisplayLevel": -1
+        },
+        {
+          "id": "price",
+          "token": "XML_NAME",
+          "regexp": "price"
         },
         {
           "id": "text",

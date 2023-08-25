@@ -29,6 +29,28 @@
           "Attribute"
         ]
       },
+      "bookTag": {
+        "displayLevel": 1,
+        "baseToken": "XML_TAG",
+        "attributes": {
+          "set": [
+            "Attribute"
+          ],
+          "unique": [
+            "bookName",
+            "text"
+          ]
+        },
+        "baseIcon": {
+          "iconId": "tag"
+        },
+        "text": [
+          "Something book:", "bookName"
+        ],
+        "description": [
+          "Attribute"
+        ]
+      },
       "Attribute": {
         "displayLevel": 0,
         "baseToken": "XML_ATTRIBUTE",
@@ -54,7 +76,13 @@
       "properties": [
         {
           "id": "name",
-          "token": "XML_NAME"
+          "token": "XML_NAME",
+          "regexp": "^(?!.*(book))"
+        },
+        {
+          "id": "bookName",
+          "token": "XML_NAME",
+          "regexp": "book"
         },
         {
           "id": "text",
