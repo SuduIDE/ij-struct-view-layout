@@ -168,8 +168,9 @@ open class BaseElement(val langElement: PsiElement) : Attributes(){
     override fun toString(): String = presentableText.getText()
 
 
-    fun clear() {
+    override fun clear() {
         parent = null
+        super.clear()
         children.forEach { it.clear() }
         children.clear()
     }

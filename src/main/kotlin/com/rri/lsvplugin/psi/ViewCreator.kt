@@ -18,7 +18,7 @@ class ViewCreator(
     private val jsonUtil: JsonContainerUtil
 ) {
     fun visitElement(element: BaseElement) {
-        visitor.visitElement(element, elementCreator, jsonUtil)
+        visitor.visitElement(listOf(element), elementCreator, jsonUtil)
     }
 
     fun createVisibilityFilters(langElement: PsiElement) : List<Filter> {
@@ -46,6 +46,8 @@ class ViewCreator(
     }
 
     fun adjustDisplayLevel(element : BaseElement) {
+        if (element.elementType == "file")
+            element.children.forEach { it.parent = element }
         val queueChildren : Queue<BaseElement> = LinkedList()
         queueChildren.add(element)
         while(queueChildren.isNotEmpty()) {

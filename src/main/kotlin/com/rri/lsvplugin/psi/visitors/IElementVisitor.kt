@@ -5,5 +5,5 @@ import com.rri.lsvplugin.languageElements.factory.elementCreator.IElementCreator
 import com.rri.lsvplugin.utils.JsonContainerUtil
 
 interface IElementVisitor {
-    fun visitElement(element: BaseElement, elementCreator: IElementCreator, jsonUtil: JsonContainerUtil)
+    fun visitElement(element: List<BaseElement>, elementCreator: IElementCreator, jsonUtil: JsonContainerUtil)
 }

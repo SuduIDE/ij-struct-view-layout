@@ -10,17 +10,11 @@
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor email="" url="">AvvALlV</vendor>
 
-    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
-         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
     This plugin is designed to customize the structure view for existing languages and for use in new ones.
   ]]></description>
 
-    <!-- Product and plugin compatibility requirements.
-         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <!--  <depends>com.intellij.java</depends>-->
 
     <actions>
         <action class="com.rri.lsvplugin.actions.ActionCreateJsonSV" id="com.rri.lsvplugin.actions.ActionCreateJsonSV"

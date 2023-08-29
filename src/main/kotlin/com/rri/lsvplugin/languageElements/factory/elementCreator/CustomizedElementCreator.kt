@@ -9,16 +9,14 @@ import com.rri.lsvplugin.utils.JsonStructureSV
 class CustomizedElementCreator : IElementCreator {
     override fun createElement(
         langElement: PsiElement,
-        typeElement: String,
-        parent: BaseElement,
+        elementStructure: JsonStructureSV.ElementInfo,
+        parent: BaseElement?,
         jsonUtil: JsonContainerUtil
     ): BaseElement {
-        val elementStructure = jsonUtil.getElementByName(langElement, typeElement)
-
         val element = BaseElement(langElement)
         element.displayLevel = elementStructure.displayLevel ?: 1
         element.displayOnlyLevel = elementStructure.displayOnlyLevel ?: 0
-        element.elementType = typeElement
+        element.elementType = elementStructure.elementId
         getElementStructure(elementStructure).clone(element)
         element.baseIcon = getIconStructure(element, elementStructure.baseIcon, jsonUtil)
         element.presentableText = element.PresentableViewText(elementStructure.text, elementStructure.description)

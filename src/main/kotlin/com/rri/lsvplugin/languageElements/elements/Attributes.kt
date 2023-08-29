@@ -31,7 +31,13 @@ open class Attributes(
     data class DefaultAttributes(
         val parent: Map<String, List<KeywordStructure>>?,
         val children: Map<String, List<KeywordStructure>>?
-    )
+    ) {
+        fun clear() {
+            parent?.toMutableMap()?.clear()
+            children?.toMutableMap()?.clear()
+
+        }
+    }
 
     var defaultAttributes: DefaultAttributes? = null
 
@@ -64,7 +70,6 @@ open class Attributes(
             return false
         return other.uniqueAttributes == uniqueAttributes && other.setAttributes == setAttributes && other.optionalAttributes == optionalAttributes
     }
-
     fun clone(other: Attributes) {
         other.uniqueAttributes = uniqueAttributes
         other.setAttributes = setAttributes
@@ -73,5 +78,12 @@ open class Attributes(
         other.exclusiveAttributes = exclusiveAttributes
     }
 
+    open fun clear() {
+        uniqueAttributes.clear()
+        setAttributes.clear()
+        optionalAttributes.clear()
+        defaultAttributes?.clear()
+        exclusiveAttributes.clear()
+    }
 
 }

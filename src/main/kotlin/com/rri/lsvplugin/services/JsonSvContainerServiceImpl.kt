@@ -83,19 +83,14 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
     }
 
     private fun addStructureViewForLang() {
-        for (langStructures in jsonSV.getMapSV()!!) {
-            @Suppress("UNCHECKED_CAST") val languageList = langStructures[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
-            if (languageList != null) {
-                for (lang in languageList) {
-                    val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
-                    if (Language.findLanguageByID(langId) != null) {
-                        structureViewFactoryMap[lang] = CustomizedStructureViewFactory()
-                        LanguageStructureViewBuilder.INSTANCE.addExplicitExtension(
-                            Language.findLanguageByID(langId)!!,
-                            structureViewFactoryMap[lang]!!
-                        )
-                    }
-                }
+        for (lang in jsonSV.getMapSV()!!.keys) {
+            val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
+            if (Language.findLanguageByID(langId) != null) {
+                structureViewFactoryMap[lang] = CustomizedStructureViewFactory()
+                LanguageStructureViewBuilder.INSTANCE.addExplicitExtension(
+                    Language.findLanguageByID(langId)!!,
+                    structureViewFactoryMap[lang]!!
+                )
             }
         }
     }
@@ -104,19 +99,14 @@ class JsonSvContainerServiceImpl(private val project: Project) : JsonSvContainer
         if (jsonSV.getMapSV() == null)
             return
 
-        for (langStructures in jsonSV.getMapSV()!!) {
-            @Suppress("UNCHECKED_CAST") val languageList = langStructures[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
-            if (languageList != null) {
-                for (lang in languageList) {
-                    val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
-                    if (Language.findLanguageByID(langId) != null && structureViewFactoryMap.contains(lang)) {
-                        LanguageStructureViewBuilder.INSTANCE.removeExplicitExtension(
-                            Language.findLanguageByID(langId)!!,
-                            structureViewFactoryMap[lang]!!
-                        )
-                        structureViewFactoryMap.remove(lang)
-                    }
-                }
+        for (lang in jsonSV.getMapSV()!!.keys) {
+            val langId = LanguageUtil.getLanguageIdByLowercaseName(lang)
+            if (Language.findLanguageByID(langId) != null && structureViewFactoryMap.contains(lang)) {
+                LanguageStructureViewBuilder.INSTANCE.removeExplicitExtension(
+                    Language.findLanguageByID(langId)!!,
+                    structureViewFactoryMap[lang]!!
+                )
+                structureViewFactoryMap.remove(lang)
             }
         }
     }

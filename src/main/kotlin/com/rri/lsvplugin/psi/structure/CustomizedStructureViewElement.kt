@@ -21,12 +21,8 @@ class CustomizedStructureViewElement(
     override fun getChildren(): Array<CustomizedStructureViewElement> {
         val childrenElements = ArrayList<CustomizedStructureViewElement>()
         if (element.elementType == "file") {
-            val prevVersionElement = element.clone()
-            prevVersionElement.clear()
-            creator.visitElement(prevVersionElement)
-            if (prevVersionElement != element) {
-                element = prevVersionElement
-            }
+            element.clear()
+            creator.visitElement(element)
             creator.adjustDisplayLevel(element)
         }
 

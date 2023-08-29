@@ -1,114 +1,59 @@
 package com.rri.lsvplugin.utils
 
 import com.intellij.openapi.components.service
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
 import com.intellij.psi.util.elementType
 import com.jetbrains.rd.util.firstOrNull
 import com.rri.lsvplugin.services.JsonSvContainerServiceImpl
 
 class JsonContainerUtil {
+    companion object {
+        val projectServicesMap = mutableMapOf<Project, JsonSvContainerServiceImpl>()
+    }
 
     private fun getLanguage(langElement: PsiElement) = langElement.language.id.lowercase()
 
-    private fun getLangElementsMap(langElement: PsiElement) =
-        langElement.project.service<JsonSvContainerServiceImpl>().getMapSV()
+    private fun getLangElementsMap(langElement: PsiElement) : MapTypeSV? {
+        if (!projectServicesMap.containsKey(langElement.project))
+            projectServicesMap[langElement.project] = langElement.project.service<JsonSvContainerServiceImpl>()
 
-    private fun getLanguageStructure(langElement: PsiElement) : Map<String, Map<String, Any>>? {
+        return projectServicesMap[langElement.project]!!.getMapSV()
+    }
+
+    private fun getLanguageStructure(langElement: PsiElement): LanguageStructureType? {
         val languageStructures = getLangElementsMap(langElement)
-        if (languageStructures != null) {
-            for (languageStructure in languageStructures) {
-                @Suppress("UNCHECKED_CAST") val languagesList = languageStructure[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
-                if (languagesList?.contains(getLanguage(langElement)) == true)
-                    return languageStructure
-            }
-        }
-        return null
+        return (languageStructures as MapTypeSV)[getLanguage(langElement)]
     }
 
-    fun isELement(langElement: PsiElement): Boolean {
-        val languageStructure = getLanguageStructure(langElement) ?: return false
-        return languageStructure[SvConstants.ELEMENTS]?.filterValues { (it as JsonStructureSV.ElementInfo).baseToken == langElement.elementType.toString() }
-            ?.isNotEmpty() ?: false
-    }
-
-    private fun isAttribute(langElement: PsiElement): Boolean {
-        return isListAttribute(langElement) || isKeywordAttribute(langElement)
-    }
-
-    private fun isListAttribute(langElement: PsiElement): Boolean {
-        val languageStructure = getLanguageStructure(langElement) ?: return false
-
-        return (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.LISTS) as? MutableMap<*, *>)?.containsValue(
-            langElement.elementType.toString()
-        ) ?: false
-    }
-
-    private fun isKeywordAttribute(langElement: PsiElement): Boolean {
-        val languageStructure =  getLanguageStructure(langElement) ?: return false
-
+    fun getElementNames(langElement: PsiElement): List<JsonStructureSV.ElementInfo>? {
         @Suppress("UNCHECKED_CAST")
-        return (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) as? List<JsonStructureSV.KeywordInfo>)?.any {
-            it.token == langElement.elementType.toString()
-        } ?: false
-    }
-
-    private fun isPropertyAttribute(langElement: PsiElement): Boolean {
-        val languageStructure = getLanguageStructure(langElement) ?: return false
-
-        @Suppress("UNCHECKED_CAST")
-        return (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.PROPERTIES) as? List<JsonStructureSV.PropertyInfo>)?.any {
-            it.token == langElement.elementType.toString()
-        } ?: false
-    }
-
-    fun getElementNames(langElement: PsiElement): Set<String>? {
-        if (!isELement(langElement))
-            return null
-
-        return getLanguageStructure(langElement)!![SvConstants.ELEMENTS]!!
-            .filterValues { (it as JsonStructureSV.ElementInfo).baseToken == langElement.elementType.toString() }.keys
-    }
-
-    fun getElementByName(langElement: PsiElement, name: String): JsonStructureSV.ElementInfo {
-        return getLanguageStructure(langElement)!![SvConstants.ELEMENTS]!![name] as JsonStructureSV.ElementInfo
+        return (getLanguageStructure(langElement)?.get(SvConstants.ELEMENTS)?.get(langElement.elementType.toString()) as? List<JsonStructureSV.ElementInfo>)
     }
 
     fun getListAttribute(langElement: PsiElement): String? {
-        if (!isListAttribute(langElement))
-            return null
-
         @Suppress("UNCHECKED_CAST")
-        return (getLanguageStructure(langElement)!![SvConstants.ATTRIBUTES]!![SvConstants.LISTS]!! as MutableMap<String, *>)
-            .filterValues { it == langElement.elementType.toString() }.keys.elementAt(0)
+        return (getLanguageStructure(langElement)?.get(SvConstants.ATTRIBUTES)?.get(SvConstants.LISTS) as? Map<String, String>)
+            ?.entries?.firstOrNull { listToken ->  listToken.value == langElement.elementType.toString() }?.key
     }
 
     fun getKeywordAttribute(langElement: PsiElement): JsonStructureSV.KeywordInfo? {
-        if (!isKeywordAttribute(langElement))
-            return null
-
         @Suppress("UNCHECKED_CAST")
-        return (getLanguageStructure(langElement)!![SvConstants.ATTRIBUTES]!![SvConstants.KEYWORDS]!! as List<JsonStructureSV.KeywordInfo>)
-            .firstOrNull { it.token == langElement.elementType.toString() }
+        return (getLanguageStructure(langElement)?.get(SvConstants.ATTRIBUTES)?.get(SvConstants.KEYWORDS) as? Map<String, JsonStructureSV.KeywordInfo>)?.get(langElement.elementType.toString())
     }
 
-    fun getKeywordAttributeByName(keywordName: String, langElement: PsiElement) : JsonStructureSV.KeywordInfo? {
-        val languageStructure = getLanguageStructure(langElement)?: return null
+    fun getKeywordAttributeByName(keywordName: String, langElement: PsiElement): JsonStructureSV.KeywordInfo? {
+        val languageStructure = getLanguageStructure(langElement) ?: return null
         @Suppress("UNCHECKED_CAST")
-        return (languageStructure[SvConstants.ATTRIBUTES]!![SvConstants.KEYWORDS]!! as List<JsonStructureSV.KeywordInfo>)
+        return (languageStructure[SvConstants.ATTRIBUTES]!![SvConstants.KEYWORDS]!! as Map<String, JsonStructureSV.KeywordInfo>).values
             .firstOrNull { it.id == keywordName }
     }
 
     fun getPropertyAttribute(langElement: PsiElement): List<JsonStructureSV.PropertyInfo>? {
-        if (!isPropertyAttribute(langElement))
-            return null
-
         @Suppress("UNCHECKED_CAST")
-        val keywordList = (getLanguageStructure(langElement)!![SvConstants.ATTRIBUTES]!![SvConstants.PROPERTIES]!! as List<JsonStructureSV.PropertyInfo>)
-            .filter { it.token == langElement.elementType.toString() }
-        if (keywordList.isEmpty())
-            return null
-
+        val keywordList =
+            (getLanguageStructure(langElement)?.get(SvConstants.ATTRIBUTES)?.get(SvConstants.PROPERTIES) as? Map<String, List<JsonStructureSV.PropertyInfo>>)
+                ?.get(langElement.elementType.toString())
         return keywordList
     }
 
@@ -127,7 +72,7 @@ class JsonContainerUtil {
     fun getIconInfo(langElement: PsiElement, baseIconName: String?): JsonStructureSV.IconInfo? {
         @Suppress("UNCHECKED_CAST")
         return (getLanguageStructure(langElement)?.get(SvConstants.ATTRIBUTES)
-            ?.get(SvConstants.ICONS) as List<JsonStructureSV.IconInfo>).firstOrNull { it.id == baseIconName }
+            ?.get(SvConstants.ICONS) as Map<String, JsonStructureSV.IconInfo>)[baseIconName]
     }
 
     fun isShowFile(file: PsiElement): Boolean {

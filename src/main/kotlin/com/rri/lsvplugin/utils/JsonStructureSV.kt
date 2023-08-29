@@ -24,6 +24,7 @@ class JsonStructureSV {
 
     @JsonClass(generateAdapter = true)
     data class ElementInfo(
+        val elementId: String,
         val displayLevel: Int?,
         val displayOnlyLevel: Int?,
         val baseToken: String,
@@ -35,7 +36,7 @@ class JsonStructureSV {
     ) {
         companion object {
             @Suppress("UNCHECKED_CAST")
-            fun fromJson(map: Map<String, Any>) = object {
+            fun fromJson(elementId: String, map: Map<String, Any>) = object {
                 private val defaultMap = map.withDefault { null }
                 private val displayLevel by defaultMap
                 private val displayOnlyLevel by defaultMap
@@ -47,6 +48,7 @@ class JsonStructureSV {
                 private val defaultAttributes by defaultMap
 
                 val elementInfo = ElementInfo(
+                    elementId,
                     (displayLevel as? Double)?.toInt(),
                     (displayOnlyLevel as? Double)?.toInt(),
                     baseToken as String,
@@ -88,10 +90,12 @@ class JsonStructureSV {
         var regexp: String?,
         val notMatchedDisplayLevel: Int?
     ) {
-
         fun isNotPartialMatch(langElement: PsiElement) : Boolean {
             try {
-                return regexp != null && Regex(regexp!!, RegexOption.IGNORE_CASE).find(langElement.text) == null
+                if (regexp != null && !regexMap.containsKey(regexp))
+                    regexMap[regexp!!] = Regex(regexp!!, RegexOption.IGNORE_CASE)
+
+                return regexp != null && regexMap[regexp]!!.find(langElement.text) == null
             } catch (error: Exception) {
                 regexp = null
                 ErrorNotification.notifyError(langElement.project, "Regular expression is incorrectly specified, regexp search disabled ")
@@ -99,6 +103,7 @@ class JsonStructureSV {
             return false
         }
         companion object {
+            val regexMap : MutableMap<String, Regex> = mutableMapOf()
             fun fromJson(map: Map<String, Any>) = object {
                 private val defaultMap = map.withDefault { null }
                 private val id by map

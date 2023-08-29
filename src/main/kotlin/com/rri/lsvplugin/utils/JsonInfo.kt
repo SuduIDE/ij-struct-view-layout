@@ -49,14 +49,11 @@ class JsonInfo(private val project: Project) {
     }
 
     private fun loadIconsForLanguages() {
-        for (languageStructure in languagesSV!!) {
+        for (languageStructure in languagesSV!!.values) {
             @Suppress("UNCHECKED_CAST")
-            val iconsList =
-                languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.ICONS) as List<JsonStructureSV.IconInfo>
-            iconsList.forEach { it.loadIcon(project) }
-
-            @Suppress("UNCHECKED_CAST") val languageNameList = languageStructure[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as? List<String>
-            languageNameList?.forEach { languageName -> iconsSV[languageName] = iconsList.associateBy { it.id } }
+            val iconsMap =
+                languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.ICONS) as Map<String, JsonStructureSV.IconInfo>
+            iconsMap.values.forEach { it.loadIcon(project) }
         }
     }
 
@@ -64,32 +61,44 @@ class JsonInfo(private val project: Project) {
         try {
             @Suppress("UNCHECKED_CAST")
             val tmpUpdatedJsonSV = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build().adapter(Any::class.java)
-                .fromJson(jsonSV) as MapTypeSV
-
+                .fromJson(jsonSV) as List<LanguageStructureType>
+            val languagesSV = mutableMapOf<String, MutableMap<String, MutableMap<String, out Any>>>()
             for (languageStructure in tmpUpdatedJsonSV) {
-                val newElements = mutableMapOf<String, JsonStructureSV.ElementInfo>()
+                val newElements = mutableMapOf<String, MutableList<JsonStructureSV.ElementInfo>>()
                 languageStructure[SvConstants.ELEMENTS]?.forEach { element ->
                     @Suppress("UNCHECKED_CAST")
-                    newElements[element.key] = JsonStructureSV.ElementInfo.fromJson(element.value as Map<String, Any>)
+                    val elementStructure = JsonStructureSV.ElementInfo.fromJson(element.key, element.value as Map<String, Any>)
+                    if (!newElements.containsKey(elementStructure.baseToken))
+                        newElements[elementStructure.baseToken] = mutableListOf(elementStructure)
+                    else
+                        newElements[elementStructure.baseToken]!!.add(elementStructure)
                 }
                 languageStructure[SvConstants.ELEMENTS] = newElements
 
-                val properties = mutableListOf<JsonStructureSV.PropertyInfo>()
+                val properties = mutableMapOf<String, MutableList<JsonStructureSV.PropertyInfo>>()
                 (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.PROPERTIES) as? List<*>)?.forEach { property ->
                     @Suppress("UNCHECKED_CAST")
-                    properties.add(JsonStructureSV.PropertyInfo.fromJson(property as Map<String, String>))
+                    val propertyStructure = JsonStructureSV.PropertyInfo.fromJson(property as Map<String, String>)
+                    if (properties.containsKey(propertyStructure.token))
+                        properties[propertyStructure.token]!!.add(propertyStructure)
+                    else
+                        properties[propertyStructure.token] = mutableListOf(propertyStructure)
+
                 }
 
-                val keywords = mutableListOf<JsonStructureSV.KeywordInfo>()
+                val keywords = mutableMapOf<String, JsonStructureSV.KeywordInfo>()
                 (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.KEYWORDS) as? List<*>)?.forEach { keyword ->
                     @Suppress("UNCHECKED_CAST")
-                    keywords.add(JsonStructureSV.KeywordInfo.fromJson(keyword as Map<String, String>))
+                    val keywordStructure = JsonStructureSV.KeywordInfo.fromJson(keyword as Map<String, String>)
+                    if (!keywords.containsKey(keywordStructure.token))
+                        keywords[keywordStructure.token] = keywordStructure
                 }
 
-                val icons = mutableListOf<JsonStructureSV.IconInfo>()
+                val icons = mutableMapOf<String, JsonStructureSV.IconInfo>()
                 (languageStructure[SvConstants.ATTRIBUTES]?.get(SvConstants.ICONS) as? List<*>)?.forEach { icon ->
                     @Suppress("UNCHECKED_CAST")
-                    icons.add(JsonStructureSV.IconInfo.fromJson(icon as Map<String, String>))
+                    val iconStructure = JsonStructureSV.IconInfo.fromJson(icon as Map<String, String>)
+                    icons[iconStructure.id] = iconStructure
                 }
 
                 languageStructure[SvConstants.ATTRIBUTES] = mutableMapOf(
@@ -122,8 +131,13 @@ class JsonInfo(private val project: Project) {
                     SvConstants.VISIBILITY_FILTERS to visibilityFilters,
                     SvConstants.SORTING_FILTERS to sortingFilters
                 )
+
+                //set the language structure for each language in list
+                for (language in languageStructure[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as List<String>) {
+                    languagesSV[language] = languageStructure
+                }
             }
-            return tmpUpdatedJsonSV
+            return languagesSV
         } catch (error: Exception) {
             ErrorNotification.notifyError(project, "Incorrect config format")
         }
@@ -131,19 +145,9 @@ class JsonInfo(private val project: Project) {
     }
 
     private fun languageToLowerCase(languagesSV: MapTypeSV): MapTypeSV {
-        var languagesList: List<String>
-        for (languageSV in languagesSV) {
-            @Suppress("UNCHECKED_CAST")
-            languagesList =
-                (languageSV[SvConstants.SETTINGS]!![SvConstants.LANGUAGES] as? MutableList<String>)?.map { it.lowercase() }
-                    ?: mutableListOf()
-            languageSV[SvConstants.SETTINGS] = mutableMapOf(
-                "showFile" to languageSV[SvConstants.SETTINGS]!!["showFile"] as Boolean,
-                SvConstants.LANGUAGES to languagesList
-            )
-        }
-        return languagesSV
+        return languagesSV.mapKeys { it.key.lowercase() }
     }
 }
 
-typealias MapTypeSV = MutableList<MutableMap<String, MutableMap<String, out Any>>>
+typealias LanguageStructureType = MutableMap<String, MutableMap<String, out Any>>
+typealias MapTypeSV = Map<String, LanguageStructureType>

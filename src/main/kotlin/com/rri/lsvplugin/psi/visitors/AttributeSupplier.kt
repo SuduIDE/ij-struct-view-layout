@@ -3,25 +3,22 @@ package com.rri.lsvplugin.psi.visitors
 import com.rri.lsvplugin.languageElements.elements.BaseElement
 
 class AttributeSupplier : IAttributeSupplier {
-    override fun addAttribute(curElement: BaseElement, attributeName: String, attributeValue: Any): Boolean {
-        if (containsUniqueAttribute(curElement, attributeName)) {
-            curElement.uniqueAttributes[attributeName] = attributeValue
-            return true
-        } else if (containsOptionalAttribute(curElement, attributeName)) {
-            curElement.optionalAttributes[attributeName] = attributeValue
-            return true
-        } else if (curElement.setAttributes.containsKey(attributeName)) {
-            @Suppress("UNCHECKED_CAST")
-            if (curElement.setAttributes[attributeName] == null)
-                curElement.setAttributes[attributeName] = mutableListOf(attributeValue)
-            else
-                (curElement.setAttributes[attributeName] as MutableList<Any>).add(attributeValue)
-            return true
-        } else if  (containsExclusiveAttribute(curElement, attributeName)) {
-            curElement.exclusiveAttributes[attributeName] = attributeValue
-            return true
+    override fun addAttribute(curElement: List<BaseElement>, attributeName: String, attributeValue: Any) {
+        for (element in curElement) {
+            if (containsUniqueAttribute(element, attributeName)) {
+                element.uniqueAttributes[attributeName] = attributeValue
+            } else if (containsOptionalAttribute(element, attributeName)) {
+                element.optionalAttributes[attributeName] = attributeValue
+            } else if (element.setAttributes.containsKey(attributeName)) {
+                @Suppress("UNCHECKED_CAST")
+                if (element.setAttributes[attributeName] == null)
+                    element.setAttributes[attributeName] = mutableListOf(attributeValue)
+                else
+                    (element.setAttributes[attributeName] as MutableList<Any>).add(attributeValue)
+            } else if (containsExclusiveAttribute(element, attributeName)) {
+                element.exclusiveAttributes[attributeName] = attributeValue
+            }
         }
-        return false
     }
 
     private fun containsUniqueAttribute(element: BaseElement, attributeName: String): Boolean {
