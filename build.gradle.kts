@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.internship"
-version = "0.3"
+version = "1.0"
 
 repositories {
   mavenCentral()

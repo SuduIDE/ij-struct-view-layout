@@ -11,7 +11,9 @@
     <vendor email="" url="">AvvALlV</vendor>
 
     <description><![CDATA[
-    This plugin is designed to customize the structure view for existing languages and for use in new ones.
+   The customization of the structure view occurs with the help of json.
+   It allows you to set the elements that will be displayed in the structure, their attributes and visibility filters,
+   which allow you to exclude the specified elements for one reason or another. Moreover, all this is available for any language.
   ]]></description>
 
     <depends>com.intellij.modules.platform</depends>

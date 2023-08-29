@@ -1,7 +1,7 @@
 # Structure view customization
 
 _Name : Flexible Structure View_ \
-_Version : 0.2.2_
+_Version : 1.0_
 
 ## General information
 
@@ -10,7 +10,7 @@ the displayed elements, their text, icons and order.
 
 ## Install
 
-* Download LSV-plugin-*.zip from Release
+* Download LSV-plugin-*.zip from Release archive
 * In intellij open __Settings__ &rarr; __Plugin__ &rarr; __Gear__ &rarr; __Install plugin from Disk__ and 
 select the location of the downloaded plugin
 * Reload Ide
@@ -197,7 +197,8 @@ There are three types of attributes in total: __lists__, __properties__, __keywo
 
 * __lists__ - contains attributes whose tokens are lists with other attributes or elements. 
 For example, in Java this could be MODIFIER_LIST, which lists the modifier keywords.
-* __properties__ - the text of the tokens is unique, such as the class name, etc. Consists of the following fields:
+* __properties__ - the text of the tokens is unique, such as the class name, etc. You can set multiple properties with the same token, 
+but different id. Consists of the following fields:
   * __"id"__ - property name, which may not depend on the language in any way: name, type, etc.
   * __"token"__ - the name of the token in the language being used
   * __"regexp"__ - an optional parameter containing a regular expression that allows you to use only those tokens whose text matches the expression
