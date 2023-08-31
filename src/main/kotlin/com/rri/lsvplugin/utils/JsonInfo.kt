@@ -133,6 +133,7 @@ class JsonInfo(private val project: Project) {
                 )
 
                 //set the language structure for each language in list
+                @Suppress("UNCHECKED_CAST")
                 for (language in languageStructure[SvConstants.SETTINGS]?.get(SvConstants.LANGUAGES) as List<String>) {
                     languagesSV[language] = languageStructure
                 }

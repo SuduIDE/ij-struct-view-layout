@@ -216,7 +216,6 @@ but different id. Consists of the following fields:
       next to the base icon
     * __"Mark"__ - also most often used in keywords, allows you to hang an additional mark on the main icon.
   * __"icon"__ - directly sets the icon with a keyword. There are three sources where an icon can be loaded from:
-    * __"PlatformIcons"__ - to use an icon from PlatformIcons, just specify the name of the icon, which starts with a capital letter
     * __"AllIcons"__ - a list of all icons can be found [here](https://jetbrains.design/intellij/resources/icons_list/).
       Icons are contained in groups corresponding to their purpose. However, in order to get any icon, it is enough to specify
       her name, in which the first letter will be capitalized

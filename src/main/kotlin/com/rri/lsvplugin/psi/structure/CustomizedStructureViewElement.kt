@@ -3,7 +3,6 @@ package com.rri.lsvplugin.psi.structure
 import com.intellij.ide.structureView.StructureViewTreeElement
 import com.intellij.navigation.ItemPresentation
 import com.intellij.openapi.ui.Queryable
-import com.intellij.platform.backend.navigation.NavigationRequest
 import com.intellij.pom.Navigatable
 import com.intellij.util.ArrayUtil
 import com.rri.lsvplugin.languageElements.elements.BaseElement

@@ -28,7 +28,6 @@ dependencies {
 intellij {
   version.set("2023.2")
   type.set("IU") // Target IDE Platform
-//  plugins.set(listOf())
   plugins.set(listOf("com.intellij.java"))
 }
 
@@ -64,7 +63,7 @@ tasks {
   }
 
   patchPluginXml {
-    sinceBuild.set("231")
+    sinceBuild.set("232")
     untilBuild.set("232.*")
   }
 

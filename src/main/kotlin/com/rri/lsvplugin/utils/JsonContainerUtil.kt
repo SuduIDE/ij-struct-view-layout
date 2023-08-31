@@ -4,7 +4,6 @@ import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.elementType
-import com.jetbrains.rd.util.firstOrNull
 import com.rri.lsvplugin.services.JsonSvContainerServiceImpl
 
 class JsonContainerUtil {

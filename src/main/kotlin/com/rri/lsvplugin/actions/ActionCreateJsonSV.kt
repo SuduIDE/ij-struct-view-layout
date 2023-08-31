@@ -5,7 +5,6 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
 import com.rri.lsvplugin.services.JsonSvContainerServiceImpl
-import java.io.File
 
 
 class ActionCreateJsonSV : AnAction() {

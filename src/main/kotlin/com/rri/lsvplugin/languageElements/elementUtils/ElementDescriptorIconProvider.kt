@@ -8,6 +8,7 @@ import javax.swing.Icon
 
 class ElementDescriptorIconProvider {
     companion object {
+        @JvmStatic
         private val iconManager = IconManager.getInstance()
 
         fun getIcon(element: BaseElement): Icon? {

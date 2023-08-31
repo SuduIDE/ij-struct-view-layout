@@ -24,7 +24,7 @@ class GeneralizedElementVisitor : IElementVisitor {
                 } ?: jsonUtil.getKeywordAttribute(child)?.also {
                    visitKeyword(curElement, child, it, jsonUtil)
                 } ?: jsonUtil.getPropertyAttribute(child)?.also {
-                   visitProperty(curElement, child, it, jsonUtil)
+                   visitProperty(curElement, child, it)
                 } ?: jsonUtil.getElementNames(child)?.also {
                     createElement(curElement, child, it, elementCreator, jsonUtil)
                 } ?: queueChildren.add(Pair(curElement, child))
@@ -82,7 +82,7 @@ class GeneralizedElementVisitor : IElementVisitor {
         )
     }
 
-    private fun visitProperty(curElements: List<BaseElement>, langElement: PsiElement, properties: List<JsonStructureSV.PropertyInfo>, jsonUtil: JsonContainerUtil) {
+    private fun visitProperty(curElements: List<BaseElement>, langElement: PsiElement, properties: List<JsonStructureSV.PropertyInfo>) {
         for (property in properties) {
             for (curElement in curElements) {
                 if (curElement.displayLevel != 0

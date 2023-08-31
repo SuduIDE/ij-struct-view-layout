@@ -4,7 +4,6 @@ import com.intellij.ide.util.treeView.smartTree.ActionPresentation
 import com.intellij.ide.util.treeView.smartTree.ActionPresentationData
 import com.intellij.ide.util.treeView.smartTree.Sorter
 import com.rri.lsvplugin.languageElements.elements.Attributes
-import com.rri.lsvplugin.languageElements.elements.BaseElement
 import com.rri.lsvplugin.psi.structure.CustomizedStructureViewElement
 import com.rri.lsvplugin.utils.JsonStructureSV
 
